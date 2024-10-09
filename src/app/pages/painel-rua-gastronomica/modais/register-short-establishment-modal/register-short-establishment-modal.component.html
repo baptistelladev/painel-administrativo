@@ -1,0 +1,946 @@
+<ion-content>
+  <section class="short-establishment">
+    <form [formGroup]="formShortEstablishment">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Informações</b> do estabelecimento
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('name')?.invalid &&
+            (formShortEstablishment.get('name')?.touched ||
+            formShortEstablishment.get('name')?.dirty))}"
+            class="rgs-input-wrapper  full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Nome do estabelecimento'"
+                labelPlacement="floating"
+                formControlName="name"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('name')?.invalid &&
+              (formShortEstablishment.get('name')?.touched || formShortEstablishment.get('name')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('name')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('mainType')?.invalid &&
+            (formShortEstablishment.get('mainType')?.touched ||
+            formShortEstablishment.get('mainType')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-select
+                (ionChange)="mainTypeChanged($event)"
+                formControlName="mainType"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Tipo de estabelecimento'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let type of ESTABLISHMENT_TYPES"
+                  [value]="type.value">
+                    {{ type.text.pt }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Localização</b> do estabelecimento
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('zip_code')?.invalid &&
+            (formShortEstablishment.get('zip_code')?.touched ||
+            formShortEstablishment.get('zip_code')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'CEP'"
+                labelPlacement="floating"
+                formControlName="zip_code"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('zip_code')?.invalid &&
+              (formShortEstablishment.get('zip_code')?.touched || formShortEstablishment.get('zip_code')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('zip_code')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('street')?.invalid &&
+            (formShortEstablishment.get('street')?.touched ||
+            formShortEstablishment.get('street')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Nome da rua'"
+                labelPlacement="floating"
+                formControlName="street"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('street')?.invalid &&
+              (formShortEstablishment.get('street')?.touched || formShortEstablishment.get('street')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('street')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('number')?.invalid &&
+            (formShortEstablishment.get('number')?.touched ||
+            formShortEstablishment.get('number')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Número do estabelecimento'"
+                labelPlacement="floating"
+                formControlName="number"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('number')?.invalid &&
+              (formShortEstablishment.get('number')?.touched || formShortEstablishment.get('number')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('number')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('neighborhood')?.invalid &&
+            (formShortEstablishment.get('neighborhood')?.touched ||
+            formShortEstablishment.get('neighborhood')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Bairro'"
+                labelPlacement="floating"
+                formControlName="neighborhood"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('neighborhood')?.invalid &&
+              (formShortEstablishment.get('neighborhood')?.touched || formShortEstablishment.get('neighborhood')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('neighborhood')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Caracteríticas</b> importantes
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Ambiente climatizado</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Música ao vivo</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Mostrar informação</ion-toggle>
+            </ion-item>
+
+
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Aceita reservas</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Aceita bichos</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12" lines="none" class="rgs-item-toggle">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Aceita Vale refeição</ion-toggle>
+            </ion-item>
+
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('ticketName')?.invalid &&
+            (formShortEstablishment.get('ticketName')?.touched ||
+            formShortEstablishment.get('ticketName')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                (ionChange)="ticketChanged($event)"
+                formControlName="ticketName"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Marcas'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let ticket of TICKETS"
+                  [value]="ticket.value">
+                    {{ ticket.text }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+                Cadastrar <b>telefones</b>
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12" formArrayName="phones" class="ion-no-padding">
+            <div *ngFor="let phone of phones.controls; let i = index" [formGroupName]="i" class="array-item">
+
+              <div class="item-title mg-bottom-16">
+                <ion-text mode="ios">
+                  <p class="fs-14 color-gray-text">Telefone <b>{{ i + 1 }}</b></p>
+                </ion-text>
+
+                <ion-button
+                title="Remover telefone"
+                class="remove clear-danger"
+                fill="clear"
+                type="button"
+                (click)="removePhone(i)">
+                  <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+
+              <div class="ddd-n-phone-wrapper">
+                <div
+                [ngClass]="{
+                'has-error' : (formShortEstablishment.get('ddd')?.invalid &&
+                (formShortEstablishment.get('ddd')?.touched ||
+                formShortEstablishment.get('ddd')?.dirty))}"
+                class="rgs-input-wrapper full-width white-background-item mg-right-16 ddd-wrapper">
+                  <ion-item
+                  lines="none"
+                  mode="ios">
+                    <ion-input
+                    enterkeyhint="next"
+                    mode="ios"
+                    [label]="'DDD'"
+                    labelPlacement="floating"
+                    formControlName="ddd"
+                    type="text"
+                    inputmode="text">
+                    </ion-input>
+                  </ion-item>
+
+                  <ion-text
+                  mode="ios"
+                  class="mg-top-8 d-block"
+                  *ngIf="
+                  formShortEstablishment.get('ddd')?.invalid &&
+                  (formShortEstablishment.get('ddd')?.touched || formShortEstablishment.get('ddd')?.dirty)">
+                    <p
+                    *ngIf="formShortEstablishment.get('ddd')?.hasError('required')"
+                    class="fs-13 color-danger">
+                      Campo obrigatório
+                    </p>
+                  </ion-text>
+                </div>
+
+                <div
+                [ngClass]="{
+                'has-error' : (formShortEstablishment.get('number')?.invalid &&
+                (formShortEstablishment.get('number')?.touched ||
+                formShortEstablishment.get('number')?.dirty))}"
+                class="rgs-input-wrapper full-width white-background-item">
+                  <ion-item
+                  lines="none"
+                  mode="ios">
+                    <ion-input
+                    enterkeyhint="next"
+                    mode="ios"
+                    [label]="'Número'"
+                    labelPlacement="floating"
+                    formControlName="number"
+                    type="text"
+                    inputmode="text">
+                    </ion-input>
+                  </ion-item>
+
+                  <ion-text
+                  mode="ios"
+                  class="mg-top-8 d-block"
+                  *ngIf="
+                  formShortEstablishment.get('number')?.invalid &&
+                  (formShortEstablishment.get('number')?.touched || formShortEstablishment.get('number')?.dirty)">
+                    <p
+                    *ngIf="formShortEstablishment.get('number')?.hasError('required')"
+                    class="fs-13 color-danger">
+                      Campo obrigatório
+                    </p>
+                  </ion-text>
+                </div>
+              </div>
+              </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-button
+            mode="md"
+            class="rgs-gray-solid fs-12"
+            fill="solid"
+            type="button"
+            shape="round"
+            (click)="addPhone()">
+              Adicionar telefone
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+                Cadastrar <b>redes sociais</b>
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12" formArrayName="networks" class="ion-no-padding">
+            <div *ngFor="let network of networks.controls; let i = index" [formGroupName]="i" class="array-item">
+
+              <div class="item-title mg-bottom-16">
+                <ion-text mode="ios">
+                  <p class="fs-14 color-gray-text">Rede social <b>{{ i + 1 }}</b></p>
+                </ion-text>
+
+                <ion-button
+                title="Remover rede social"
+                class="remove clear-danger"
+                fill="clear"
+                type="button"
+                (click)="removeNetwork(i)">
+                  <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                </ion-button>
+              </div>
+
+              <div
+              [ngClass]="{'has-error' : (formShortEstablishment.get('value')?.invalid &&
+              (formShortEstablishment.get('value')?.touched ||
+              formShortEstablishment.get('value')?.dirty))}"
+              class="rgs-select-wrapper full-width white-background-item mg-bottom-16">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-select
+                  (ionChange)="ticketChanged($event)"
+                  formControlName="value"
+                  [cancelText]="'Cancelar'"
+                  [okText]="'Definir'"
+                  [label]="'Marcas'"
+                  toggleIcon="chevron-down-outline"
+                  label-placement="floating">
+                    <ion-select-option
+                    *ngFor="let network of NETWORKS"
+                    [value]="network.value">
+                      {{ network.text }}
+                    </ion-select-option>
+                  </ion-select>
+                </ion-item>
+              </div>
+
+              <div
+              [ngClass]="{
+              'has-error' : (formShortEstablishment.get('user')?.invalid &&
+              (formShortEstablishment.get('user')?.touched ||
+              formShortEstablishment.get('user')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Usuário'"
+                  labelPlacement="floating"
+                  formControlName="user"
+                  type="text"
+                  inputmode="text">
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                formShortEstablishment.get('user')?.invalid &&
+                (formShortEstablishment.get('user')?.touched || formShortEstablishment.get('user')?.dirty)">
+                  <p
+                  *ngIf="formShortEstablishment.get('user')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                </ion-text>
+              </div>
+            </div>
+          </ion-col>
+
+          <ion-col
+          size="12"
+          class="txt-end">
+            <ion-button
+            mode="md"
+            class="rgs-gray-solid fs-12"
+            fill="solid"
+            type="button"
+            shape="round"
+            (click)="addNetwork()">
+              Adicionar <ion-icon name="add-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+                Cadastrar <b>horário de funcionamento</b>
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12" formArrayName="mondaysHour" class="ion-no-padding">
+            <div class="working-time-wrapper">
+              <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
+                <ion-toggle justify="space-between" mode="ios">Segunda-feira</ion-toggle>
+              </ion-item>
+
+              <div class="open-close-wrapper">
+                <div class="open-close" *ngFor="let network of mondaysHour.controls; let i = index" [formGroupName]="i">
+                  <div
+                  [id]="'open-' + i + '-mondays-hour'"
+                  [ngClass]="{
+                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
+                  (formShortEstablishment.get('open')?.touched ||
+                  formShortEstablishment.get('open')?.dirty))}"
+                  class="rgs-input-wrapper full-width white-background-item mg-right-16">
+                    <ion-item
+                    lines="none"
+                    mode="ios">
+                      <ion-input
+                      enterkeyhint="next"
+                      mode="ios"
+                      [label]="'Abre'"
+                      labelPlacement="floating"
+                      [formControlName]="'open'"
+                      type="text"
+                      inputmode="text">
+                      </ion-input>
+                    </ion-item>
+
+                    <ion-text
+                    mode="ios"
+                    class="mg-top-8 d-block"
+                    *ngIf="
+                    formShortEstablishment.get('open')?.invalid &&
+                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                      <p
+                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      class="fs-13 color-danger">
+                        Campo obrigatório
+                      </p>
+                    </ion-text>
+
+                    <!-- DEFINIR ABERTURA E FECHAMENTO DO ESTABELECIMENTO -->
+                    <ion-modal
+                    [id]="'modal-open-' + i  + '-mondays-hour'"
+                    [trigger]="'open-' + i  + '-mondays-hour'"
+                    [initialBreakpoint]="1" [breakpoints]="[1]"
+                    class="custom-modal-for-time"
+                    mode="md"
+                    [keepContentsMounted]="true"
+                    [isOpen]="timerDatetime">
+                      <ng-template>
+                        <ion-datetime
+                        (ionChange)="mondaysHourChanged($event)"
+                        formControlName="open"
+                        class="custom-datetime-for-time"
+                        [minuteValues]="[0,15,30,45]"
+                        presentation="time"
+                        displayFormat="hh:mm"
+                        locale="pt-BR"
+                        presentation="time"
+                        #datetime>
+                        </ion-datetime>
+
+                        <ion-button
+                        (click)="defineTimeFromMondaysHour(i, 'open')"
+                        class="rgs-main-solid custom-button-for-time"
+                        mode="md"
+                        title="Definir">
+                          Definir entrada {{ i }}
+                        </ion-button>
+                      </ng-template>
+                    </ion-modal>
+                  </div>
+
+                  <div
+                  [id]="'close-' + i + '-mondays-hour'"
+                  [ngClass]="{
+                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
+                  (formShortEstablishment.get('close')?.touched ||
+                  formShortEstablishment.get('close')?.dirty))}"
+                  class="rgs-input-wrapper full-width white-background-item">
+                    <ion-item
+                    lines="none"
+                    mode="ios">
+                      <ion-input
+                      enterkeyhint="next"
+                      mode="ios"
+                      [label]="'Fecha'"
+                      labelPlacement="floating"
+                      formControlName="close"
+                      type="text"
+                      inputmode="text">
+                      </ion-input>
+                    </ion-item>
+
+                    <ion-text
+                    mode="ios"
+                    class="mg-top-8 d-block"
+                    *ngIf="
+                    formShortEstablishment.get('close')?.invalid &&
+                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                      <p
+                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      class="fs-13 color-danger">
+                        Campo obrigatório
+                      </p>
+                    </ion-text>
+
+                    <!-- DEFINIR ABERTURA E FECHAMENTO DO ESTABELECIMENTO -->
+                    <ion-modal
+                    [id]="'modal-close-' + i + '-mondays-hour'"
+                    [trigger]="'close-' + i + '-mondays-hour'"
+                    [initialBreakpoint]="1" [breakpoints]="[1]"
+                    class="custom-modal-for-time"
+                    mode="md"
+                    [keepContentsMounted]="true"
+                    [isOpen]="timerDatetime">
+                      <ng-template>
+                        <ion-datetime
+                        (ionChange)="mondaysHourChanged($event)"
+                        formControlName="close"
+                        class="custom-datetime-for-time"
+                        [minuteValues]="[0,15,30,45]"
+                        presentation="time"
+                        displayFormat="hh:mm"
+                        locale="pt-BR"
+                        presentation="time"
+                        #datetime>
+                        </ion-datetime>
+
+                        <ion-button
+                        (click)="defineTimeFromMondaysHour(i, 'close')"
+                        class="rgs-main-solid custom-button-for-time"
+                        mode="md"
+                        title="Definir">
+                          Definir saída {{ i }}
+                        </ion-button>
+                      </ng-template>
+                    </ion-modal>
+                  </div>
+
+                  <ion-button
+                  title="Remover horário"
+                  class="remove clear-danger"
+                  fill="clear"
+                  type="button"
+                  (click)="removeMondaysHour(i)">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+
+                <ion-button
+                mode="md"
+                class="rgs-gray-solid fs-12"
+                fill="solid"
+                type="button"
+                shape="round"
+                (click)="addMondaysHour()">
+                  Adicionar horário
+                </ion-button>
+              </div>
+            </div>
+          </ion-col>
+
+          <ion-col size="12" formArrayName="tuesdaysHour" class="ion-no-padding">
+            <div class="working-time-wrapper">
+              <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
+                <ion-toggle justify="space-between" mode="ios">Terça-feira</ion-toggle>
+              </ion-item>
+
+              <div class="open-close-wrapper">
+                <div class="open-close" *ngFor="let network of tuesdaysHour.controls; let i = index" [formGroupName]="i">
+                  <div
+                  [id]="'open-' + i + '-tuesdays-hour'"
+                  [ngClass]="{
+                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
+                  (formShortEstablishment.get('open')?.touched ||
+                  formShortEstablishment.get('open')?.dirty))}"
+                  class="rgs-input-wrapper full-width white-background-item mg-right-16">
+                    <ion-item
+                    lines="none"
+                    mode="ios">
+                      <ion-input
+                      enterkeyhint="next"
+                      mode="ios"
+                      [label]="'Abre'"
+                      labelPlacement="floating"
+                      [formControlName]="'open'"
+                      type="text"
+                      inputmode="text">
+                      </ion-input>
+                    </ion-item>
+
+                    <ion-text
+                    mode="ios"
+                    class="mg-top-8 d-block"
+                    *ngIf="
+                    formShortEstablishment.get('open')?.invalid &&
+                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                      <p
+                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      class="fs-13 color-danger">
+                        Campo obrigatório
+                      </p>
+                    </ion-text>
+
+                    <!-- DEFINIR ABERTURA E FECHAMENTO DO ESTABELECIMENTO -->
+                    <ion-modal
+                    [id]="'modal-open-' + i + '-tuesdays-hour'"
+                    [trigger]="'open-' + i + '-tuesdays-hour'"
+                    [initialBreakpoint]="1" [breakpoints]="[1]"
+                    class="custom-modal-for-time"
+                    mode="md"
+                    [keepContentsMounted]="true"
+                    [isOpen]="timerDatetime">
+                      <ng-template>
+                        <ion-datetime
+                        (ionChange)="tuesdaysHourChanged($event)"
+                        formControlName="open"
+                        class="custom-datetime-for-time"
+                        [minuteValues]="[0,15,30,45]"
+                        presentation="time"
+                        displayFormat="hh:mm"
+                        locale="pt-BR"
+                        presentation="time"
+                        #datetime>
+                        </ion-datetime>
+
+                        <ion-button
+                        (click)="defineTimeFromTuesdaysHour(i, 'open')"
+                        class="rgs-main-solid custom-button-for-time"
+                        mode="md"
+                        title="Definir">
+                          Definir entrada {{ i }}
+                        </ion-button>
+                      </ng-template>
+                    </ion-modal>
+                  </div>
+
+                  <div
+                  [id]="'close-' + i + '-tuesdays-hour'"
+                  [ngClass]="{
+                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
+                  (formShortEstablishment.get('close')?.touched ||
+                  formShortEstablishment.get('close')?.dirty))}"
+                  class="rgs-input-wrapper full-width white-background-item">
+                    <ion-item
+                    lines="none"
+                    mode="ios">
+                      <ion-input
+                      enterkeyhint="next"
+                      mode="ios"
+                      [label]="'Fecha'"
+                      labelPlacement="floating"
+                      formControlName="close"
+                      type="text"
+                      inputmode="text">
+                      </ion-input>
+                    </ion-item>
+
+                    <ion-text
+                    mode="ios"
+                    class="mg-top-8 d-block"
+                    *ngIf="
+                    formShortEstablishment.get('close')?.invalid &&
+                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                      <p
+                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      class="fs-13 color-danger">
+                        Campo obrigatório
+                      </p>
+                    </ion-text>
+
+                    <!-- DEFINIR ABERTURA E FECHAMENTO DO ESTABELECIMENTO -->
+                    <ion-modal
+                    [id]="'modal-close-' + i + '-tuesdays-hour'"
+                    [trigger]="'close-' + i + '-tuesdays-hour'"
+                    [initialBreakpoint]="1" [breakpoints]="[1]"
+                    class="custom-modal-for-time"
+                    mode="md"
+                    [keepContentsMounted]="true"
+                    [isOpen]="timerDatetime">
+                      <ng-template>
+                        <ion-datetime
+                        (ionChange)="tuesdaysHourChanged($event)"
+                        formControlName="close"
+                        class="custom-datetime-for-time"
+                        [minuteValues]="[0,15,30,45]"
+                        presentation="time"
+                        displayFormat="hh:mm"
+                        locale="pt-BR"
+                        presentation="time"
+                        #datetime>
+                        </ion-datetime>
+
+                        <ion-button
+                        (click)="defineTimeFromTuesdaysHour(i, 'close')"
+                        class="rgs-main-solid custom-button-for-time"
+                        mode="md"
+                        title="Definir">
+                          Definir saída {{ i }}
+                        </ion-button>
+                      </ng-template>
+                    </ion-modal>
+                  </div>
+
+                  <ion-button
+                  title="Remover horário"
+                  class="remove clear-danger"
+                  fill="clear"
+                  type="button"
+                  (click)="removeTuesdaysHour(i)">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+
+                <ion-button
+                mode="md"
+                class="rgs-gray-solid fs-12"
+                fill="solid"
+                type="button"
+                shape="round"
+                (click)="addTuesdaysHour()">
+                  Adicionar horário
+                </ion-button>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </section>
+</ion-content>
+
+<ion-footer
+mode="ios"
+class="ion-no-border bg-white">
+  <ion-toolbar
+  mode="ios"
+  class="ion-bg-white ion-no-padding">
+    <div class="footer-wrapper">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-button
+            [disabled]="true"
+            title="Cadastrar estabelecimento"
+            class="rgs-main-solid"
+            mode="md"
+            shape="round">
+              Cadastrar estabelecimento
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,90 @@
+ion-content {
+  section {
+    max-width: 445px;
+    margin: 0 auto;
+
+    &.short-establishment {
+      padding: 16px;
+    }
+  }
+}
+
+.footer-wrapper {
+  max-width: 445px;
+  margin: 0 auto;
+
+  ion-button {
+    width: 100%;
+    height: 48px;
+  }
+}
+
+.array-item {
+  margin: 0 0 16px 0;
+
+  .item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    ion-button {
+      margin: 0 -8px 0 0;
+
+      ion-icon {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+.ddd-n-phone-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  .ddd-wrapper {
+    width: 66px;
+  }
+}
+
+.open-close {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 5px;
+  margin: 0 0 8px 0;
+
+  ion-button {
+    min-width: 0;
+    margin-left: 16px;
+
+    ion-icon {
+      font-size: 60px;
+    }
+  }
+}
+
+.working-time-wrapper {
+  background: var(--gray-fa);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  margin: 0 0 16px 0;
+}
+
+ion-modal.custom-modal-for-time {
+  --width: auto;
+  --height: auto;
+  --min-height: 0;
+  --min-width: 0;
+  border-radius: 16px 16px 0 0;
+}
+
+ion-datetime.custom-datetime-for-time {
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+ion-button.custom-button-for-time {
+  --border-radius: 0;
+}
