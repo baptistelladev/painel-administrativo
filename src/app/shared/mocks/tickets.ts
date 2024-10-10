@@ -14,7 +14,7 @@ export const TICKETS: IShortTicket[] = [
     value: 'VR'
   },
   {
-    text: 'Ticker Restaurante',
+    text: 'Ticket Restaurante',
     value: 'TICKET_RESTAURANTE'
   }
 ]

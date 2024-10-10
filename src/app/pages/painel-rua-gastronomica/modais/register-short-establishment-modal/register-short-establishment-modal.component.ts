@@ -266,6 +266,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       return day;
     })
 
+    this.shortEstablishment.working_time = working_time;
+
     this.shortEstablishment.value = this.formShortEstablishment.get('url')?.value;
 
     await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
