@@ -420,9 +420,9 @@
                 </div>
 
                 <div
-                [ngClass]="{'has-error' : (formShortEstablishment.get('type')?.invalid &&
-                (formShortEstablishment.get('type')?.touched ||
-                formShortEstablishment.get('type')?.dirty))}"
+                [ngClass]="{'has-error' : (phones.at(i).get('type')?.invalid &&
+                (phones.at(i).get('type')?.touched ||
+                phones.at(i).get('type')?.dirty))}"
                 class="rgs-select-wrapper full-width white-background-item mg-bottom-16 label-w-gray-fa">
                   <ion-item
                   lines="none"
@@ -447,10 +447,10 @@
                   mode="ios"
                   class="mg-top-8 d-block"
                   *ngIf="
-                  formShortEstablishment.get('type')?.invalid &&
-                  (formShortEstablishment.get('type')?.touched || formShortEstablishment.get('type')?.dirty)">
+                  phones.at(i).get('type')?.invalid &&
+                  (phones.at(i).get('type')?.touched || phones.at(i).get('type')?.dirty)">
                     <p
-                    *ngIf="formShortEstablishment.get('type')?.hasError('required')"
+                    *ngIf="phones.at(i).get('type')?.hasError('required')"
                     class="fs-13 color-danger">
                       Campo obrigatório
                     </p>
@@ -460,9 +460,9 @@
                 <div class="ddd-n-phone-wrapper">
                   <div
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('ddd')?.invalid &&
-                  (formShortEstablishment.get('ddd')?.touched ||
-                  formShortEstablishment.get('ddd')?.dirty))}"
+                  'has-error' : (phones.at(i).get('ddd')?.invalid &&
+                  (phones.at(i).get('ddd')?.touched ||
+                  phones.at(i).get('ddd')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 ddd-wrapper label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -482,10 +482,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('ddd')?.invalid &&
-                    (formShortEstablishment.get('ddd')?.touched || formShortEstablishment.get('ddd')?.dirty)">
+                    phones.at(i).get('ddd')?.invalid &&
+                    (phones.at(i).get('ddd')?.touched || phones.at(i).get('ddd')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('ddd')?.hasError('required')"
+                      *ngIf="phones.at(i).get('ddd')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -494,9 +494,9 @@
 
                   <div
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('number')?.invalid &&
-                  (formShortEstablishment.get('number')?.touched ||
-                  formShortEstablishment.get('number')?.dirty))}"
+                  'has-error' : (phones.at(i).get('number')?.invalid &&
+                  (phones.at(i).get('number')?.touched ||
+                  phones.at(i).get('number')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item">
                     <ion-item
                     lines="none"
@@ -516,10 +516,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('number')?.invalid &&
-                    (formShortEstablishment.get('number')?.touched || formShortEstablishment.get('number')?.dirty)">
+                    phones.at(i).get('number')?.invalid &&
+                    (phones.at(i).get('number')?.touched || phones.at(i).get('number')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('number')?.hasError('required')"
+                      *ngIf="phones.at(i).get('number')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -574,9 +574,9 @@
                 </div>
 
                 <div
-                [ngClass]="{'has-error' : (formShortEstablishment.get('value')?.invalid &&
-                (formShortEstablishment.get('value')?.touched ||
-                formShortEstablishment.get('value')?.dirty))}"
+                [ngClass]="{'has-error' : (networks.at(i).get('value')?.invalid &&
+                (networks.at(i).get('value')?.touched ||
+                networks.at(i).get('value')?.dirty))}"
                 class="rgs-select-wrapper full-width white-background-item mg-bottom-16 label-w-gray-fa">
                   <ion-item
                   lines="none"
@@ -596,13 +596,26 @@
                       </ion-select-option>
                     </ion-select>
                   </ion-item>
+
+                  <ion-text
+                  mode="ios"
+                  class="mg-top-8 d-block"
+                  *ngIf="
+                  networks.at(i).get('value')?.invalid &&
+                  (networks.at(i).get('value')?.touched || networks.at(i).get('value')?.dirty)">
+                    <p
+                    *ngIf="networks.at(i).get('value')?.hasError('required')"
+                    class="fs-13 color-danger">
+                      Campo obrigatório
+                    </p>
+                  </ion-text>
                 </div>
 
                 <div
                 [ngClass]="{
-                'has-error' : (formShortEstablishment.get('user')?.invalid &&
-                (formShortEstablishment.get('user')?.touched ||
-                formShortEstablishment.get('user')?.dirty))}"
+                'has-error' : (networks.at(i).get('user')?.invalid &&
+                (networks.at(i).get('user')?.touched ||
+                networks.at(i).get('user')?.dirty))}"
                 class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                   <ion-item
                   lines="none"
@@ -622,10 +635,10 @@
                   mode="ios"
                   class="mg-top-8 d-block"
                   *ngIf="
-                  formShortEstablishment.get('user')?.invalid &&
-                  (formShortEstablishment.get('user')?.touched || formShortEstablishment.get('user')?.dirty)">
+                  networks.at(i).get('user')?.invalid &&
+                  (networks.at(i).get('user')?.touched || networks.at(i).get('user')?.dirty)">
                     <p
-                    *ngIf="formShortEstablishment.get('user')?.hasError('required')"
+                    *ngIf="networks.at(i).get('user')?.hasError('required')"
                     class="fs-13 color-danger">
                       Campo obrigatório
                     </p>
@@ -660,7 +673,7 @@
           </ion-col>
 
           <!-- SEGUNDA-FEIRA -->
-          <ion-col size="12" formArrayName="mondaysHour" >
+          <ion-col size="12" formArrayName="mondaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
                 <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'mondaysHour')" #mondaysHourToggle>Segunda-feira <span *ngIf="!mondaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
@@ -671,9 +684,9 @@
                   <div
                   [id]="'open-' + i + '-mondays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (mondaysHour.at(i).get('open')?.invalid &&
+                  (mondaysHour.at(i).get('open')?.touched ||
+                  mondaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -693,10 +706,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    mondaysHour.at(i).get('open')?.invalid &&
+                    (mondaysHour.at(i).get('open')?.touched || mondaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="mondaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -738,9 +751,9 @@
                   <div
                   [id]="'close-' + i + '-mondays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (mondaysHour.at(i).get('close')?.invalid &&
+                  (mondaysHour.at(i).get('close')?.touched ||
+                  mondaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -760,10 +773,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    mondaysHour.at(i).get('close')?.invalid &&
+                    (mondaysHour.at(i).get('close')?.touched || mondaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="mondaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -826,7 +839,7 @@
           </ion-col>
 
           <!-- TERÇA-FEIRA -->
-          <ion-col size="12" formArrayName="tuesdaysHour" >
+          <ion-col size="12" formArrayName="tuesdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
                 <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'tuesdaysHour')" #tuesdaysHourToggle>Terça-feira <span *ngIf="!tuesdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
@@ -837,9 +850,9 @@
                   <div
                   [id]="'open-' + i + '-tuesdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (tuesdaysHour.at(i).get('open')?.invalid &&
+                  (tuesdaysHour.at(i).get('open')?.touched ||
+                  tuesdaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -859,10 +872,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    tuesdaysHour.at(i).get('open')?.invalid &&
+                    (tuesdaysHour.at(i).get('open')?.touched || tuesdaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="tuesdaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -904,9 +917,9 @@
                   <div
                   [id]="'close-' + i + '-tuesdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (tuesdaysHour.at(i).get('close')?.invalid &&
+                  (tuesdaysHour.at(i).get('close')?.touched ||
+                  tuesdaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -926,10 +939,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    tuesdaysHour.at(i).get('close')?.invalid &&
+                    (tuesdaysHour.at(i).get('close')?.touched || tuesdaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="tuesdaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -992,7 +1005,7 @@
           </ion-col>
 
           <!-- QUARTA-FEIRA -->
-          <ion-col size="12" formArrayName="wednesdaysHour" >
+          <ion-col size="12" formArrayName="wednesdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
                 <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'wednesdaysHour')" #wednesdaysHourToggle>Quarta-feira <span *ngIf="!wednesdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
@@ -1003,9 +1016,9 @@
                   <div
                   [id]="'open-' + i + '-wednesdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (wednesdaysHour.at(i).get('open')?.invalid &&
+                  (wednesdaysHour.at(i).get('open')?.touched ||
+                  wednesdaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1025,10 +1038,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    wednesdaysHour.at(i).get('open')?.invalid &&
+                    (wednesdaysHour.at(i).get('open')?.touched || wednesdaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="wednesdaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1070,9 +1083,9 @@
                   <div
                   [id]="'close-' + i + '-wednesdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (wednesdaysHour.at(i).get('close')?.invalid &&
+                  (wednesdaysHour.at(i).get('close')?.touched ||
+                  wednesdaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1092,10 +1105,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    wednesdaysHour.at(i).get('close')?.invalid &&
+                    (wednesdaysHour.at(i).get('close')?.touched || wednesdaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="wednesdaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1158,10 +1171,10 @@
           </ion-col>
 
           <!-- QUINTA-FEIRA -->
-          <ion-col size="12" formArrayName="thursdaysHour" >
+          <ion-col size="12" formArrayName="thursdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'thursdaysHour')" #thursdaysHourToggle>Quinta-feira <span *ngIf="!wednesdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'thursdaysHour')" #thursdaysHourToggle>Quinta-feira <span *ngIf="!thursdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
               <div class="open-close-wrapper mg-top-8" *ngIf="thursdaysHourToggle.checked">
@@ -1169,9 +1182,9 @@
                   <div
                   [id]="'open-' + i + '-thursdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (thursdaysHour.at(i).get('open')?.invalid &&
+                  (thursdaysHour.at(i).get('open')?.touched ||
+                  thursdaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1191,10 +1204,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    thursdaysHour.at(i).get('open')?.invalid &&
+                    (thursdaysHour.at(i).get('open')?.touched || thursdaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="thursdaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1236,9 +1249,9 @@
                   <div
                   [id]="'close-' + i + '-thursdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (thursdaysHour.at(i).get('close')?.invalid &&
+                  (thursdaysHour.at(i).get('close')?.touched ||
+                  thursdaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1258,10 +1271,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    thursdaysHour.at(i).get('close')?.invalid &&
+                    (thursdaysHour.at(i).get('close')?.touched || thursdaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="thursdaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1335,9 +1348,9 @@
                   <div
                   [id]="'open-' + i + '-fridays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (fridaysHour.at(i).get('open')?.invalid &&
+                  (fridaysHour.at(i).get('open')?.touched ||
+                  fridaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1357,10 +1370,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    fridaysHour.at(i).get('open')?.invalid &&
+                    (fridaysHour.at(i).get('open')?.touched || fridaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="fridaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1402,9 +1415,9 @@
                   <div
                   [id]="'close-' + i + '-fridays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (fridaysHour.at(i).get('close')?.invalid &&
+                  (fridaysHour.at(i).get('close')?.touched ||
+                  fridaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1424,10 +1437,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    fridaysHour.at(i).get('close')?.invalid &&
+                    (fridaysHour.at(i).get('close')?.touched || fridaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="fridaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1501,9 +1514,9 @@
                   <div
                   [id]="'open-' + i + '-saturdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (saturdaysHour.at(i).get('open')?.invalid &&
+                  (saturdaysHour.at(i).get('open')?.touched ||
+                  saturdaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1523,10 +1536,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    saturdaysHour.at(i).get('open')?.invalid &&
+                    (saturdaysHour.at(i).get('open')?.touched || saturdaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="saturdaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1568,9 +1581,9 @@
                   <div
                   [id]="'close-' + i + '-saturdays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (saturdaysHour.at(i).get('close')?.invalid &&
+                  (saturdaysHour.at(i).get('close')?.touched ||
+                  saturdaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1590,10 +1603,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    saturdaysHour.at(i).get('close')?.invalid &&
+                    (saturdaysHour.at(i).get('close')?.touched || saturdaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="saturdaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1667,9 +1680,9 @@
                   <div
                   [id]="'open-' + i + '-sundays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('open')?.invalid &&
-                  (formShortEstablishment.get('open')?.touched ||
-                  formShortEstablishment.get('open')?.dirty))}"
+                  'has-error' : (sundaysHour.at(i).get('open')?.invalid &&
+                  (sundaysHour.at(i).get('open')?.touched ||
+                  sundaysHour.at(i).get('open')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item mg-right-16 label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1689,10 +1702,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('open')?.invalid &&
-                    (formShortEstablishment.get('open')?.touched || formShortEstablishment.get('open')?.dirty)">
+                    sundaysHour.at(i).get('open')?.invalid &&
+                    (sundaysHour.at(i).get('open')?.touched || sundaysHour.at(i).get('open')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('open')?.hasError('required')"
+                      *ngIf="sundaysHour.at(i).get('open')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>
@@ -1734,9 +1747,9 @@
                   <div
                   [id]="'close-' + i + '-sundays-hour'"
                   [ngClass]="{
-                  'has-error' : (formShortEstablishment.get('close')?.invalid &&
-                  (formShortEstablishment.get('close')?.touched ||
-                  formShortEstablishment.get('close')?.dirty))}"
+                  'has-error' : (sundaysHour.at(i).get('close')?.invalid &&
+                  (sundaysHour.at(i).get('close')?.touched ||
+                  sundaysHour.at(i).get('close')?.dirty))}"
                   class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
@@ -1756,10 +1769,10 @@
                     mode="ios"
                     class="mg-top-8 d-block"
                     *ngIf="
-                    formShortEstablishment.get('close')?.invalid &&
-                    (formShortEstablishment.get('close')?.touched || formShortEstablishment.get('close')?.dirty)">
+                    sundaysHour.at(i).get('close')?.invalid &&
+                    (sundaysHour.at(i).get('close')?.touched || sundaysHour.at(i).get('close')?.dirty)">
                       <p
-                      *ngIf="formShortEstablishment.get('close')?.hasError('required')"
+                      *ngIf="sundaysHour.at(i).get('close')?.hasError('required')"
                       class="fs-13 color-danger">
                         Campo obrigatório
                       </p>

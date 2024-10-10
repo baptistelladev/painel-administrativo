@@ -119,7 +119,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.initFormShortEstablishment()
+    this.initFormShortEstablishment();
+    this.formShortEstablishment.valueChanges.subscribe((res) => {
+      this.checkFormErrors();
+    })
   }
 
   public initFormShortEstablishment(): void {
@@ -141,8 +144,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       acceptVale: [false, Validators.required ],
       showVale: [true, Validators.required ],
       ticketName: '',
-      phones: this.formBuilder.array([]),
-      networks: this.formBuilder.array([]),
+      phones: this.formBuilder.array([], [Validators.required]),
+      networks: this.formBuilder.array([], [Validators.required]),
       mondaysHour: this.formBuilder.array([]),
       tuesdaysHour: this.formBuilder.array([]),
       wednesdaysHour: this.formBuilder.array([]),
@@ -552,5 +555,14 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     .trim(); // Remove espaços em branco no início e no fim
 
     this.formShortEstablishment.patchValue({ url: nameToUrl })
+  }
+
+  checkFormErrors() {
+    Object.keys(this.formShortEstablishment.controls).forEach(key => {
+      const controlErrors = this.formShortEstablishment.get(key)?.errors;
+      if (controlErrors) {
+        console.log(`Erro no campo ${key}:`, controlErrors);
+      }
+    });
   }
 }
