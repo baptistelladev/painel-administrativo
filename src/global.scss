@@ -120,8 +120,7 @@ hr.rgs-divider {
 
   ion-select {
     &::part(label) {
-      color: var(--gray-text);
-      opacity: .5;
+      color: var(--gray-c);
     }
 
     &::part(container) {
@@ -165,6 +164,14 @@ hr.rgs-divider {
 
   &.label-w-gray-fa {
     ion-item {
+      ion-select {
+        &.select-expanded.select-label-placement-floating, &.has-value.select-label-placement-floating {
+          &::part(label) {
+            background: var(--gray-fa);
+          }
+        }
+      }
+
       ion-input {
         &.has-focus.input-label-placement-floating, &.has-value.input-label-placement-floating {
 
@@ -180,6 +187,30 @@ hr.rgs-divider {
     }
   }
 
+  &.label-w-white {
+    ion-item {
+      ion-select {
+        &.select-expanded.select-label-placement-floating, &.has-value.select-label-placement-floating {
+          &::part(label) {
+            background: var(--white);
+          }
+        }
+      }
+
+      ion-input {
+        &.has-focus.input-label-placement-floating, &.has-value.input-label-placement-floating {
+
+          .input-wrapper.sc-ion-input-ios {
+            .label-text-wrapper.sc-ion-input-ios {
+              .label-text.sc-ion-input-ios {
+                background: var(--white);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
   &.has-error {
     ion-item {
@@ -307,4 +338,8 @@ ion-item.rgs-item-toggle {
   --min-height: 0;
   --color: var(--gray-text);
   font-size: 14px;
+}
+
+.disabled-w-opacity-1 {
+  opacity: 1 !important;
 }

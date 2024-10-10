@@ -2,7 +2,7 @@ import { IHour } from "./Hour";
 
 export interface ITime {
   day_number: number,
-  text: string,
+  text: any,
   opening_time: IHour[]
 }
 

@@ -19,25 +19,6 @@ ion-content {
   }
 }
 
-.array-item {
-  margin: 0 0 16px 0;
-
-  .item-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-
-    ion-button {
-      margin: 0 -8px 0 0;
-
-      ion-icon {
-        font-size: 22px;
-      }
-    }
-  }
-}
-
 .ddd-n-phone-wrapper {
   display: flex;
   align-items: flex-start;
@@ -65,12 +46,37 @@ ion-content {
   }
 }
 
-.working-time-wrapper {
+
+
+.array-item {
   background: var(--gray-fa);
   border-radius: 16px;
   padding: 16px;
   box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
-  margin: 0 0 16px 0;
+  margin: 0 0 20px 0;
+
+  .item-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+
+    ion-button {
+      margin: 0 -8px 0 0;
+
+      ion-icon {
+        font-size: 22px;
+      }
+    }
+  }
+}
+
+.working-time-wrapper, .url-wrapper {
+  background: var(--gray-fa);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  margin: 0 0 5px 0;
 }
 
 ion-modal.custom-modal-for-time {

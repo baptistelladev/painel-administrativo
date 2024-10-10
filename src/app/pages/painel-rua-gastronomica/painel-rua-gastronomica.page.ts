@@ -23,7 +23,8 @@ export class PainelRuaGastronomicaPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: RegisterShortEstablishmentModalComponent,
       mode: 'ios',
-      cssClass: 'rgs-register'
+      cssClass: 'rgs-register',
+      id: 'register-short-establishment'
     })
 
     await modal.present();

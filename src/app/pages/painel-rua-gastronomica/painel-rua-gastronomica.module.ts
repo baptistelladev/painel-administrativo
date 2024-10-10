@@ -8,6 +8,7 @@ import { PainelRuaGastronomicaPageRoutingModule } from './painel-rua-gastronomic
 
 import { PainelRuaGastronomicaPage } from './painel-rua-gastronomica.page';
 import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
   imports: [
