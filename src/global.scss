@@ -121,6 +121,7 @@ hr.rgs-divider {
   ion-select {
     &::part(label) {
       color: var(--gray-c);
+      transform: translateY(18px) !important;
     }
 
     &::part(container) {
@@ -132,6 +133,7 @@ hr.rgs-divider {
       opacity: .5;
       margin: 0 -3px 0 0;
     }
+
 
     &.select-expanded.select-label-placement-floating, &.has-value.select-label-placement-floating {
       &::part(label) {
@@ -249,6 +251,7 @@ hr.rgs-divider {
           .label-text.sc-ion-input-ios {
             color: var(--gray-c);
             transition: all 200ms ease;
+            transform: translateY(-3px) !important;
           }
         }
 
