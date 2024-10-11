@@ -29,6 +29,8 @@ import { ITime } from 'src/app/shared/models/Time';
 })
 export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
+  public isRegistering: boolean = false;
+
   public selectedTime: any;
 
   // USADO PARA MANIPULARO DATETIME.
@@ -176,7 +178,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
   }
 
   public async registerEstablishment() {
-
+    this.isRegistering = true;
 
     this.shortEstablishment.name = this.formShortEstablishment.get('name')?.value;
     this.shortEstablishment.mainType = this.shortEstablishment.mainType;
@@ -302,6 +304,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
     .then(async () => {
       await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
+      this.isRegistering = false;
+    }).catch(() => {
+      this.isRegistering = false;
     })
 
   }
