@@ -51,11 +51,11 @@ export const SPECIALTIES: IEstablishmentSpecialty[] = [
     }
   },
   {
-    value: 'DIVERSAS',
+    value: 'NENHUMA',
     text: {
-      pt: 'Diversas',
-      en: 'Various',
-      es: 'Diversas'
+      pt: 'Nenhuma',
+      en: 'None',
+      es: 'Ninguna'
     }
   }
 ]
