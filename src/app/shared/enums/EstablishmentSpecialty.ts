@@ -1,0 +1,10 @@
+
+export enum EstablishmentSpecialtyEnum {
+  BRASILEIRA = 'BRASILEIRA',
+  MEXICANA = 'MEXICANA',
+  JAPONESA = 'JAPONESA',
+  CHINESA = 'CHINESA',
+  ITALIANA = 'ITALIANA',
+  HAVAIANA = 'HAVAIANA',
+  DIVERSAS = 'DIVERSAS'
+}

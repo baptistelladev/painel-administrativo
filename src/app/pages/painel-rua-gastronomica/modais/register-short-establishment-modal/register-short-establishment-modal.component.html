@@ -95,6 +95,35 @@
           </ion-col>
 
           <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('specialty')?.invalid &&
+            (formShortEstablishment.get('specialty')?.touched ||
+            formShortEstablishment.get('specialty')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item mg-top-16 mg-bottom-16 label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                formControlName="specialty"
+                (ionChange)="specialtyChanged($event)"
+                formControlName="specialty"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Especialidades'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let specialty of SPECIALTIES"
+                  [value]="specialty.value">
+                    {{ specialty.text.pt }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
             <ion-text mode="ios">
               <hr class="rgs-divider">
             </ion-text>

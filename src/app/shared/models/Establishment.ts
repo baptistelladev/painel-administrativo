@@ -1,3 +1,5 @@
+import { IEstablishmentSpecialty } from "./EstablishmentSpecialty"
+import { IEstablishmentType } from "./EstablishmentType"
 import { IHour } from "./Hour"
 import { ISocialNetwork } from "./Network"
 import { IPhone } from "./Phone"
@@ -14,7 +16,8 @@ export interface IShortEstablishment {
     street: string,
     zip_code: string
   },
-  mainType: any,
+  specialty: IEstablishmentSpecialty[],
+  mainType: IEstablishmentType,
   ticket_info: {
     accept_ticket: boolean,
     show_field: boolean,

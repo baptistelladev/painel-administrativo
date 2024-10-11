@@ -1,3 +1,4 @@
+import { SPECIALTIES } from './../../../../shared/mocks/specialties';
 
 
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -14,6 +15,7 @@ import { PHONES } from 'src/app/shared/mocks/phones';
 import { TICKETS } from 'src/app/shared/mocks/tickets';
 import { IAdress } from 'src/app/shared/models/Endereco';
 import { IShortEstablishment } from 'src/app/shared/models/Establishment';
+import { IEstablishmentSpecialty } from 'src/app/shared/models/EstablishmentSpecialty';
 import { IEstablishmentType } from 'src/app/shared/models/EstablishmentType';
 import { ISocialNetwork } from 'src/app/shared/models/Network';
 import { IPhone } from 'src/app/shared/models/Phone';
@@ -44,7 +46,24 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       street: '',
       zip_code: ''
     },
-    mainType: '',
+    specialty: [
+      {
+        value: '',
+        text: {
+          pt: '',
+          en: '',
+          es: ''
+        }
+      }
+    ],
+    mainType: {
+      value: '',
+      text: {
+        pt: '',
+        en: '',
+        es: ''
+      }
+    },
     ticket_info: {
       accept_ticket: false,
       show_field: false,
@@ -110,6 +129,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
   public NETWORKS: ISocialNetwork[] = NETWORKS;
   public PHONES: IPhone[] = PHONES;
   public DAYS: ITime[] = DAYS;
+  public SPECIALTIES: IEstablishmentSpecialty[] = SPECIALTIES;
 
   constructor(
     private formBuilder : FormBuilder,
@@ -120,14 +140,12 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
   ngOnInit() {
     this.initFormShortEstablishment();
-    this.formShortEstablishment.valueChanges.subscribe((res) => {
-      this.checkFormErrors();
-    })
   }
 
   public initFormShortEstablishment(): void {
     this.formShortEstablishment = this.formBuilder.group({
       name: ['', [ Validators.required, Validators.minLength(2) ]],
+      specialty: [''],
       mainType: ['', [ Validators.required ]],
       zip_code: ['', [ Validators.required, Validators.minLength(8) ]],
       street: ['', Validators.required ],
@@ -270,16 +288,32 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
     this.shortEstablishment.value = this.formShortEstablishment.get('url')?.value;
 
+    if (this.formShortEstablishment.get('specialty')?.value && this.formShortEstablishment.get('specialty')?.value.length > 0) {
+      let specialtiesValues = this.formShortEstablishment.get('specialty')?.value
+
+      let specialtiesFiltered: IEstablishmentSpecialty[] = this.SPECIALTIES.filter((specialty: IEstablishmentSpecialty) => specialtiesValues.some((value: string) => specialty.value === value) )
+
+      this.shortEstablishment.specialty = specialtiesFiltered;
+
+    } else {
+      this.shortEstablishment.specialty = [];
+    }
+
     await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
     .then(async () => {
       await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
     })
+
   }
 
   public async mainTypeChanged(e: any) {
-    this.shortEstablishment.mainType = this.ESTABLISHMENT_TYPES.find((type: IEstablishmentType) => {
+    let foundType = this.ESTABLISHMENT_TYPES.find((type: IEstablishmentType) => {
       return type.value === e.detail.value;
     })
+
+    if (foundType) {
+      this.shortEstablishment.mainType = foundType;
+    }
   }
 
   public async getCep() {
@@ -296,6 +330,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
      })
     }
 
+  }
+
+  public async specialtyChanged(e: any) {
+    console.log(e);
   }
 
   public async ticketChanged(e: any) {
