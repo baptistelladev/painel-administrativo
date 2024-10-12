@@ -41,7 +41,8 @@ export interface IShortEstablishment {
   },
   working_time: ITime[],
   phones: IPhone[],
-  networks: ISocialNetwork[]
+  networks: ISocialNetwork[],
+  isBuilding: boolean
 }
 
 export interface ILongEstablishment {

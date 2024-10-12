@@ -6,5 +6,6 @@ export enum EstablishmentSpecialtyEnum {
   CHINESA = 'CHINESA',
   ITALIANA = 'ITALIANA',
   HAVAIANA = 'HAVAIANA',
-  NENHUMA = 'NENHUMA'
+  NENHUMA = 'NENHUMA',
+  ARABE = 'ARABE'
 }

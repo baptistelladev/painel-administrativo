@@ -40,6 +40,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
   public formShortEstablishment: FormGroup;
 
   public shortEstablishment: IShortEstablishment = {
+    isBuilding: false,
+    id: '',
     name: '',
     value: '',
     adress: {
@@ -173,7 +175,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       fridaysHour: this.formBuilder.array([]),
       saturdaysHour: this.formBuilder.array([]),
       sundaysHour: this.formBuilder.array([]),
-      url: ['', [Validators.required]]
+      url: ['', [Validators.required]],
+      isBuilding: [false, [Validators.required]]
     })
   }
 
@@ -300,6 +303,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     } else {
       this.shortEstablishment.specialty = [];
     }
+
+    this.shortEstablishment.isBuilding = this.formShortEstablishment.get('isBuilding')?.value;
 
     await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
     .then(async () => {
