@@ -18,6 +18,11 @@ export interface IShortEstablishment {
   },
   specialty: IEstablishmentSpecialty[],
   mainType: IEstablishmentType,
+  market_ticket_info: {
+    accept_ticket: boolean,
+    show_field: boolean,
+    tickets: IShortTicket[]
+  },
   ticket_info: {
     accept_ticket: boolean,
     show_field: boolean,

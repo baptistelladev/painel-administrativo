@@ -4,6 +4,20 @@ import { ITime } from "../models/Time";
 
 export const DAYS: ITime[] = [
   {
+    day_number: 0,
+    text: {
+      pt: 'Domingo',
+      en: 'Sunday',
+      es: 'Domingo'
+    },
+    opening_time: [
+      {
+        open: '',
+        close: ''
+      }
+    ]
+  },
+  {
     day_number: 1,
     text: {
       pt: 'Segunda-feira',
@@ -79,20 +93,6 @@ export const DAYS: ITime[] = [
       pt: 'Sábado',
       en: 'Saturday',
       es: 'Sábado'
-    },
-    opening_time: [
-      {
-        open: '',
-        close: ''
-      }
-    ]
-  },
-  {
-    day_number: 0,
-    text: {
-      pt: 'Domingo',
-      en: 'Sunday',
-      es: 'Domingo'
     },
     opening_time: [
       {

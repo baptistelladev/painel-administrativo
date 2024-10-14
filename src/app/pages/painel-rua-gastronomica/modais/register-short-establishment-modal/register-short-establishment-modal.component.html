@@ -228,6 +228,7 @@
           </ion-col>
 
           <ion-col size="12">
+
             <div
             [ngClass]="{
             'has-error' : (formShortEstablishment.get('neighborhood')?.invalid &&
@@ -399,12 +400,11 @@
               mode="ios">
                 <ion-select
                 [multiple]="true"
-                formControlName="ticketName"
                 (ionChange)="ticketChanged($event)"
                 formControlName="ticketName"
                 [cancelText]="'Cancelar'"
                 [okText]="'Definir'"
-                [label]="'Marcas'"
+                [label]="'Cartões refeição'"
                 toggleIcon="chevron-down-outline"
                 label-placement="floating">
                   <ion-select-option
@@ -418,6 +418,62 @@
 
             <ion-item mode="ios" lines="none" class="rgs-item-toggle">
               <ion-toggle justify="space-between" mode="ios" formControlName="showVale">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12" lines="none" class="rgs-item-toggle">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+
+            <ion-item
+            *ngIf="formShortEstablishment.get('mainType')?.value === EstablishmentTypeEnum.EMPORIO"
+            lines="none"
+            mode="ios"
+            class="simulate-bootstrap-alert mg-top-16 line-height-18 mg-bottom-16">
+              <ion-icon name="alert-circle-outline" slot="start" class="color-bootstrap-warning"></ion-icon>
+
+              <ion-text mode="ios" class="color-bootstrap-warning">
+                <p class="fs-12 mg-bottom-8"><b>Atenção</b></p>
+                <p class="fs-14">Identificamos o tipo do estabelecimento e a informação á seguir obrigatória pois o {{ formShortEstablishment.get('name')?.value }} é do tipo <b>Empório ou Mercado</b>.</p>
+              </ion-text>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="acceptMarketVale">Aceita Vale alimentação</ion-toggle>
+            </ion-item>
+
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('marketTicketName')?.invalid &&
+            (formShortEstablishment.get('marketTicketName')?.touched ||
+            formShortEstablishment.get('marketTicketName')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item mg-top-16 mg-bottom-16 label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                (ionChange)="marketTicketChanged($event)"
+                formControlName="marketTicketName"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Cartões alimentação'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let ticket of MARKET_TICKETS"
+                  [value]="ticket.value">
+                    {{ ticket.text }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="showMarketVale">Mostrar informação</ion-toggle>
             </ion-item>
           </ion-col>
 

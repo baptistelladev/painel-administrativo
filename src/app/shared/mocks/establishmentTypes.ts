@@ -73,5 +73,13 @@ export const ESTABLISHMENT_TYPES: IEstablishmentType[] = [
       es: 'Cafetería'
     },
     value: 'CAFETERIA'
+  },
+  {
+    text: {
+      pt: 'Empório',
+      en: 'Emporium',
+      es: 'Emporio'
+    },
+    value: 'EMPORIO'
   }
 ]

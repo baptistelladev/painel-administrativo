@@ -8,8 +8,10 @@ import { min, take } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
 import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
+import { EstablishmentTypeEnum } from 'src/app/shared/enums/EstablishmentType';
 import { DAYS } from 'src/app/shared/mocks/days';
 import { ESTABLISHMENT_TYPES } from 'src/app/shared/mocks/establishmentTypes';
+import { MARKET_TICKETS } from 'src/app/shared/mocks/marketTickets';
 import { NETWORKS } from 'src/app/shared/mocks/networks';
 import { PHONES } from 'src/app/shared/mocks/phones';
 import { TICKETS } from 'src/app/shared/mocks/tickets';
@@ -78,6 +80,16 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
         }
       ]
     },
+    market_ticket_info: {
+      accept_ticket: false,
+      show_field: false,
+      tickets: [
+        {
+          value: '',
+          text: ''
+        }
+      ]
+    },
     petfriendly_info: {
       accept_petfriendly: false,
       show_field: false
@@ -130,10 +142,13 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
   public ESTABLISHMENT_TYPES: IEstablishmentType[] = ESTABLISHMENT_TYPES;
   public TICKETS: IShortTicket[] = TICKETS;
+  public MARKET_TICKETS: IShortTicket[] = MARKET_TICKETS;
   public NETWORKS: ISocialNetwork[] = NETWORKS;
   public PHONES: IPhone[] = PHONES;
   public DAYS: ITime[] = DAYS;
   public SPECIALTIES: IEstablishmentSpecialty[] = SPECIALTIES;
+
+  public EstablishmentTypeEnum = EstablishmentTypeEnum;
 
   constructor(
     private formBuilder : FormBuilder,
@@ -166,6 +181,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       acceptVale: [false, Validators.required ],
       showVale: [true, Validators.required ],
       ticketName: '',
+      acceptMarketVale: false,
+      marketTicketName: '',
+      showMarketVale: false,
       phones: this.formBuilder.array([], [Validators.required]),
       networks: this.formBuilder.array([], [Validators.required]),
       mondaysHour: this.formBuilder.array([]),
@@ -217,6 +235,21 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       this.shortEstablishment.ticket_info.tickets = [];
     }
 
+    // ALIMENTAÇÃO
+    this.shortEstablishment.market_ticket_info.accept_ticket = this.formShortEstablishment.get('acceptMarketVale')?.value;
+    this.shortEstablishment.market_ticket_info.show_field = this.formShortEstablishment.get('showMarketVale')?.value;
+
+    if (this.formShortEstablishment.get('marketTicketName')?.value && this.formShortEstablishment.get('marketTicketName')?.value.length > 0) {
+      let ticketValues = this.formShortEstablishment.get('marketTicketName')?.value
+
+      let ticketsFiltered: IShortTicket[] = this.TICKETS.filter((ticket: IShortTicket) => ticketValues.some((value: string) => ticket.value === value) )
+
+      this.shortEstablishment.ticket_info.tickets = ticketsFiltered;
+
+    } else {
+      this.shortEstablishment.ticket_info.tickets = [];
+    }
+
     if (this.formShortEstablishment.get('networks')?.value && this.formShortEstablishment.get('networks')?.value.length > 0) {
       let networksValues = this.formShortEstablishment.get('networks')?.value;
 
@@ -258,31 +291,31 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     let working_time = [...this.DAYS].map((day: ITime) => {
       switch (day.day_number) {
         case 0:
-          day.opening_time = this.formShortEstablishment.get('mondaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('sundaysHour')?.value;
           break;
 
         case 1:
-          day.opening_time = this.formShortEstablishment.get('tuesdaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('mondaysHour')?.value;
           break;
 
         case 2:
-          day.opening_time = this.formShortEstablishment.get('wednesdaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('tuesdaysHour')?.value;
           break;
 
         case 3:
-          day.opening_time = this.formShortEstablishment.get('thursdaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('wednesdaysHour')?.value;
           break;
 
         case 4:
-          day.opening_time = this.formShortEstablishment.get('fridaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('thursdaysHour')?.value;
           break;
 
         case 5:
-          day.opening_time = this.formShortEstablishment.get('saturdaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('fridaysHour')?.value;
           break;
 
         case 6:
-          day.opening_time = this.formShortEstablishment.get('sundaysHour')?.value;
+          day.opening_time = this.formShortEstablishment.get('saturdaysHour')?.value;
           break;
       }
 
@@ -324,6 +357,12 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     if (foundType) {
       this.shortEstablishment.mainType = foundType;
     }
+
+    if (e.detail.value === EstablishmentTypeEnum.EMPORIO) {
+      this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.addValidators([Validators.required]);
+    } else {
+      this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.removeValidators([Validators.required]);
+    }
   }
 
   public async getCep() {
@@ -347,6 +386,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
   }
 
   public async ticketChanged(e: any) {
+    console.log(e);
+  }
+
+  public async marketTicketChanged(e: any) {
     console.log(e);
   }
 

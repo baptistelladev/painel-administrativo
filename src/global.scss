@@ -346,3 +346,20 @@ ion-item.rgs-item-toggle {
 .disabled-w-opacity-1 {
   opacity: 1 !important;
 }
+
+ion-item {
+  &.simulate-bootstrap-alert {
+    border-radius: 16px;
+    --min-height: 0;
+    --padding-top: 16px;
+    --padding-end: 16px;
+    --padding-start: 16px;
+    --padding-bottom: 16px;
+    --background: #fff3cd;
+    border: 1px solid #ffeeba;
+
+    ion-icon {
+      font-size: 32px;
+    }
+  }
+}
