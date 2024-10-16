@@ -1,17 +1,143 @@
 <ion-content
 forceOverscroll="false">
+  <section class="painel-rua-gastronomica">
+    <ion-grid [fixed]="true">
+      <ion-row>
+
+        <ion-col size="12">
+          <ion-text mode="ios" class="line-height-22">
+            <p class="fs-14 color-gray-6">Santos, {{ today }}.</p>
+
+            <h2 class="fs-24 color-gray-text font-baloo">Gestão da <b>Rua Gastronômica de Santos</b></h2>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="12" size-lg="6">
+          <ion-grid class="no-padding">
+            <ion-row class="no-padding">
+              <ion-col size="12" class="no-pad-sides">
+                <ion-text mode="ios" class="d-block">
+                  <h2 class="fs-20 color-gray-text font-baloo">Visão <b>geral</b></h2>
+                </ion-text>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-gray-text type fs-12 txt-uppercase">Adegas</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-gray-text type fs-12 txt-uppercase">Docerias</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-gray-text type fs-12 txt-uppercase">Empório</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-gray-text type fs-12 txt-uppercase">Hamburgueria</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>5</b></p>
+                    <p class="color-gray-text type fs-12 txt-uppercase">Bares</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>12</b></p>
+                    <p class="color-gray-6 txt-uppercase type fs-12">Restaurante</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+
+        <ion-col size="12" size-md="6">
+
+          <ion-grid class="no-padding">
+            <ion-row>
+              <ion-col size="12" class="no-pad-sides">
+                <ion-text mode="ios" class="d-block">
+                  <h2 class="fs-20 color-gray-text font-baloo"><b>Links</b> úteis</h2>
+                </ion-text>
+              </ion-col>
+
+              <ion-col size="12">
+                <ion-list
+                mode="ios"
+                class="mg-top-16 mg-bottom-8">
+                  <ion-item
+                  detail="false"
+                  lines="none"
+                  *ngFor="let link of LINKS"
+                  [href]="link.href"
+                  [target]="'_blank'"
+                  [button]="true">
+                    <ion-text mode="ios" class="line-height-20">
+                      <p class="color-gray-6 fs-14 txt-uppercase">{{ link.text }}</p>
+                      <p class="color-gray-6 fs-12 adress">
+                        {{ link.subtext }}
+                      </p>
+                    </ion-text>
+
+                    <ion-text mode="ios" class="txt-right" slot="end">
+                      <ion-chip mode="ios" class="main-solid-green txt-uppercase fs-10 small">
+                        <ion-icon name="link-outline" class="color-white"></ion-icon> Visitar
+                      </ion-chip>
+                    </ion-text>
+                  </ion-item>
+                </ion-list>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
   <ion-fab
   mode="ios"
   slot="fixed"
   vertical="bottom"
   horizontal="end">
     <ion-fab-button>
-      <ion-icon name="chevron-up-outline"></ion-icon>
+      <ion-icon name="add-outline"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
       <ion-fab-button
       (click)="openModalToCreateStablishment()">
         <ion-icon name="storefront-outline"></ion-icon>
+      </ion-fab-button>
+
+      <ion-fab-button
+      (click)="openModalToCreateParking()">
+        <ion-icon name="car-sport-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>
   </ion-fab>

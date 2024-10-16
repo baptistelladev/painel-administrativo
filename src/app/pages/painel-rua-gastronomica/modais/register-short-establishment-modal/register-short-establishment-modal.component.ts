@@ -650,6 +650,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     this.formShortEstablishment.patchValue({ url: nameToUrl })
   }
 
+  public closeModal(): void {
+    this.modalCtrl.dismiss();
+  }
+
   checkFormErrors() {
     Object.keys(this.formShortEstablishment.controls).forEach(key => {
       const controlErrors = this.formShortEstablishment.get(key)?.errors;

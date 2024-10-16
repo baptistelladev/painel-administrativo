@@ -3,6 +3,17 @@
     <form [formGroup]="formShortEstablishment">
       <ion-grid>
         <ion-row>
+          <ion-col size="12" class="txt-right">
+            <ion-button
+            (click)="closeModal()"
+            title="Fechar modal"
+            class="rgs-gray-solid fs-14"
+            mode="md"
+            shape="round">
+              Fechar modal
+            </ion-button>
+          </ion-col>
+
           <ion-col size="12">
             <ion-text mode="ios">
               <h1 class="fs-24 font-baloo color-gray-text">
@@ -162,7 +173,7 @@
                 labelPlacement="floating"
                 formControlName="zip_code"
                 type="text"
-                inputmode="text">
+                inputmode="numeric">
                 </ion-input>
               </ion-item>
 
@@ -228,7 +239,6 @@
           </ion-col>
 
           <ion-col size="12">
-
             <div
             [ngClass]="{
             'has-error' : (formShortEstablishment.get('neighborhood')?.invalid &&
@@ -286,7 +296,7 @@
                 labelPlacement="floating"
                 formControlName="number"
                 type="text"
-                inputmode="text">
+                inputmode="numeric">
                 </ion-input>
               </ion-item>
 
@@ -565,7 +575,7 @@
                       labelPlacement="floating"
                       formControlName="ddd"
                       type="text"
-                      inputmode="text">
+                      inputmode="numeric">
                       </ion-input>
                     </ion-item>
 
@@ -599,7 +609,7 @@
                       labelPlacement="floating"
                       formControlName="number"
                       type="text"
-                      inputmode="text">
+                      inputmode="numeric">
                       </ion-input>
                     </ion-item>
 

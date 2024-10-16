@@ -1,4 +1,87 @@
+
+@import './../../../assets/scss/utils/mixins.scss';
+
 ion-fab {
   bottom: 32px;
   right: 32px;
+}
+
+ion-item {
+  &.dashboard-item {
+    margin: 0;
+    box-shadow: #0000001a 0 0 5px, #0000001a 0 0 1px;
+    border-radius: 12px;
+    --border-radius: 12px;
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+
+    ion-text {
+      p {
+        &.length {
+          font-size: 46px;
+          margin-top: -8px;
+        }
+
+        &.type {
+          margin-top: -5px;
+        }
+      }
+    }
+  }
+}
+
+ion-content {
+  --background: linear-gradient(to top, var(--gray-ed) 15%, var(--white));
+}
+
+ion-list {
+  background: linear-gradient(to left, var(--white), var(--transparent));
+  border-radius: 0 12px 12px 0;
+  padding: 0;
+  box-shadow: 5px 0 5px -3px rgba(0, 0, 0, 0.1);
+
+  ion-item {
+    --background: var(--transparent);
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --min-height: 0;
+    --inner-padding-end: 0;
+    --padding-top: 16px;
+    --padding-bottom: 16px;
+    border-bottom: 1px solid var(--gray-da);
+
+    &:nth-child(odd) {
+      border-bottom: 1px solid var(--gray-da);
+    }
+
+    &:nth-child(even) {
+      border-top: 1px solid var(--white);
+    }
+
+    &:last-child {
+      border-bottom: 1px solid transparent;
+    }
+
+    ion-text {
+      ion-chip {
+        margin: 0;
+
+        ion-icon {
+          margin: 0 5px 0 0;
+        }
+      }
+
+      p {
+        &.adress {
+          @include flexbox(center, flex-start, row);
+
+          ion-icon {
+            margin: 0 4px 0 0;
+          }
+        }
+      }
+    }
+  }
 }

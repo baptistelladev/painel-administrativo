@@ -1,0 +1,337 @@
+<ion-content>
+  <section class="short-parking">
+    <form [formGroup]="formShortParking">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="txt-right">
+            <ion-button
+            (click)="closeModal()"
+            title="Fechar modal"
+            class="rgs-gray-solid fs-14"
+            mode="md"
+            shape="round">
+              Fechar modal
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Informações</b> do estacionamento
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('name')?.invalid &&
+            (formShortParking.get('name')?.touched ||
+            formShortParking.get('name')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Nome do estacionamento'"
+                labelPlacement="floating"
+                formControlName="name"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortParking.get('name')?.invalid &&
+              (formShortParking.get('name')?.touched || formShortParking.get('name')?.dirty)">
+                <p
+                *ngIf="formShortParking.get('name')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+
+                <p
+                *ngIf="formShortParking.get('name')?.hasError('minlength')"
+                class="fs-13 color-danger">
+                  No mínimo 2 caracteres
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Localização</b> do estacionamento
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('zip_code')?.invalid &&
+            (formShortParking.get('zip_code')?.touched ||
+            formShortParking.get('zip_code')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                (keyup)="getCep()"
+                maxlength="8"
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'CEP'"
+                labelPlacement="floating"
+                formControlName="zip_code"
+                type="text"
+                inputmode="numeric">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortParking.get('zip_code')?.invalid &&
+              (formShortParking.get('zip_code')?.touched || formShortParking.get('zip_code')?.dirty)">
+                <p
+                *ngIf="formShortParking.get('zip_code')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+                <p
+                *ngIf="formShortParking.get('zip_code')?.hasError('minlength')"
+                class="fs-13 color-danger">
+                  Necessário 8 caracteres
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('street')?.invalid &&
+            (formShortParking.get('street')?.touched ||
+            formShortParking.get('street')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Nome da rua'"
+                labelPlacement="floating"
+                formControlName="street"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortParking.get('street')?.invalid &&
+              (formShortParking.get('street')?.touched || formShortParking.get('street')?.dirty)">
+                <p
+                *ngIf="formShortParking.get('street')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+                <p
+                *ngIf="formShortParking.get('street')?.hasError('minlength')"
+                class="fs-13 color-danger">
+                  Rua inválida
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('neighborhood')?.invalid &&
+            (formShortParking.get('neighborhood')?.touched ||
+            formShortParking.get('neighborhood')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Bairro'"
+                labelPlacement="floating"
+                formControlName="neighborhood"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortParking.get('neighborhood')?.invalid &&
+              (formShortParking.get('neighborhood')?.touched || formShortParking.get('neighborhood')?.dirty)">
+                <p
+                *ngIf="formShortParking.get('neighborhood')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+                <p
+                *ngIf="formShortParking.get('neighborhood')?.hasError('minlength')"
+                class="fs-13 color-danger">
+                  Bairro inválido
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('number')?.invalid &&
+            (formShortParking.get('number')?.touched ||
+            formShortParking.get('number')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Número do estabelecimento'"
+                labelPlacement="floating"
+                formControlName="number"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortParking.get('number')?.invalid &&
+              (formShortParking.get('number')?.touched || formShortParking.get('number')?.dirty)">
+                <p
+                *ngIf="formShortParking.get('number')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Informações</b> para contato
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="2.5">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('ddd')?.invalid &&
+            (formShortParking.get('ddd')?.touched ||
+            formShortParking.get('ddd')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                maxlength="3"
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'DDD'"
+                labelPlacement="floating"
+                formControlName="ddd"
+                type="text"
+                inputmode="numeric">
+                </ion-input>
+              </ion-item>
+            </div>
+          </ion-col>
+
+          <ion-col size="9.5">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortParking.get('phoneNumber')?.invalid &&
+            (formShortParking.get('phoneNumber')?.touched ||
+            formShortParking.get('phoneNumber')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                maxlength="12"
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Número'"
+                labelPlacement="floating"
+                formControlName="phoneNumber"
+                type="text"
+                inputmode="numeric">
+                </ion-input>
+              </ion-item>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </section>
+</ion-content>
+
+<ion-footer
+mode="ios"
+class="ion-no-border bg-white">
+  <ion-toolbar
+  mode="ios"
+  class="ion-bg-white ">
+    <div class="footer-wrapper">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-button
+            [disabled]="formShortParking.invalid || isRegistering"
+            (click)="registerParking()"
+            title="Cadastrar estacionamento"
+            class="rgs-main-solid"
+            mode="md"
+            shape="round">
+              <ng-container *ngIf="!isRegistering">Cadastrar estacionamento</ng-container>
+
+              <ng-container *ngIf="isRegistering">
+                <ion-spinner name="dots"></ion-spinner>
+              </ng-container>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-toolbar>
+</ion-footer>

@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import * as moment from 'moment';
+import 'moment/locale/fr'
+moment.locale('pt')
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,7 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() {}
+  constructor() {
+
+  }
 }

@@ -9,6 +9,7 @@ import { PainelRuaGastronomicaPageRoutingModule } from './painel-rua-gastronomic
 import { PainelRuaGastronomicaPage } from './painel-rua-gastronomica.page';
 import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
 import { HttpClient } from '@angular/common/http';
+import { RegisterShortParkingComponent } from './modais/register-short-parking/register-short-parking.component';
 
 @NgModule({
   imports: [
@@ -19,6 +20,10 @@ import { HttpClient } from '@angular/common/http';
     FormsModule,
     ReactiveFormsModule
   ],
-  declarations: [PainelRuaGastronomicaPage, RegisterShortEstablishmentModalComponent]
+  declarations: [
+    PainelRuaGastronomicaPage,
+    RegisterShortEstablishmentModalComponent,
+    RegisterShortParkingComponent
+  ]
 })
 export class PainelRuaGastronomicaPageModule {}
