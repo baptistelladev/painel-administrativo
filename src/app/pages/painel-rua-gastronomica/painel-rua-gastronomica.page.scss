@@ -85,3 +85,11 @@ ion-list {
     }
   }
 }
+
+.establishments-wrapper {
+  width: 100%;
+  height: auto;
+  padding: 16px 0;
+  background: var(--gray-ed);
+  box-shadow: inset 2px 0px 11px rgba(0, 0, 0, .2);
+}

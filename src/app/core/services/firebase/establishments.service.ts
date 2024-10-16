@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Firestore} from '@angular/fire/firestore';
+import { collectionData, Firestore} from '@angular/fire/firestore';
 import { addDoc, collection } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 import { IShortEstablishment } from 'src/app/shared/models/Establishment';
 
 @Injectable({
@@ -20,5 +21,10 @@ export class EstablishmentsService {
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
     }
+  }
+
+  public getCollection(collectionName: string): Observable<IShortEstablishment[]> {
+    const itemCollection = collection(this.firestore, collectionName);
+    return collectionData<any>(itemCollection);
   }
 }

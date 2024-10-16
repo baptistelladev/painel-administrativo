@@ -24,7 +24,7 @@ forceOverscroll="false">
               <ion-col size="4">
                 <ion-item size="12" lines="none" class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-green font-baloo length"><b>{{ just_adegas.length }}</b></p>
                     <p class="color-gray-text type fs-12 txt-uppercase">Adegas</p>
                   </ion-text>
                 </ion-item>
@@ -33,7 +33,7 @@ forceOverscroll="false">
               <ion-col size="4">
                 <ion-item size="12" lines="none" class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-green font-baloo length"><b>{{ just_docerias.length }}</b></p>
                     <p class="color-gray-text type fs-12 txt-uppercase">Docerias</p>
                   </ion-text>
                 </ion-item>
@@ -42,7 +42,7 @@ forceOverscroll="false">
               <ion-col size="4">
                 <ion-item size="12" lines="none" class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>1</b></p>
+                    <p class="color-green font-baloo length"><b>{{ just_emporios.length }}</b></p>
                     <p class="color-gray-text type fs-12 txt-uppercase">Empório</p>
                   </ion-text>
                 </ion-item>
@@ -51,8 +51,8 @@ forceOverscroll="false">
               <ion-col size="4">
                 <ion-item size="12" lines="none" class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>1</b></p>
-                    <p class="color-gray-text type fs-12 txt-uppercase">Hamburgueria</p>
+                    <p class="color-green font-baloo length"><b>{{ just_hamburguerias.length }}</b></p>
+                    <p class="color-gray-text type fs-12 txt-uppercase">Hamburguerias</p>
                   </ion-text>
                 </ion-item>
               </ion-col>
@@ -60,7 +60,7 @@ forceOverscroll="false">
               <ion-col size="4">
                 <ion-item size="12" lines="none" class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>5</b></p>
+                    <p class="color-green font-baloo length"><b>{{ just_bares.length }}</b></p>
                     <p class="color-gray-text type fs-12 txt-uppercase">Bares</p>
                   </ion-text>
                 </ion-item>
@@ -69,8 +69,26 @@ forceOverscroll="false">
               <ion-col size="4">
                 <ion-item size="12" lines="none" class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>12</b></p>
-                    <p class="color-gray-6 txt-uppercase type fs-12">Restaurante</p>
+                    <p class="color-green font-baloo length"><b>{{ just_restaurantes.length }}</b></p>
+                    <p class="color-gray-6 txt-uppercase type fs-12">Restaurantes</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>{{ just_pizzarias.length }}</b></p>
+                    <p class="color-gray-6 txt-uppercase type fs-12">Pizzarias</p>
+                  </ion-text>
+                </ion-item>
+              </ion-col>
+
+              <ion-col size="4">
+                <ion-item size="12" lines="none" class="dashboard-item">
+                  <ion-text mode="ios">
+                    <p class="color-green font-baloo length"><b>{{ just_cafeterias.length }}</b></p>
+                    <p class="color-gray-6 txt-uppercase type fs-12">Cafeterias</p>
                   </ion-text>
                 </ion-item>
               </ion-col>
@@ -120,6 +138,113 @@ forceOverscroll="false">
       </ion-row>
     </ion-grid>
   </section>
+
+  <div class="establishments-wrapper">
+    <swiper-container
+    class="full-width swiper-w-relative-pagination"
+    [init]="true"
+    #establishmentsSwiper
+    [freeMode]="false"
+    [autoHeight]="false"
+    slides-offset-before="16"
+    slides-offset-after="16"
+    initial-slide="0"
+    [slidesPerView]="1"
+    space-between="16"
+    [breakpoints]="{
+     '200' : {
+        slidesPerView: 1.7
+      },
+      '363' : {
+        slidesPerView: 1.9
+      },
+      '445' : {
+        slidesPerView: 2.4
+      },
+      '667' : {
+        slidesPerView: 3.4
+      },
+      '792' : {
+        slidesPerView: 3.8
+      },
+      '991' : {
+        slidesPerView: 4.5,
+        centeredSlides: false
+      },
+      '1200' : {
+        slidesPerView: 5.2
+      },
+      '1300' : {
+        slidesPerView: 6.7
+      },
+      '1600' : {
+        slidesPerView: 8
+      }
+      ,
+      '2000' : {
+        slidesPerView: 10.3
+      }
+    }">
+      <ng-container *ngIf="short_establishments && short_establishments.length > 0">
+        <swiper-slide
+        *ngFor="let establishment of short_establishments; let i = index"
+        class="unlock-shadow-from-swiper auto-width">
+          <ion-card
+          [ngClass]="{ 'coming-soon': establishment.isBuilding }"
+          mode="ios"
+          class="establishment-card-vertical"
+          lines="none">
+            <ion-card-content class="txt-center" mode="ios">
+              <div class="logo-wrapper mg-bottom-12">
+                <div class="logo-container"
+                [ngClass]="{'has-image': !isLoadingLogo, 'logo-needs-gray-2' : establishment.value === 'galeteria-santista'}">
+                  <ion-spinner name="lines-sharp-small" *ngIf="isLoadingLogo"></ion-spinner>
+
+                  <ion-img
+                  *ngIf="!isLoadingLogo"
+                  (ionImgDidLoad)="imageHasLoaded()"
+                  [src]="'./../../../../assets/images/establishments/' + establishment.value + (establishment.value === 'bistro-14' || establishment.value === 'galeteria-santista' ? '.png' : '.jpg')">
+                  </ion-img>
+                </div>
+              </div>
+
+              <ion-text mode="ios" class="txt-center">
+                <p class="color-gray-text txt-uppercase type font-w-thin type">
+                  {{ establishment.mainType.text.pt }}
+                </p>
+                <h2 class="color-gray-text font-baloo name"><b>{{ establishment.name }}</b></h2>
+                <p class="number color-gray-text">n&ordm; {{ establishment.adress.number }}</p>
+              </ion-text>
+            </ion-card-content>
+
+            <ion-card-footer mode="ios">
+              <ion-button
+              *ngIf="!establishment.isBuilding"
+              title="Ver detalhes"
+              mode="md"
+              class="full-width">
+                Ver <b class="mg-left-5">detalhes</b> <ion-icon name="arrow-forward" class="mg-left-5"></ion-icon>
+              </ion-button>
+
+              <div class="coming-soon" *ngIf="establishment.isBuilding">
+                <ion-text mode="ios">
+                  <p class="fs-14 d-block">em breve</p>
+                </ion-text>
+              </div>
+            </ion-card-footer>
+          </ion-card>
+        </swiper-slide>
+      </ng-container>
+
+      <ng-container *ngIf="!short_establishments">
+        <swiper-slide
+        *ngFor="let establishment of [1,2,3,4,5]; let i = index"
+        class="unlock-shadow-from-swiper auto-width">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </swiper-slide>
+      </ng-container>
+    </swiper-container>
+  </div>
 
   <ion-fab
   mode="ios"
