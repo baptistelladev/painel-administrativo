@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
@@ -10,28 +10,152 @@ import { IShortEstablishment } from 'src/app/shared/models/Establishment';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { EstablishmentTypeEnum } from 'src/app/shared/enums/EstablishmentType';
+import { Store } from '@ngrx/store';
+import * as RuaGastronomicaDeSantosStore from './../../shared/store/ruaGastronomicaDeSantos.state';
 
 @Component({
   selector: 'app-painel-rua-gastronomica',
   templateUrl: './painel-rua-gastronomica.page.html',
   styleUrls: ['./painel-rua-gastronomica.page.scss'],
 })
-export class PainelRuaGastronomicaPage implements OnInit {
+export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
 
-  public just_adegas: IShortEstablishment[];
-  public just_docerias: IShortEstablishment[];
-  public just_emporios: IShortEstablishment[];
-  public just_hamburguerias: IShortEstablishment[];
-  public just_bares: IShortEstablishment[];
-  public just_restaurantes: IShortEstablishment[];
-  public just_pizzarias: IShortEstablishment[];
-  public just_cafeterias: IShortEstablishment[];
+
+
+  public lenghts_to_save_time: {
+    list: IShortEstablishment[],
+    establishment_type: string,
+    text: any,
+    length: number,
+    plural: any
+  }[] = [
+    {
+      list: [],
+      establishment_type: 'ADEGA',
+      length: 0,
+      text: {
+        pt: 'Adega',
+        en: 'Wine Cellar',
+        es: 'Bodega'
+      },
+      plural: {
+        pt: 'Adegas',
+        en: 'Wine Cellars',
+        es: 'Bodegas'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'DOCERIA',
+      length: 0,
+      text: {
+        pt: 'Doceria',
+        en: 'Confectionery',
+        es: 'Dulcería'
+      },
+      plural: {
+        pt: 'Docerias',
+        en: 'Confectioneries',
+        es: 'Dulcerías'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'EMPORIO',
+      length: 0,
+      text: {
+        pt: 'Empório',
+        en: 'Emporium',
+        es: 'Empore'
+      },
+      plural: {
+        pt: 'Empórios',
+        en: 'Emporiums',
+        es: 'Emporios'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'HAMBURGUERIA',
+      length: 0,
+      text: {
+        pt: 'Hamburgueria',
+        en: 'Burger Joint',
+        es: 'Hamburguesería'
+      },
+      plural: {
+        pt: 'Hamburguerias',
+        en: 'Burger Joints',
+        es: 'Hamburgueserías'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'BAR',
+      length: 0,
+      text: {
+        pt: 'Bar',
+        en: 'Bar',
+        es: 'Bar'
+      },
+      plural: {
+        pt: 'Bares',
+        en: 'Bars',
+        es: 'Bares'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'RESTAURANTE',
+      length: 0,
+      text: {
+        pt: 'Restaurante',
+        en: 'Restaurant',
+        es: 'Restaurante'
+      },
+      plural: {
+        pt: 'Restaurantes',
+        en: 'Restaurants',
+        es: 'Restaurantes'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'PIZZARIA',
+      length: 0,
+      text: {
+        pt: 'Pizzaria',
+        en: 'Pizzeria',
+        es: 'Pizzería'
+      },
+      plural: {
+        pt: 'Pizzarias',
+        en: 'Pizzerias',
+        es: 'Pizzerías'
+      }
+    },
+    {
+      list: [],
+      establishment_type: 'CAFETERIA',
+      length: 0,
+      text: {
+        pt: 'Cafeteria',
+        en: 'Cafeteria',
+        es: 'Cafetería'
+      },
+      plural: {
+        pt: 'Cafeterias',
+        en: 'Cafeterias',
+        es: 'Cafeterías'
+      }
+    }
+  ]
 
   public isLoadingLogo: boolean;
 
   public short_establishments: IShortEstablishment[];
   public establishments$: Observable<IShortEstablishment[]>;
-  public establishmentsDescription: Subscription;
+  public establishmentsSubscription: Subscription;
 
   public today: string = moment().format('LL');
 
@@ -56,7 +180,8 @@ export class PainelRuaGastronomicaPage implements OnInit {
   constructor(
     private establishmentsService : EstablishmentsService,
     private modalCtrl : ModalController,
-    private utilsService : UtilsService
+    private utilsService : UtilsService,
+    private store : Store
   ) { }
 
   ngOnInit() {
@@ -93,7 +218,7 @@ export class PainelRuaGastronomicaPage implements OnInit {
   public getEstablishments() {
     this.establishments$ = this.establishmentsService.getCollection(CollectionsEnum.SHORT_ESTABLISHMENTS);
 
-    this.establishmentsDescription = this.establishments$
+    this.establishmentsSubscription = this.establishments$
     .pipe(
       map((establishments: IShortEstablishment[]) => {
         this.utilsService.orderByAdressNumberCrescent(establishments);
@@ -103,19 +228,43 @@ export class PainelRuaGastronomicaPage implements OnInit {
     .subscribe((establishments: IShortEstablishment[]) => {
       this.short_establishments = establishments;
 
-      this.just_adegas = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.ADEGA );
-      this.just_docerias = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.DOCERIA );
-      this.just_emporios = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.EMPORIO );
-      this.just_hamburguerias = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.HAMBURGUERIA );
-      this.just_bares = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.BAR );
-      this.just_restaurantes = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.RESTAURANTE );
-      this.just_pizzarias = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.PIZZARIA );
-      this.just_cafeterias = this.short_establishments.filter((establishment: IShortEstablishment) => establishment.mainType.value === EstablishmentTypeEnum.CAFETERIA );
+      this.lenghts_to_save_time = [...this.lenghts_to_save_time].map((option: any) => {
+        let list = this.short_establishments.filter((establishment: IShortEstablishment) => {
+          return establishment.mainType.value === option['establishment_type'];
+        })
+
+        option['list'] = list;
+        option['length'] = list.length;
+
+        return option;
+      })
     })
   }
 
   public imageHasLoaded() {
     this.isLoadingLogo = false;
+  }
+
+  public seeEstablishment(establishment: IShortEstablishment): void {
+    this.store.dispatch(RuaGastronomicaDeSantosStore.setCurrentEstablishment({ establishment: establishment } ))
+    this.openModalToSeeStablishment();
+  }
+
+  public async openModalToSeeStablishment(): Promise<HTMLIonModalElement> {
+    const modal = await this.modalCtrl.create({
+      component: RegisterShortEstablishmentModalComponent,
+      mode: 'ios',
+      cssClass: 'rgs-register',
+      id: 'register-short-establishment'
+    })
+
+    await modal.present();
+
+    return modal;
+  }
+
+  ngOnDestroy(): void {
+    this.establishmentsSubscription.unsubscribe();
   }
 
 }

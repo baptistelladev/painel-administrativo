@@ -12,7 +12,7 @@ forceOverscroll="false">
           </ion-text>
         </ion-col>
 
-        <ion-col size="12" size-lg="6">
+        <ion-col size="12">
           <ion-grid class="no-padding">
             <ion-row class="no-padding">
               <ion-col size="12" class="no-pad-sides">
@@ -21,116 +21,28 @@ forceOverscroll="false">
                 </ion-text>
               </ion-col>
 
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
+              <ion-col
+              *ngFor="let info of lenghts_to_save_time; let i = index"
+              size="6"
+              size-sm="4"
+              size-md="3"
+              size-lg="1.5">
+                <ion-item
+                [disabled]="info.list.length === 0"
+                [button]="true"
+                size="12"
+                lines="none"
+                class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_adegas.length }}</b></p>
-                    <p class="color-gray-text type fs-12 txt-uppercase">Adegas</p>
+                    <p class="color-green font-baloo length">{{ info.list.length }}</p>
+                    <p class="color-gray-text type fs-10 txt-uppercase" *ngIf="info.list.length < 2">
+                      {{ info.text.pt }}
+                    </p>
+                    <p class="color-gray-text type fs-10 txt-uppercase" *ngIf="info.list.length > 1">
+                      {{ info.plural.pt }}
+                    </p>
                   </ion-text>
                 </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_docerias.length }}</b></p>
-                    <p class="color-gray-text type fs-12 txt-uppercase">Docerias</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_emporios.length }}</b></p>
-                    <p class="color-gray-text type fs-12 txt-uppercase">Empório</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_hamburguerias.length }}</b></p>
-                    <p class="color-gray-text type fs-12 txt-uppercase">Hamburguerias</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_bares.length }}</b></p>
-                    <p class="color-gray-text type fs-12 txt-uppercase">Bares</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_restaurantes.length }}</b></p>
-                    <p class="color-gray-6 txt-uppercase type fs-12">Restaurantes</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_pizzarias.length }}</b></p>
-                    <p class="color-gray-6 txt-uppercase type fs-12">Pizzarias</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-
-              <ion-col size="4">
-                <ion-item size="12" lines="none" class="dashboard-item">
-                  <ion-text mode="ios">
-                    <p class="color-green font-baloo length"><b>{{ just_cafeterias.length }}</b></p>
-                    <p class="color-gray-6 txt-uppercase type fs-12">Cafeterias</p>
-                  </ion-text>
-                </ion-item>
-              </ion-col>
-            </ion-row>
-          </ion-grid>
-        </ion-col>
-
-        <ion-col size="12" size-md="6">
-
-          <ion-grid class="no-padding">
-            <ion-row>
-              <ion-col size="12" class="no-pad-sides">
-                <ion-text mode="ios" class="d-block">
-                  <h2 class="fs-20 color-gray-text font-baloo"><b>Links</b> úteis</h2>
-                </ion-text>
-              </ion-col>
-
-              <ion-col size="12">
-                <ion-list
-                mode="ios"
-                class="mg-top-16 mg-bottom-8">
-                  <ion-item
-                  detail="false"
-                  lines="none"
-                  *ngFor="let link of LINKS"
-                  [href]="link.href"
-                  [target]="'_blank'"
-                  [button]="true">
-                    <ion-text mode="ios" class="line-height-20">
-                      <p class="color-gray-6 fs-14 txt-uppercase">{{ link.text }}</p>
-                      <p class="color-gray-6 fs-12 adress">
-                        {{ link.subtext }}
-                      </p>
-                    </ion-text>
-
-                    <ion-text mode="ios" class="txt-right" slot="end">
-                      <ion-chip mode="ios" class="main-solid-green txt-uppercase fs-10 small">
-                        <ion-icon name="link-outline" class="color-white"></ion-icon> Visitar
-                      </ion-chip>
-                    </ion-text>
-                  </ion-item>
-                </ion-list>
               </ion-col>
             </ion-row>
           </ion-grid>
@@ -219,18 +131,12 @@ forceOverscroll="false">
 
             <ion-card-footer mode="ios">
               <ion-button
-              *ngIf="!establishment.isBuilding"
+              (click)="seeEstablishment(establishment)"
               title="Ver detalhes"
               mode="md"
               class="full-width">
                 Ver <b class="mg-left-5">detalhes</b> <ion-icon name="arrow-forward" class="mg-left-5"></ion-icon>
               </ion-button>
-
-              <div class="coming-soon" *ngIf="establishment.isBuilding">
-                <ion-text mode="ios">
-                  <p class="fs-14 d-block">em breve</p>
-                </ion-text>
-              </div>
             </ion-card-footer>
           </ion-card>
         </swiper-slide>

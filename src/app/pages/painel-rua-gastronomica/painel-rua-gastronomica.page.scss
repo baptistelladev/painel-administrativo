@@ -8,20 +8,24 @@ ion-fab {
 
 ion-item {
   &.dashboard-item {
+    --min-height: 60px;
     margin: 0;
-    box-shadow: #0000001a 0 0 5px, #0000001a 0 0 1px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     border-radius: 12px;
     --border-radius: 12px;
     --padding-start: 16px;
     --padding-end: 16px;
     --padding-top: 16px;
     --padding-bottom: 16px;
+    --background: linear-gradient(to bottom, var(--gray-fa) 5%, transparent);
+    --inner-padding-end: 0;
+    animation-duration: 0.5s;
 
     ion-text {
       p {
         &.length {
-          font-size: 46px;
-          margin-top: -8px;
+          font-size: 30px;
+          margin-top: -15px;
         }
 
         &.type {
@@ -37,10 +41,10 @@ ion-content {
 }
 
 ion-list {
-  background: linear-gradient(to left, var(--white), var(--transparent));
-  border-radius: 0 12px 12px 0;
+  background: linear-gradient(to left, var(--gray-fa), var(--transparent));
+  border-radius: 12px;
   padding: 0;
-  box-shadow: 5px 0 5px -3px rgba(0, 0, 0, 0.1);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
 
   ion-item {
     --background: var(--transparent);
@@ -51,17 +55,14 @@ ion-list {
     --padding-top: 16px;
     --padding-bottom: 16px;
     border-bottom: 1px solid var(--gray-da);
-
-    &:nth-child(odd) {
-      border-bottom: 1px solid var(--gray-da);
-    }
-
-    &:nth-child(even) {
-      border-top: 1px solid var(--white);
-    }
+    border-top: 1px solid var(--white);
 
     &:last-child {
-      border-bottom: 1px solid transparent;
+      border-bottom: none;
+    }
+
+    &:first-child {
+      border-top: none;
     }
 
     ion-text {

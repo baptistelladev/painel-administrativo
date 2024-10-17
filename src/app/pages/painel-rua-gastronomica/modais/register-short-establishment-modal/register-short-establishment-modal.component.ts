@@ -4,7 +4,7 @@ import { SPECIALTIES } from './../../../../shared/mocks/specialties';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormArrayName, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, ModalController } from '@ionic/angular';
-import { min, take } from 'rxjs';
+import { min, Observable, ObservableLike, Subscription, take } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
 import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
@@ -23,6 +23,9 @@ import { ISocialNetwork } from 'src/app/shared/models/Network';
 import { IPhone } from 'src/app/shared/models/Phone';
 import { IShortTicket } from 'src/app/shared/models/Ticket';
 import { ITime } from 'src/app/shared/models/Time';
+import * as RuaGastronomicaDeSantosStore from './../../../../shared/store/ruaGastronomicaDeSantos.state';
+import { Store } from '@ngrx/store';
+import { IHour } from 'src/app/shared/models/Hour';
 
 @Component({
   selector: 'app-register-short-establishment-modal',
@@ -155,15 +158,21 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
   public EstablishmentTypeEnum = EstablishmentTypeEnum;
 
+  public currentEstablishment: IShortEstablishment;
+  public establishment$: Observable<IShortEstablishment>;
+  public establishmentSubscription: Subscription;
+
   constructor(
     private formBuilder : FormBuilder,
     private modalCtrl : ModalController,
     private establishmentService : EstablishmentsService,
-    private cepService : CepService
+    private cepService : CepService,
+    private store : Store
   ) { }
 
   ngOnInit() {
     this.initFormShortEstablishment();
+    this.getCurrentEstablishmentFromNGRX();
   }
 
   public initFormShortEstablishment(): void {
@@ -427,11 +436,11 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('phones') as FormArray;
   }
 
-  public addPhone() {
+  public addPhone(phone?: IPhone) {
     const phoneGroup = this.formBuilder.group({
-      type: ['', [ Validators.required ]],
-      ddd: ['', [ Validators.required ]],
-      number: ['', [ Validators.required ]],
+      type: [phone ? phone.type : '', [ Validators.required ]],
+      ddd: [phone ? phone.ddd : '', [ Validators.required ]],
+      number: [phone ? phone.number : '', [ Validators.required ]],
     });
     this.phones.push(phoneGroup);
   }
@@ -444,10 +453,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('networks') as FormArray;
   }
 
-  public addNetwork() {
+  public addNetwork(network?: ISocialNetwork) {
     const networkGroup = this.formBuilder.group({
-      value: ['', [ Validators.required ]],
-      user: ['', [ Validators.required ]]
+      value: [network ? network.value : '', [ Validators.required ]],
+      user: [network ? network.user : '', [ Validators.required ]]
     });
     this.networks.push(networkGroup);
   }
@@ -461,10 +470,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('mondaysHour') as FormArray;
   }
 
-  public addMondaysHour() {
+  public addMondaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.mondaysHour.push(hourGroup);
   }
@@ -489,10 +498,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('tuesdaysHour') as FormArray;
   }
 
-  public addTuesdaysHour() {
+  public addTuesdaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.tuesdaysHour.push(hourGroup);
   }
@@ -517,10 +526,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('wednesdaysHour') as FormArray;
   }
 
-  public addWednesdaysHour() {
+  public addWednesdaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.wednesdaysHour.push(hourGroup);
   }
@@ -545,10 +554,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('thursdaysHour') as FormArray;
   }
 
-  public addThursdaysHour() {
+  public addThursdaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.thursdaysHour.push(hourGroup);
   }
@@ -573,10 +582,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('fridaysHour') as FormArray;
   }
 
-  public addFridaysHour() {
+  public addFridaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.fridaysHour.push(hourGroup);
   }
@@ -601,10 +610,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('saturdaysHour') as FormArray;
   }
 
-  public addSaturdaysHour() {
+  public addSaturdaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.saturdaysHour.push(hourGroup);
   }
@@ -629,10 +638,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     return this.formShortEstablishment.get('sundaysHour') as FormArray;
   }
 
-  public addSundaysHour() {
+  public addSundaysHour(hour?: IHour) {
     const hourGroup = this.formBuilder.group({
-      open: ['', [ Validators.required ]],
-      close: ['', [ Validators.required ]]
+      open: [hour ? hour.open : '' , [ Validators.required ]],
+      close: [hour ? hour.close : '', [ Validators.required ]]
     });
     this.sundaysHour.push(hourGroup);
   }
@@ -662,7 +671,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     }
   }
 
-  public removeEverythingFromString(e: any): void {
+  public removeEverythingFromString(): void {
     let nameToUrl = this.formShortEstablishment.get('name')?.value;
     nameToUrl = nameToUrl
     .normalize('NFD') // Normaliza para decompor caracteres acentuados
@@ -677,6 +686,13 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
   public closeModal(): void {
     this.modalCtrl.dismiss();
+    this.formShortEstablishment.reset();
+
+    if (this.establishment$) {
+      this.currentEstablishment = this.shortEstablishment;
+      this.store.dispatch(RuaGastronomicaDeSantosStore.clearCurrentEstablishment());
+      this.establishmentSubscription.unsubscribe();
+    }
   }
 
   checkFormErrors() {
@@ -686,5 +702,125 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
         console.log(`Erro no campo ${key}:`, controlErrors);
       }
     });
+  }
+
+  public getCurrentEstablishmentFromNGRX(): void {
+    this.establishment$ = this.store.select(RuaGastronomicaDeSantosStore.selectCurrentEstablishment);
+
+    this.establishmentSubscription = this.establishment$
+    .subscribe({
+      next: async (establishment: IShortEstablishment) => {
+        this.currentEstablishment = establishment;
+
+        if (this.currentEstablishment.name) {
+          await this.fillFormAndVariablesWhenComesFromDetail(this.currentEstablishment);
+        }
+      }
+    })
+  }
+
+  public async fillFormAndVariablesWhenComesFromDetail(establishment: IShortEstablishment) {
+
+    this.formShortEstablishment.get('name')?.patchValue(establishment.name);
+    //this.formShortEstablishment.get('url')?.patchValue(establishment.value);
+    this.removeEverythingFromString()
+
+    let specialties: string[] = establishment.specialty.map((specialty: IEstablishmentSpecialty) => {
+      return specialty.value
+    })
+
+    this.formShortEstablishment.get('specialty')?.patchValue(specialties);
+
+    this.formShortEstablishment.get('mainType')?.patchValue(establishment.mainType.value);
+
+    this.formShortEstablishment.get('zip_code')?.patchValue(establishment.adress.zip_code);
+    this.formShortEstablishment.get('street')?.patchValue(establishment.adress.street);
+    this.formShortEstablishment.get('neighborhood')?.patchValue(establishment.adress.neighborhood);
+    this.formShortEstablishment.get('number')?.patchValue(establishment.adress.number);
+
+
+    this.formShortEstablishment.get('hasAirConditioned')?.patchValue(establishment.air_conditioned_info.has_air_conditioned);
+    this.formShortEstablishment.get('showAirConditionedField')?.patchValue(establishment.air_conditioned_info.show_field);
+
+
+    this.formShortEstablishment.get('hasLiveMusic')?.patchValue(establishment.livemusic_info.has_livemusic);
+    this.formShortEstablishment.get('showLiveMusic')?.patchValue(establishment.livemusic_info.show_field);
+
+    this.formShortEstablishment.get('hasBooking')?.patchValue(establishment.booking_info.accept_booking);
+    this.formShortEstablishment.get('showBooking')?.patchValue(establishment.booking_info.show_field);
+
+    this.formShortEstablishment.get('isPetFriendly')?.patchValue(establishment.petfriendly_info.accept_petfriendly);
+    this.formShortEstablishment.get('showPetFriendly')?.patchValue(establishment.petfriendly_info.show_field);
+
+    this.formShortEstablishment.get('acceptVale')?.patchValue(establishment.ticket_info.accept_ticket);
+    this.formShortEstablishment.get('showVale')?.patchValue(establishment.ticket_info.show_field);
+
+    let ticketNames: string[] = establishment.ticket_info.tickets.map((ticket: IShortTicket) => {
+      return ticket.value
+    })
+
+    this.formShortEstablishment.get('ticketName')?.patchValue(ticketNames);
+
+    this.formShortEstablishment.get('acceptMarketVale')?.patchValue(establishment.market_ticket_info.accept_ticket);
+
+    let marketTicketNames: string[] = establishment.market_ticket_info.tickets.map((ticket: IShortTicket) => {
+      return ticket.value
+    })
+
+    this.formShortEstablishment.get('marketTicketName')?.patchValue(marketTicketNames);
+
+    this.formShortEstablishment.get('showMarketVale')?.patchValue(establishment.market_ticket_info.show_field);
+
+    establishment.phones.forEach((phone: IPhone) => {
+      this.addPhone(phone);
+    })
+
+    establishment.networks.forEach((network: ISocialNetwork) => {
+      this.addNetwork(network);
+    })
+
+    establishment.working_time.forEach((working_time: ITime) => {
+      working_time.opening_time.forEach((hour: IHour) => {
+        switch (working_time.day_number) {
+          case 0:
+            this.addSundaysHour(hour);
+            break;
+
+          case 1:
+            this.addMondaysHour(hour);
+            break;
+
+          case 2:
+            this.addTuesdaysHour(hour);
+            break;
+
+          case 3:
+            this.addWednesdaysHour(hour);
+            break;
+
+          case 4:
+            this.addThursdaysHour(hour);
+            break;
+
+          case 5:
+            this.addFridaysHour(hour);
+            break;
+
+          case 6:
+            this.addSaturdaysHour(hour);
+            break;
+        }
+      })
+    })
+
+    //this.formShortEstablishment.get('mondaysHour')?.value,
+    //this.formShortEstablishment.get('tuesdaysHour')?.value,
+    //this.formShortEstablishment.get('wednesdaysHour')?.value,
+    //this.formShortEstablishment.get('thursdaysHour')?.value,
+    //this.formShortEstablishment.get('fridaysHour')?.value,
+    //this.formShortEstablishment.get('saturdaysHour')?.value,
+    //this.formShortEstablishment.get('sundaysHour')?.value,
+
+    this.formShortEstablishment.get('isBuilding')?.patchValue(establishment.isBuilding);
   }
 }

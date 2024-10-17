@@ -376,6 +376,7 @@ ion-card {
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
     min-height: 270px;
+    background: linear-gradient(to bottom, var(--white), var(--transparent));
 
     &.coming-soon {
       box-shadow: none;
@@ -428,7 +429,7 @@ ion-card {
 
         h2 {
           &.name {
-            max-width: 78px;
+            max-width: 95px;
           }
         }
       }
@@ -454,13 +455,13 @@ ion-card {
         --padding-bottom: 16px;
         --background: var(--gray-fa);
         --color: var(--green);
-        text-shadow: 2px 2px 2px var(--white);
         border-radius: 0;
         --border-radius: 0;
         border-top: .5px solid var(--gray-ec);
         font-size: 14px;
         font-weight: 300;
         --background-hover: var(--green);
+        --background: var(--transparent);
 
         ion-icon {
           margin: 0 0 0 5px;
