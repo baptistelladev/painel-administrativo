@@ -7,7 +7,7 @@ import { IShortTicket } from "./Ticket"
 import { ITime } from "./Time"
 
 export interface IShortEstablishment {
-  id?: string
+  id: string
   name: string,
   value: string,
   adress: {

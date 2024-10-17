@@ -1,9 +1,9 @@
 import { SPECIALTIES } from './../../../../shared/mocks/specialties';
 
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, viewChild, ViewChild } from '@angular/core';
 import { FormArray, FormArrayName, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonDatetime, ModalController } from '@ionic/angular';
+import { IonDatetime, IonTab, IonToggle, ModalController } from '@ionic/angular';
 import { min, Observable, ObservableLike, Subscription, take } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
 import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
@@ -32,7 +32,15 @@ import { IHour } from 'src/app/shared/models/Hour';
   templateUrl: './register-short-establishment-modal.component.html',
   styleUrls: ['./register-short-establishment-modal.component.scss'],
 })
-export class RegisterShortEstablishmentModalComponent  implements OnInit {
+export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterViewInit {
+
+  public showSundays: boolean = false;
+  public showTuesdays: boolean = false;
+  public showWednesdays: boolean = false;
+  public showThursdays: boolean = false;
+  public showFridays: boolean = false;
+  public showSaturdays: boolean = false;
+  public showMondays: boolean = false;
 
   public isRegistering: boolean = false;
 
@@ -175,12 +183,17 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     this.getCurrentEstablishmentFromNGRX();
   }
 
+  ngAfterViewInit(): void {
+
+  }
+
   public initFormShortEstablishment(): void {
     this.formShortEstablishment = this.formBuilder.group({
       name: ['', [ Validators.required, Validators.minLength(2) ]],
       specialty: [''],
       mainType: ['', [ Validators.required ]],
       zip_code: ['', [ Validators.required, Validators.minLength(8) ]],
+      type: ['', [ Validators.required ]],
       street: ['', Validators.required ],
       neighborhood: ['', Validators.required ],
       number : ['', Validators.required ],
@@ -208,15 +221,28 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       saturdaysHour: this.formBuilder.array([]),
       sundaysHour: this.formBuilder.array([]),
       url: ['', [Validators.required]],
-      isBuilding: [false, [Validators.required]]
+      isBuilding: [false, [Validators.required]],
+      sundaysHourToggle: false
     })
   }
 
-  public async registerEstablishment() {
+  public async registerEstablishment(type: 'create' | 'update') {
     this.isRegistering = true;
 
+    if (this.currentEstablishment.id) {
+      this.shortEstablishment.id = this.currentEstablishment.id;
+    }
+
     this.shortEstablishment.name = this.formShortEstablishment.get('name')?.value;
-    this.shortEstablishment.mainType = this.shortEstablishment.mainType;
+
+    let foundType: IEstablishmentType | undefined = this.ESTABLISHMENT_TYPES.find((type: IEstablishmentType) => {
+      return type.value === this.formShortEstablishment.get('mainType')?.value
+    })
+
+    if (foundType) {
+      this.shortEstablishment.mainType = foundType;
+    }
+
     this.shortEstablishment.adress.zip_code = this.formShortEstablishment.get('zip_code')?.value;
     this.shortEstablishment.adress.street = this.formShortEstablishment.get('street')?.value;
     this.shortEstablishment.adress.neighborhood = this.formShortEstablishment.get('neighborhood')?.value;
@@ -241,6 +267,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     if (this.formShortEstablishment.get('ticketName')?.value && this.formShortEstablishment.get('ticketName')?.value.length > 0) {
       let ticketValues = this.formShortEstablishment.get('ticketName')?.value
 
+      console.log(ticketValues);
+
+
       let ticketsFiltered: IShortTicket[] = this.TICKETS.filter((ticket: IShortTicket) => ticketValues.some((value: string) => ticket.value === value) )
 
       this.shortEstablishment.ticket_info.tickets = ticketsFiltered;
@@ -258,10 +287,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
       let ticketsFiltered: IShortTicket[] = this.TICKETS.filter((ticket: IShortTicket) => ticketValues.some((value: string) => ticket.value === value) )
 
-      this.shortEstablishment.ticket_info.tickets = ticketsFiltered;
+      this.shortEstablishment.market_ticket_info.tickets = ticketsFiltered;
 
     } else {
-      this.shortEstablishment.ticket_info.tickets = [];
+      this.shortEstablishment.market_ticket_info.tickets = [];
     }
 
     if (this.formShortEstablishment.get('networks')?.value && this.formShortEstablishment.get('networks')?.value.length > 0) {
@@ -353,25 +382,41 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
     this.shortEstablishment.isBuilding = this.formShortEstablishment.get('isBuilding')?.value;
 
-    await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
-    .then(async () => {
-      await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
-      this.isRegistering = false;
-    }).catch(() => {
-      this.isRegistering = false;
-    })
+    switch (this.formShortEstablishment.get('type')?.value) {
+      case 'rua':
+        this.shortEstablishment.adress.type.pt = 'Rua';
+        this.shortEstablishment.adress.type.en = 'Street';
+        this.shortEstablishment.adress.type.es = 'Calle';
+        break;
+
+      case 'avenida':
+        this.shortEstablishment.adress.type.pt = 'Avenida';
+        this.shortEstablishment.adress.type.en = 'Avenue';
+        this.shortEstablishment.adress.type.es = 'Avenida';
+        break;
+    }
+
+    if (type === 'create') {
+      await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
+      .then(async () => {
+        await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
+        this.isRegistering = false;
+      }).catch(() => {
+        this.isRegistering = false;
+      })
+    } else {
+      await this.establishmentService.setDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.currentEstablishment.id, this.shortEstablishment)
+      .then(async () => {
+        await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
+        this.isRegistering = false;
+      }).catch(() => {
+        this.isRegistering = false;
+      })
+    }
 
   }
 
   public async mainTypeChanged(e: any) {
-    let foundType = this.ESTABLISHMENT_TYPES.find((type: IEstablishmentType) => {
-      return type.value === e.detail.value;
-    })
-
-    if (foundType) {
-      this.shortEstablishment.mainType = foundType;
-    }
-
     if (e.detail.value === EstablishmentTypeEnum.EMPORIO) {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.addValidators([Validators.required]);
     } else {
@@ -396,20 +441,21 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
       switch (type) {
         case 'rua':
-          this.shortEstablishment.adress.type['pt'] = 'Rua';
-          this.shortEstablishment.adress.type['en'] = 'Street';
-          this.shortEstablishment.adress.type['es'] = 'Calle';
+          this.shortEstablishment.adress.type.pt = 'Rua';
+          this.shortEstablishment.adress.type.en = 'Street';
+          this.shortEstablishment.adress.type.es = 'Calle';
           break;
 
         case 'avenida':
-          this.shortEstablishment.adress.type['pt'] = 'Avenida';
-          this.shortEstablishment.adress.type['en'] = 'Avenue';
-          this.shortEstablishment.adress.type['es'] = 'Avenida';
+          this.shortEstablishment.adress.type.pt = 'Avenida';
+          this.shortEstablishment.adress.type.en = 'Avenue';
+          this.shortEstablishment.adress.type.es = 'Avenida';
           break;
       }
 
-        this.formShortEstablishment.patchValue({ street: shortStreetName });
-        this.formShortEstablishment.patchValue({ neighborhood: adress.bairro });
+      this.formShortEstablishment.patchValue({ street: shortStreetName });
+      this.formShortEstablishment.patchValue({ neighborhood: adress.bairro });
+      this.formShortEstablishment.patchValue({ type: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() });
      })
     }
 
@@ -669,6 +715,36 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       formArray.reset();
       formArray.controls = []
     }
+
+    switch (formControlName) {
+      case 'sundaysHour':
+        this.showSundays = !this.showSundays;
+        break;
+
+      case 'mondaysHour':
+        this.showMondays = !this.showMondays;
+        break;
+
+      case 'tuesdaysHour':
+        this.showTuesdays = !this.showTuesdays;
+        break;
+
+      case 'wednesdaysHour':
+        this.showWednesdays = !this.showWednesdays;
+        break;
+
+      case 'thursdaysHour':
+        this.showThursdays = !this.showThursdays;
+        break;
+
+      case 'fridaysHour':
+        this.showFridays = !this.showFridays;
+        break;
+
+      case 'saturdaysHour':
+        this.showSaturdays = !this.showSaturdays;
+        break;
+    }
   }
 
   public removeEverythingFromString(): void {
@@ -720,6 +796,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
   }
 
   public async fillFormAndVariablesWhenComesFromDetail(establishment: IShortEstablishment) {
+
+    this.shortEstablishment.adress.type = { ...establishment.adress.type };
+
+    this.formShortEstablishment.get('type')?.patchValue(this.shortEstablishment.adress.type.pt);
 
     this.formShortEstablishment.get('name')?.patchValue(establishment.name);
     //this.formShortEstablishment.get('url')?.patchValue(establishment.value);
@@ -780,6 +860,39 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
     })
 
     establishment.working_time.forEach((working_time: ITime) => {
+
+      if (working_time.opening_time.length > 0) {
+        switch (working_time.day_number) {
+          case 0:
+            this.showSundays = !this.showSundays;
+            break;
+
+          case 1:
+            this.showMondays = !this.showMondays;
+            break;
+
+          case 2:
+            this.showTuesdays = !this.showTuesdays;
+            break;
+
+          case 3:
+            this.showWednesdays = !this.showWednesdays;
+            break;
+
+          case 4:
+            this.showThursdays = !this.showThursdays;
+            break;
+
+          case 5:
+            this.showFridays = !this.showFridays;
+            break;
+
+          case 6:
+            this.showSaturdays = !this.showSaturdays;
+            break;
+        }
+      }
+
       working_time.opening_time.forEach((hour: IHour) => {
         switch (working_time.day_number) {
           case 0:
@@ -813,14 +926,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       })
     })
 
-    //this.formShortEstablishment.get('mondaysHour')?.value,
-    //this.formShortEstablishment.get('tuesdaysHour')?.value,
-    //this.formShortEstablishment.get('wednesdaysHour')?.value,
-    //this.formShortEstablishment.get('thursdaysHour')?.value,
-    //this.formShortEstablishment.get('fridaysHour')?.value,
-    //this.formShortEstablishment.get('saturdaysHour')?.value,
-    //this.formShortEstablishment.get('sundaysHour')?.value,
-
     this.formShortEstablishment.get('isBuilding')?.patchValue(establishment.isBuilding);
+
   }
 }

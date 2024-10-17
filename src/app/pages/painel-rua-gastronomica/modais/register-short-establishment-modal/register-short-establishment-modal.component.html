@@ -78,6 +78,7 @@
             formShortEstablishment.get('mainType')?.dirty))}"
             class="rgs-select-wrapper full-width white-background-item label-w-white">
               <ion-item
+              class="overflow-hidden"
               lines="none"
               mode="ios">
                 <ion-select
@@ -118,6 +119,7 @@
             formShortEstablishment.get('specialty')?.dirty))}"
             class="rgs-select-wrapper full-width white-background-item label-w-white">
               <ion-item
+              class="overflow-hidden"
               lines="none"
               mode="ios">
                 <ion-select
@@ -192,6 +194,42 @@
                 *ngIf="formShortEstablishment.get('zip_code')?.hasError('minlength')"
                 class="fs-13 color-danger">
                   Necessário 8 caracteres
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('type')?.invalid &&
+            (formShortEstablishment.get('type')?.touched ||
+            formShortEstablishment.get('type')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Tipo'"
+                labelPlacement="floating"
+                formControlName="type"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('type')?.invalid &&
+              (formShortEstablishment.get('type')?.touched || formShortEstablishment.get('type')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('street')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
                 </p>
               </ion-text>
             </div>
@@ -422,6 +460,7 @@
             formShortEstablishment.get('ticketName')?.dirty))}"
             class="rgs-select-wrapper full-width white-background-item mg-top-16 mg-bottom-16 label-w-white">
               <ion-item
+              class="overflow-hidden"
               lines="none"
               mode="ios">
                 <ion-select
@@ -478,6 +517,7 @@
             formShortEstablishment.get('marketTicketName')?.dirty))}"
             class="rgs-select-wrapper full-width white-background-item mg-top-16 mg-bottom-16 label-w-white">
               <ion-item
+              class="overflow-hidden"
               lines="none"
               mode="ios">
                 <ion-select
@@ -542,6 +582,7 @@
                 phones.at(i).get('type')?.dirty))}"
                 class="rgs-select-wrapper full-width white-background-item mg-bottom-16 label-w-gray-fa">
                   <ion-item
+                  class="overflow-hidden"
                   lines="none"
                   mode="ios">
                     <ion-select
@@ -696,6 +737,7 @@
                 networks.at(i).get('value')?.dirty))}"
                 class="rgs-select-wrapper full-width white-background-item mg-bottom-16 label-w-gray-fa">
                   <ion-item
+                  class="overflow-hidden"
                   lines="none"
                   mode="ios">
                     <ion-select
@@ -795,10 +837,10 @@
           <ion-col size="12" formArrayName="sundaysHour" >
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'sundaysHour')" #sundaysHourToggle>Domingo <span *ngIf="!sundaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'sundaysHour')" [checked]="showSundays">Domingo <span *ngIf="!showSundays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper mg-top-8" *ngIf="sundaysHourToggle.checked">
+              <div class="open-close-wrapper mg-top-8" *ngIf="showSundays">
                 <div class="open-close" *ngFor="let network of sundaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-sundays-hour'"
@@ -961,10 +1003,10 @@
           <ion-col size="12" formArrayName="mondaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'mondaysHour')" #mondaysHourToggle>Segunda-feira <span *ngIf="!mondaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'mondaysHour')" [checked]="showMondays">Segunda-feira <span *ngIf="!showMondays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper" *ngIf="mondaysHourToggle.checked">
+              <div class="open-close-wrapper" *ngIf="showMondays">
                 <div class="open-close" *ngFor="let network of mondaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-mondays-hour'"
@@ -1127,10 +1169,10 @@
           <ion-col size="12" formArrayName="tuesdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'tuesdaysHour')" #tuesdaysHourToggle>Terça-feira <span *ngIf="!tuesdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'tuesdaysHour')" [checked]="showTuesdays">Terça-feira <span *ngIf="showTuesdays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper mg-top-8" *ngIf="tuesdaysHourToggle.checked">
+              <div class="open-close-wrapper mg-top-8" *ngIf="showTuesdays">
                 <div class="open-close" *ngFor="let network of tuesdaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-tuesdays-hour'"
@@ -1293,10 +1335,10 @@
           <ion-col size="12" formArrayName="wednesdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'wednesdaysHour')" #wednesdaysHourToggle>Quarta-feira <span *ngIf="!wednesdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'wednesdaysHour')" [checked]="showWednesdays">Quarta-feira <span *ngIf="!showWednesdays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper mg-top-8" *ngIf="wednesdaysHourToggle.checked">
+              <div class="open-close-wrapper mg-top-8" *ngIf="showWednesdays">
                 <div class="open-close" *ngFor="let network of wednesdaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-wednesdays-hour'"
@@ -1459,10 +1501,10 @@
           <ion-col size="12" formArrayName="thursdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'thursdaysHour')" #thursdaysHourToggle>Quinta-feira <span *ngIf="!thursdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'thursdaysHour')" [checked]="showThursdays">Quinta-feira <span *ngIf="!showThursdays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper mg-top-8" *ngIf="thursdaysHourToggle.checked">
+              <div class="open-close-wrapper mg-top-8" *ngIf="showThursdays">
                 <div class="open-close" *ngFor="let network of thursdaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-thursdays-hour'"
@@ -1625,10 +1667,10 @@
           <ion-col size="12" formArrayName="fridaysHour" >
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'fridaysHour')" #fridaysHourToggle>Sexta-feira <span *ngIf="!fridaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'fridaysHour')" [checked]="showFridays">Sexta-feira <span *ngIf="!showFridays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper mg-top-8" *ngIf="fridaysHourToggle.checked">
+              <div class="open-close-wrapper mg-top-8" *ngIf="showFridays">
                 <div class="open-close" *ngFor="let network of fridaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-fridays-hour'"
@@ -1791,10 +1833,10 @@
           <ion-col size="12" formArrayName="saturdaysHour" >
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'saturdaysHour')" #saturdaysHourToggle>Sábado <span *ngIf="!saturdaysHourToggle.checked" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'saturdaysHour')" [checked]="showSaturdays">Sábado <span *ngIf="!showSaturdays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
-              <div class="open-close-wrapper mg-top-8" *ngIf="saturdaysHourToggle.checked">
+              <div class="open-close-wrapper mg-top-8" *ngIf="showSaturdays">
                 <div class="open-close" *ngFor="let network of saturdaysHour.controls; let i = index" [formGroupName]="i">
                   <div
                   [id]="'open-' + i + '-saturdays-hour'"
@@ -2031,7 +2073,7 @@ class="ion-no-border bg-white">
             <ion-button
             *ngIf="!currentEstablishment?.name"
             [disabled]="formShortEstablishment.invalid || isRegistering"
-            (click)="registerEstablishment()"
+            (click)="registerEstablishment('create')"
             title="Cadastrar estabelecimento"
             class="rgs-main-solid"
             mode="md"
@@ -2046,7 +2088,7 @@ class="ion-no-border bg-white">
             <ion-button
             *ngIf="currentEstablishment?.name"
             [disabled]="formShortEstablishment.invalid || isRegistering"
-            (click)="registerEstablishment()"
+            (click)="registerEstablishment('update')"
             title="Atualizar estabelecimento"
             class="rgs-main-solid"
             mode="md"

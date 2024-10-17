@@ -188,6 +188,10 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
     this.getEstablishments();
   }
 
+  ionViewDidEnter(){
+
+  }
+
   public async openModalToCreateStablishment(): Promise<HTMLIonModalElement> {
     const modal = await this.modalCtrl.create({
       component: RegisterShortEstablishmentModalComponent,
