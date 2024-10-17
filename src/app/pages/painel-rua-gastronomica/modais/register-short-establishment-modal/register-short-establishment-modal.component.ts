@@ -50,7 +50,12 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
       number: '',
       neighborhood: '',
       street: '',
-      zip_code: ''
+      zip_code: '',
+      type: {
+        pt: '',
+        en: '',
+        es: ''
+      }
     },
     specialty: [
       {
@@ -374,7 +379,27 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit {
 
     if (cep.length === 8) {
      await this.cepService.getCep(cep).then((adress: IAdress) => {
-        this.formShortEstablishment.patchValue({ street: adress.logradouro });
+
+      let longStreetName: string = adress.logradouro;
+      let streetSplited: string[] = longStreetName.split(' ');
+      let type: string = streetSplited[0].toLowerCase();
+      let shortStreetName: string = streetSplited.slice(1).join(' ');
+
+      switch (type) {
+        case 'rua':
+          this.shortEstablishment.adress.type['pt'] = 'Rua';
+          this.shortEstablishment.adress.type['en'] = 'Street';
+          this.shortEstablishment.adress.type['es'] = 'Calle';
+          break;
+
+        case 'avenida':
+          this.shortEstablishment.adress.type['pt'] = 'Avenida';
+          this.shortEstablishment.adress.type['en'] = 'Avenue';
+          this.shortEstablishment.adress.type['es'] = 'Avenida';
+          break;
+      }
+
+        this.formShortEstablishment.patchValue({ street: shortStreetName });
         this.formShortEstablishment.patchValue({ neighborhood: adress.bairro });
      })
     }

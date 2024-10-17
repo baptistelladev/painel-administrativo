@@ -317,6 +317,22 @@
 
           <ion-col size="12">
             <ion-text mode="ios">
+              <p class="fs-14 color-gray-text">
+                O serviço de cep irá buscar o endereço e preencher automaticamente, porém, nós iramos tirar a primeira parte do endereço (Rua) e substituiremos por Rua/Street/Calle para atender outros idiomas.
+              </p>
+
+              <ng-container *ngIf="shortEstablishment.adress.type['pt']">
+                <p class="fs-14 mg-bottom-8 mg-top-16">Veja abaixo:</p>
+
+                <p class="fs-12 color-gray-6">🇧🇷 {{ shortEstablishment.adress.type['pt'] }} {{ formShortEstablishment.get('street')?.value }}</p>
+                <p class="fs-12 color-gray-6">🇺🇸 {{ formShortEstablishment.get('street')?.value }} {{ shortEstablishment.adress.type['en'] }}</p>
+                <p class="fs-12 color-gray-6">🇪🇸 {{ shortEstablishment.adress.type['es'] }} {{ formShortEstablishment.get('street')?.value }}</p>
+              </ng-container>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
               <hr class="rgs-divider">
             </ion-text>
           </ion-col>

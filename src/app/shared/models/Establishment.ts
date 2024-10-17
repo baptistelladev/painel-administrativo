@@ -14,7 +14,8 @@ export interface IShortEstablishment {
     number: string,
     neighborhood: string,
     street: string,
-    zip_code: string
+    zip_code: string,
+    type: any
   },
   specialty: IEstablishmentSpecialty[],
   mainType: IEstablishmentType,

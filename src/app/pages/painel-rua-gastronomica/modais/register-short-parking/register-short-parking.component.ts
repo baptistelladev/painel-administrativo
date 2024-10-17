@@ -41,7 +41,11 @@ export class RegisterShortParkingComponent  implements OnInit {
         number: '',
         zip_code: '',
         neighborhood: '',
-
+        type: {
+          pt: '',
+          en: '',
+          es: ''
+        }
       },
       phone: {
         ddd: '',
@@ -71,6 +75,7 @@ export class RegisterShortParkingComponent  implements OnInit {
     this.shortParking.adress.zip_code = this.formShortParking.get('zip_code')?.value;
     this.shortParking.adress.street = this.formShortParking.get('street')?.value;
     this.shortParking.adress.number = this.formShortParking.get('number')?.value;
+    this.shortParking.adress.neighborhood = this.formShortParking.get('neighborhood')?.value;
 
     this.shortParking.phone.ddd = this.formShortParking.get('ddd')?.value;
     this.shortParking.phone.number = this.formShortParking.get('phoneNumber')?.value;
@@ -82,6 +87,7 @@ export class RegisterShortParkingComponent  implements OnInit {
     }).catch(() => {
       this.isRegistering = false;
     })
+
   }
 
   public closeModal(): void {
@@ -97,7 +103,28 @@ export class RegisterShortParkingComponent  implements OnInit {
 
     if (cep.length === 8) {
      await this.cepService.getCep(cep).then((adress: IAdress) => {
-        this.formShortParking.patchValue({ street: adress.logradouro });
+
+        let longStreetName: string = adress.logradouro;
+        let streetSplited: string[] = longStreetName.split(' ');
+        let type: string = streetSplited[0].toLowerCase();
+        let shortStreetName: string = streetSplited.slice(1).join(' ');
+
+        switch (type) {
+          case 'rua':
+            this.shortParking.adress.type['pt'] = 'Rua';
+            this.shortParking.adress.type['en'] = 'Street';
+            this.shortParking.adress.type['es'] = 'Calle';
+            break;
+
+          case 'avenida':
+            this.shortParking.adress.type['pt'] = 'Avenida';
+            this.shortParking.adress.type['en'] = 'Avenue';
+            this.shortParking.adress.type['es'] = 'Avenida';
+            break;
+        }
+
+
+        this.formShortParking.patchValue({ street: shortStreetName });
         this.formShortParking.patchValue({ neighborhood: adress.bairro });
      })
     }
