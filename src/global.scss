@@ -375,8 +375,9 @@ ion-card {
     --padding-bottom: 16px;
     border-radius: 12px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
-    min-height: 270px;
+    min-height: 321px; // DIFERENTE DO SITE EM RAZÃO DOS BOTÕES
     background: linear-gradient(to bottom, var(--white), var(--transparent));
+    position: relative;
 
     &.coming-soon {
       box-shadow: none;
@@ -439,6 +440,7 @@ ion-card {
       width: 100%;
       height: auto;
       display: block;
+      border-top: 1px solid var(--gray-da);
 
       .coming-soon {
         @include flexbox(center, center, row);
@@ -454,18 +456,29 @@ ion-card {
         --padding-top: 16px;
         --padding-bottom: 16px;
         --background: var(--gray-fa);
-        --color: var(--green);
         border-radius: 0;
         --border-radius: 0;
-        border-top: .5px solid var(--gray-ec);
+
         font-size: 14px;
         font-weight: 300;
-        --background-hover: var(--green);
         --background: var(--transparent);
+        --box-shadow: none;
 
         ion-icon {
           margin: 0 0 0 5px;
           font-size: 18px;
+        }
+
+        // BOTÕES ESPECÍFICOS.
+        &.details {
+          --background-hover: var(--green);
+          --color: var(--green);
+        }
+
+        &.remove {
+          --background-hover: var(--danger);
+          --color: var(--danger);
+          border-top: 1px solid var(--gray-da);
         }
       }
     }

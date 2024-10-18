@@ -23,9 +23,33 @@
           </ion-col>
 
           <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="isPremium">É cliente <b>premium</b>?</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
             <ion-item mode="ios" lines="none" class="rgs-item-toggle">
               <ion-toggle justify="space-between" mode="ios" formControlName="isBuilding">Ainda irá inaugurar?</ion-toggle>
             </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
           </ion-col>
 
           <ion-col size="12">
@@ -1169,7 +1193,7 @@
           <ion-col size="12" formArrayName="tuesdaysHour">
             <div class="working-time-wrapper">
               <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
-                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'tuesdaysHour')" [checked]="showTuesdays">Terça-feira <span *ngIf="showTuesdays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
+                <ion-toggle justify="space-between" mode="ios" (ionChange)="clearWorkingTimeWhenSwithIsFalse($event, 'tuesdaysHour')" [checked]="showTuesdays">Terça-feira <span *ngIf="!showTuesdays" class="fs-14 color-danger font-w-bold">não abre</span></ion-toggle>
               </ion-item>
 
               <div class="open-close-wrapper mg-top-8" *ngIf="showTuesdays">

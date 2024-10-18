@@ -1,5 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { collectionData, Firestore, setDoc, updateDoc} from '@angular/fire/firestore';
+import { collectionData, deleteDoc, Firestore, setDoc} from '@angular/fire/firestore';
 import { addDoc, collection, doc } from 'firebase/firestore';
 import { Observable } from 'rxjs';
 import { IShortEstablishment } from 'src/app/shared/models/Establishment';
@@ -39,6 +40,18 @@ export class EstablishmentsService {
       console.log('Documento atualizado com sucesso!');
     } catch (error) {
       console.error('Erro ao atualizar o documento: ', error);
+    }
+  }
+
+  public async removeDoc(collectionName: string, docId: string) {
+
+    const docRef = doc(this.firestore, collectionName, docId);
+
+    try {
+      await deleteDoc(docRef);
+      console.log('Documento removido com sucesso!');
+    } catch (error) {
+      console.error('Erro ao remover documento: ', error);
     }
   }
 }

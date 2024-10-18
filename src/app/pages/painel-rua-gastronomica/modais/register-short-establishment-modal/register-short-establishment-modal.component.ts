@@ -222,7 +222,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       sundaysHour: this.formBuilder.array([]),
       url: ['', [Validators.required]],
       isBuilding: [false, [Validators.required]],
-      sundaysHourToggle: false
+      sundaysHourToggle: false,
+      isPremium: [false, [ Validators.required ]]
     })
   }
 

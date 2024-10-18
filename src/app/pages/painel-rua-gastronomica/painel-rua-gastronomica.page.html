@@ -34,7 +34,7 @@ forceOverscroll="false">
                 lines="none"
                 class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="color-green font-baloo length">{{ info.list.length }}</p>
+                    <p class="font-baloo length" [ngClass]="[ info.list.length ? 'color-green' : 'color-danger']">{{ info.list.length }}</p>
                     <p class="color-gray-text type fs-10 txt-uppercase" *ngIf="info.list.length < 2">
                       {{ info.text.pt }}
                     </p>
@@ -59,6 +59,8 @@ forceOverscroll="false">
 
   <div class="establishments-wrapper">
     <swiper-container
+    (swiperreachbeginning)="swiperReachedBeginning()"
+    (swiperreachend)="swiperReachedEnd()"
     class="full-width swiper-w-relative-pagination"
     [init]="true"
     #establishmentsSwiper
@@ -108,7 +110,6 @@ forceOverscroll="false">
         *ngFor="let establishment of short_establishments; let i = index"
         class="unlock-shadow-from-swiper auto-width">
           <ion-card
-          [ngClass]="{ 'coming-soon': establishment.isBuilding }"
           mode="ios"
           class="establishment-card-vertical"
           lines="none">
@@ -140,8 +141,17 @@ forceOverscroll="false">
               (click)="seeEstablishment(establishment)"
               title="Ver detalhes"
               mode="md"
-              class="full-width">
+              class="full-width details">
                 Ver <b class="mg-left-5">detalhes</b> <ion-icon name="arrow-forward" class="mg-left-5"></ion-icon>
+              </ion-button>
+
+              <ion-button
+              (click)="showAlertToRemove(establishment)"
+              title="Remover cliente"
+              title="Remover detalhes"
+              mode="md"
+              class="full-width remove">
+                <b class="mg-right-5">Remover</b> cliente <ion-icon name="trash-outline" class="mg-left-5"></ion-icon>
               </ion-button>
             </ion-card-footer>
           </ion-card>
@@ -164,6 +174,44 @@ forceOverscroll="false">
             <p class="fs-14 color-gray-text">Não existem estabelecimento cadastrados.</p>
           </ion-text>
         </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ng-container *ngIf="short_establishments && short_establishments.length > 0">
+          <ion-col size="6">
+            <div class="controls-wrapper">
+              <ion-button
+              [disabled]="hideLeftControl"
+              (click)="slideToPrev()"
+              mode="md"
+              class="rgs-main-solid fs-14 mg-right-8"
+              shape="round"
+              title="">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+              </ion-button>
+
+              <ion-button
+              [disabled]="hideRightControl"
+              (click)="slideToNext()"
+              mode="md"
+              class="rgs-main-solid fs-14"
+              shape="round"
+              title="">
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-col>
+
+          <ion-col size="6">
+            <ion-text
+            class="color-gray-text fs-13 line-height-20 txt-lowercase txt-right"
+            mode="ios">
+              <p><span class="fs-16 font-w-bold">{{ short_establishments.length }}</span> estabelecimentos<ng-container *ngIf="short_establishments.length > 1">s</ng-container></p>
+            </ion-text>
+          </ion-col>
+        </ng-container>
       </ion-row>
     </ion-grid>
   </div>

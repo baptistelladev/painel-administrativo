@@ -1,5 +1,5 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AlertController, ModalController } from '@ionic/angular';
 import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
 import { RegisterShortParkingComponent } from './modais/register-short-parking/register-short-parking.component';
@@ -12,6 +12,7 @@ import { UtilsService } from 'src/app/core/services/utils.service';
 import { EstablishmentTypeEnum } from 'src/app/shared/enums/EstablishmentType';
 import { Store } from '@ngrx/store';
 import * as RuaGastronomicaDeSantosStore from './../../shared/store/ruaGastronomicaDeSantos.state';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-painel-rua-gastronomica',
@@ -20,7 +21,12 @@ import * as RuaGastronomicaDeSantosStore from './../../shared/store/ruaGastronom
 })
 export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
 
+  @ViewChild('establishmentsSwiper')
+  swiperRef: ElementRef | undefined;
+  swiper?: Swiper;
 
+  public hideRightControl: boolean = false;
+  public hideLeftControl: boolean = false;
 
   public lenghts_to_save_time: {
     list: IShortEstablishment[],
@@ -181,7 +187,8 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
     private establishmentsService : EstablishmentsService,
     private modalCtrl : ModalController,
     private utilsService : UtilsService,
-    private store : Store
+    private store : Store,
+    private alertCtrl : AlertController
   ) { }
 
   ngOnInit() {
@@ -265,6 +272,65 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
     await modal.present();
 
     return modal;
+  }
+
+  public async showAlertToRemove(establishment: IShortEstablishment): Promise<HTMLIonAlertElement> {
+    const alert = await this.alertCtrl.create({
+      mode: 'ios',
+      message: `Confirmar remoção de ${establishment.name}?`,
+      subHeader: `${establishment.name}`,
+      cssClass: 'rgs-alert',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+
+          }
+        },
+        {
+          text: 'Remover',
+          role: 'confirm',
+          handler: async () => {
+            await alert.dismiss();
+            await this.establishmentsService.removeDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, establishment.id);
+          }
+        },
+      ]
+    })
+
+    await alert.present();
+
+    return alert;
+  }
+
+  public slideToNext(): void {
+    this.swiper?.slideNext(800);
+
+    if (this.hideLeftControl) {
+      this.hideLeftControl = false;
+    }
+
+  }
+
+  public slideToPrev(): void {
+    this.swiper?.slidePrev(800);
+
+    if (this.hideRightControl) {
+      this.hideRightControl = false;
+    }
+  }
+
+  public swiperReachedEnd() {
+    this.hideRightControl = true;
+  }
+
+  public swiperReachedBeginning() {
+    this.hideLeftControl = true;
+  }
+
+  public slideSwiperToStart(): void {
+    this.swiper?.slideTo(0, 800);
   }
 
   ngOnDestroy(): void {
