@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
@@ -19,7 +19,7 @@ import Swiper from 'swiper';
   templateUrl: './painel-rua-gastronomica.page.html',
   styleUrls: ['./painel-rua-gastronomica.page.scss'],
 })
-export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
+export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('establishmentsSwiper')
   swiperRef: ElementRef | undefined;
@@ -195,8 +195,8 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
     this.getEstablishments();
   }
 
-  ionViewDidEnter(){
-
+  ngAfterViewInit(): void {
+    this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
   public async openModalToCreateStablishment(): Promise<HTMLIonModalElement> {
@@ -306,6 +306,9 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy {
 
   public slideToNext(): void {
     this.swiper?.slideNext(800);
+
+    console.log('teste next');
+
 
     if (this.hideLeftControl) {
       this.hideLeftControl = false;

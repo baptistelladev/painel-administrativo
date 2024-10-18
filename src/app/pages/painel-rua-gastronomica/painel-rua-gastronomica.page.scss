@@ -20,6 +20,8 @@ ion-item {
     --background: linear-gradient(to bottom, var(--gray-fa) 5%, transparent);
     --inner-padding-end: 0;
     animation-duration: 0.5s;
+    --detail-icon-opacity: 1;
+    --detail-icon-color: red;
 
     ion-text {
       p {

@@ -8,6 +8,7 @@ export interface IRuaGastronomicaDeSantosState {
 export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState = {
   currentEstablishment: {
     isBuilding: false,
+    isPremium: false,
     id: '',
     name: '',
     value: '',

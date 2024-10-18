@@ -379,6 +379,15 @@ ion-card {
     background: linear-gradient(to bottom, var(--white), var(--transparent));
     position: relative;
 
+    ion-icon {
+      &.verified {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        font-size: 29px;
+      }
+    }
+
     &.coming-soon {
       box-shadow: none;
       pointer-events: none;

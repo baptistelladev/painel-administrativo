@@ -30,6 +30,7 @@ forceOverscroll="false">
                 <ion-item
                 [disabled]="info.list.length === 0"
                 [button]="true"
+                [detailIcon]="info.list.length ? 'chevron-forward-outline' : 'lock-closed-outline'"
                 size="12"
                 lines="none"
                 class="dashboard-item">
@@ -59,12 +60,12 @@ forceOverscroll="false">
 
   <div class="establishments-wrapper">
     <swiper-container
+
     (swiperreachbeginning)="swiperReachedBeginning()"
     (swiperreachend)="swiperReachedEnd()"
     class="full-width swiper-w-relative-pagination"
-    [init]="true"
     #establishmentsSwiper
-    [freeMode]="false"
+    [freeMode]="true"
     [autoHeight]="false"
     slides-offset-before="16"
     slides-offset-after="16"
@@ -88,8 +89,7 @@ forceOverscroll="false">
         slidesPerView: 3.8
       },
       '991' : {
-        slidesPerView: 4.5,
-        centeredSlides: false
+        slidesPerView: 4.5
       },
       '1200' : {
         slidesPerView: 5.2
@@ -104,7 +104,8 @@ forceOverscroll="false">
       '2000' : {
         slidesPerView: 10.3
       }
-    }">
+    }"
+    [init]="true">
       <ng-container *ngIf="short_establishments && short_establishments.length > 0">
         <swiper-slide
         *ngFor="let establishment of short_establishments; let i = index"
@@ -113,6 +114,8 @@ forceOverscroll="false">
           mode="ios"
           class="establishment-card-vertical"
           lines="none">
+            <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified" *ngIf="establishment.isPremium"></ion-icon>
+
             <ion-card-content class="txt-center" mode="ios">
               <div class="logo-wrapper mg-bottom-12">
                 <div class="logo-container"

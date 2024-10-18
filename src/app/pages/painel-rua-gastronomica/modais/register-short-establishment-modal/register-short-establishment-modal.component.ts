@@ -54,6 +54,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
   public shortEstablishment: IShortEstablishment = {
     isBuilding: false,
+    isPremium: false,
     id: '',
     name: '',
     value: '',
@@ -382,6 +383,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     }
 
     this.shortEstablishment.isBuilding = this.formShortEstablishment.get('isBuilding')?.value;
+    this.shortEstablishment.isPremium = this.formShortEstablishment.get('isPremium')?.value;
 
     switch (this.formShortEstablishment.get('type')?.value) {
       case 'rua':
@@ -764,10 +766,11 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public closeModal(): void {
     this.modalCtrl.dismiss();
     this.formShortEstablishment.reset();
+    this.store.dispatch(RuaGastronomicaDeSantosStore.clearCurrentEstablishment());
+
+    this.currentEstablishment = this.shortEstablishment;
 
     if (this.establishment$) {
-      this.currentEstablishment = this.shortEstablishment;
-      this.store.dispatch(RuaGastronomicaDeSantosStore.clearCurrentEstablishment());
       this.establishmentSubscription.unsubscribe();
     }
   }
@@ -797,6 +800,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   }
 
   public async fillFormAndVariablesWhenComesFromDetail(establishment: IShortEstablishment) {
+
+    console.log(establishment);
+
 
     this.shortEstablishment.adress.type = { ...establishment.adress.type };
 
@@ -928,6 +934,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     })
 
     this.formShortEstablishment.get('isBuilding')?.patchValue(establishment.isBuilding);
+    this.formShortEstablishment.get('isPremium')?.patchValue(establishment.isPremium);
 
   }
 }
