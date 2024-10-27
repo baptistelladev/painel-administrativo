@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { IShortEstablishment } from 'src/app/shared/models/Establishment';
+import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
 
 @Injectable({
   providedIn: 'root'

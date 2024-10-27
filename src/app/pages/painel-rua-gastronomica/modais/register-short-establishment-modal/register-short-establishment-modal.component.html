@@ -650,6 +650,7 @@
                     lines="none"
                     mode="ios">
                       <ion-input
+                      maxlength="3"
                       enterkeyhint="next"
                       mode="ios"
                       [label]="'DDD'"
@@ -679,11 +680,12 @@
                   'has-error' : (phones.at(i).get('number')?.invalid &&
                   (phones.at(i).get('number')?.touched ||
                   phones.at(i).get('number')?.dirty))}"
-                  class="rgs-input-wrapper full-width white-background-item">
+                  class="rgs-input-wrapper full-width white-background-item label-w-gray-fa">
                     <ion-item
                     lines="none"
                     mode="ios">
                       <ion-input
+                      maxlength="9"
                       enterkeyhint="next"
                       mode="ios"
                       [label]="'Número'"
@@ -2046,6 +2048,7 @@
               lines="none"
               mode="ios">
                 <ion-input
+
                 enterkeyhint="next"
                 mode="ios"
                 [label]="'Rota'"
@@ -2074,7 +2077,7 @@
           <ion-col size="12" *ngIf="formShortEstablishment.get('name')?.value">
             <div class="url-wrapper">
               <ion-text mode="ios">
-                <p class="color-gray-text fs-14">As pessoas conhecerão o <b>{{ formShortEstablishment.get('name')?.value }}</b> pela url https://www.ruagastronomicadesantos.com.br/<b class="color-green">{{ formShortEstablishment.get('url')?.value }}</b></p>
+                <p class="color-gray-text fs-14">As pessoas conhecerão o <b>{{ formShortEstablishment.get('name')?.value }}</b> no www.anfitrionapp.com.br caso busquem pelo <b class="color-green">{{ formShortEstablishment.get('url')?.value }}</b></p>
               </ion-text>
             </div>
           </ion-col>

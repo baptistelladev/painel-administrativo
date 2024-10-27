@@ -1,6 +1,6 @@
 
-import { IPhone } from "../models/Phone";
-import { ITime } from "../models/Time";
+import { IPhone } from "../models/IPhone";
+import { ITime } from "../models/ITime";
 
 export const DAYS: ITime[] = [
   {

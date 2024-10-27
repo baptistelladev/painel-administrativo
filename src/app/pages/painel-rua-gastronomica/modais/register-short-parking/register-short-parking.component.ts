@@ -4,7 +4,7 @@ import { ModalController } from '@ionic/angular';
 import { CepService } from 'src/app/core/services/cep.service';
 import { ParkingsService } from 'src/app/core/services/firebase/parkings.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
-import { IAdress } from 'src/app/shared/models/Endereco';
+import { IAdress } from 'src/app/shared/models/IAddress';
 import { IShortParking } from 'src/app/shared/models/IParking';
 
 @Component({

@@ -1,5 +1,5 @@
 import { createAction, createReducer, createSelector, on, props, createFeatureSelector } from "@ngrx/store";
-import { IShortEstablishment } from '../models/Establishment';
+import { IShortEstablishment } from '../models/IEstablishment';
 
 export interface IRuaGastronomicaDeSantosState {
   currentEstablishment: IShortEstablishment

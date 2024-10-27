@@ -1,4 +1,4 @@
-import { ISocialNetwork } from "../models/Network";
+import { ISocialNetwork } from "../models/INetwork";
 
 
 export const NETWORKS: ISocialNetwork[] = [

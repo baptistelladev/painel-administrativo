@@ -1,5 +1,5 @@
 
-import { IPhone } from "../models/Phone";
+import { IPhone } from "../models/IPhone";
 
 export const PHONES: IPhone[] = [
   {

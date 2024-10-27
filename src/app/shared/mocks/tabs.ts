@@ -1,4 +1,4 @@
-import { ITab } from "../models/Tabs";
+import { ITab } from "../models/ITabs";
 
 
 export const TABS: ITab[] = [

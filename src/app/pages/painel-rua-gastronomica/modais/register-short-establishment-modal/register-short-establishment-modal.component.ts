@@ -1,12 +1,11 @@
 import { SPECIALTIES } from './../../../../shared/mocks/specialties';
 
 
-import { AfterViewInit, Component, OnInit, viewChild, ViewChild } from '@angular/core';
-import { FormArray, FormArrayName, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IonDatetime, IonTab, IonToggle, ModalController } from '@ionic/angular';
-import { min, Observable, ObservableLike, Subscription, take } from 'rxjs';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonDatetime, ModalController } from '@ionic/angular';
+import { Observable,  Subscription } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
-import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { EstablishmentTypeEnum } from 'src/app/shared/enums/EstablishmentType';
 import { DAYS } from 'src/app/shared/mocks/days';
@@ -15,17 +14,18 @@ import { MARKET_TICKETS } from 'src/app/shared/mocks/marketTickets';
 import { NETWORKS } from 'src/app/shared/mocks/networks';
 import { PHONES } from 'src/app/shared/mocks/phones';
 import { TICKETS } from 'src/app/shared/mocks/tickets';
-import { IAdress } from 'src/app/shared/models/Endereco';
-import { IShortEstablishment } from 'src/app/shared/models/Establishment';
-import { IEstablishmentSpecialty } from 'src/app/shared/models/EstablishmentSpecialty';
-import { IEstablishmentType } from 'src/app/shared/models/EstablishmentType';
-import { ISocialNetwork } from 'src/app/shared/models/Network';
-import { IPhone } from 'src/app/shared/models/Phone';
-import { IShortTicket } from 'src/app/shared/models/Ticket';
-import { ITime } from 'src/app/shared/models/Time';
+import { IAdress } from 'src/app/shared/models/IAddress';
+import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
+import { IEstablishmentSpecialty } from 'src/app/shared/models/IEstablishmentSpecialty';
+import { IEstablishmentType } from 'src/app/shared/models/IEstablishmentType';
+import { ISocialNetwork } from 'src/app/shared/models/INetwork';
+import { IPhone } from 'src/app/shared/models/IPhone';
+import { IShortTicket } from 'src/app/shared/models/ITicket';
+import { ITime } from 'src/app/shared/models/ITime';
 import * as RuaGastronomicaDeSantosStore from './../../../../shared/store/ruaGastronomicaDeSantos.state';
 import { Store } from '@ngrx/store';
-import { IHour } from 'src/app/shared/models/Hour';
+import { IHour } from 'src/app/shared/models/IHour';
+import { PlacesService } from 'src/app/core/services/firebase/places.service';
 
 @Component({
   selector: 'app-register-short-establishment-modal',
@@ -174,7 +174,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   constructor(
     private formBuilder : FormBuilder,
     private modalCtrl : ModalController,
-    private establishmentService : EstablishmentsService,
+    private placesService : PlacesService,
     private cepService : CepService,
     private store : Store
   ) { }
@@ -400,7 +400,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     }
 
     if (type === 'create') {
-      await this.establishmentService.addDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.shortEstablishment)
+      await this.placesService.addDoc(CollectionsEnum.PLACES, this.shortEstablishment)
       .then(async () => {
         await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
         this.isRegistering = false;
@@ -408,7 +408,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         this.isRegistering = false;
       })
     } else {
-      await this.establishmentService.setDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, this.currentEstablishment.id, this.shortEstablishment)
+      await this.placesService.setDoc(CollectionsEnum.PLACES, this.currentEstablishment.id, this.shortEstablishment)
       .then(async () => {
         await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
         this.isRegistering = false;

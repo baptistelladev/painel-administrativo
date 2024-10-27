@@ -1,14 +1,15 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { collectionData, deleteDoc, Firestore, setDoc} from '@angular/fire/firestore';
-import { addDoc, collection, doc } from 'firebase/firestore';
-import { Observable } from 'rxjs';
-import { IShortEstablishment } from 'src/app/shared/models/Establishment';
+import { addDoc, collection, CollectionReference, doc, getDocs, query, QueryConstraint, where } from 'firebase/firestore';
+import { from, Observable } from 'rxjs';
+import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
+import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
 
 @Injectable({
   providedIn: 'root'
 })
-export class EstablishmentsService {
+export class PlacesService {
 
   constructor(
     private firestore : Firestore
@@ -24,11 +25,6 @@ export class EstablishmentsService {
     } catch (e) {
       console.error("Erro ao adicionar documento: ", e);
     }
-  }
-
-  public getCollection(collectionName: string): Observable<IShortEstablishment[]> {
-    const itemCollection = collection(this.firestore, collectionName);
-    return collectionData<any>(itemCollection);
   }
 
   public async setDoc(collectionName: string, docId: string, establishment: IShortEstablishment): Promise<any> {
@@ -53,5 +49,26 @@ export class EstablishmentsService {
     } catch (error) {
       console.error('Erro ao remover documento: ', error);
     }
+  }
+
+  public getCollection(
+    collectionName: string,
+    filters: IFirebaseFilter[] = []
+  ): Observable<any[]> {
+    // Cria a referência da coleção
+    const colRef = collection(this.firestore, collectionName) as CollectionReference;
+
+    // Constrói a lista de restrições da consulta
+    const queryConstraints: QueryConstraint[] = filters.map(filter =>
+      where(filter.field, filter.operator, filter.value)
+    );
+
+    // Cria a consulta com todos os filtros
+    const q = query(colRef, ...queryConstraints);
+
+    // Converte a `Promise` resultante do `getDocs` em um `Observable`
+    return from(getDocs(q).then(querySnapshot =>
+      querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+    ));
   }
 }

@@ -1,5 +1,5 @@
 
-import { IEstablishmentSpecialty } from "../models/EstablishmentSpecialty";
+import { IEstablishmentSpecialty } from "../models/IEstablishmentSpecialty";
 
 export const SPECIALTIES: IEstablishmentSpecialty[] = [
   {

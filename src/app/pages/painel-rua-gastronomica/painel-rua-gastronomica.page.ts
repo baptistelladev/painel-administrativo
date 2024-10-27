@@ -1,18 +1,16 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { EstablishmentsService } from 'src/app/core/services/firebase/establishments.service';
 import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
 import { RegisterShortParkingComponent } from './modais/register-short-parking/register-short-parking.component';
 import * as moment from 'moment';
-import { IShortParking } from 'src/app/shared/models/IParking';
 import { map, Observable, Subscription } from 'rxjs';
-import { IShortEstablishment } from 'src/app/shared/models/Establishment';
+import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { UtilsService } from 'src/app/core/services/utils.service';
-import { EstablishmentTypeEnum } from 'src/app/shared/enums/EstablishmentType';
 import { Store } from '@ngrx/store';
 import * as RuaGastronomicaDeSantosStore from './../../shared/store/ruaGastronomicaDeSantos.state';
 import Swiper from 'swiper';
+import { PlacesService } from 'src/app/core/services/firebase/places.service';
 
 @Component({
   selector: 'app-painel-rua-gastronomica',
@@ -184,7 +182,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
   ]
 
   constructor(
-    private establishmentsService : EstablishmentsService,
+    private placesService : PlacesService,
     private modalCtrl : ModalController,
     private utilsService : UtilsService,
     private store : Store,
@@ -227,7 +225,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
 
   public getEstablishments() {
-    this.establishments$ = this.establishmentsService.getCollection(CollectionsEnum.SHORT_ESTABLISHMENTS);
+    this.establishments$ = this.placesService.getCollection(CollectionsEnum.PLACES, [{ field: 'SUGGESTIONS', operator: 'array-contains', value: 'RUA_GASTRONOMICA_DE_SANTOS' }]);
 
     this.establishmentsSubscription = this.establishments$
     .pipe(
@@ -293,7 +291,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
           role: 'confirm',
           handler: async () => {
             await alert.dismiss();
-            await this.establishmentsService.removeDoc(CollectionsEnum.SHORT_ESTABLISHMENTS, establishment.id);
+            await this.placesService.removeDoc(CollectionsEnum.PLACES, establishment.id);
           }
         },
       ]

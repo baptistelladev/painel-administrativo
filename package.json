@@ -22,6 +22,7 @@
     "@angular/platform-browser": "^18.0.0",
     "@angular/platform-browser-dynamic": "^18.0.0",
     "@angular/router": "^18.0.0",
+    "@capacitor/android": "6.1.2",
     "@capacitor/app": "6.0.1",
     "@capacitor/core": "6.1.2",
     "@capacitor/haptics": "6.0.1",
@@ -51,6 +52,7 @@
     "@angular/language-service": "^18.0.0",
     "@capacitor/cli": "6.1.2",
     "@ionic/angular-toolkit": "^11.0.1",
+    "@ngrx/eslint-plugin": "^18.1.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -65,8 +67,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.4.0",
-    "@ngrx/eslint-plugin": "^18.1.0"
+    "typescript": "~5.4.0"
   },
   "description": "An Ionic project"
 }

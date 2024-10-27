@@ -1,10 +1,10 @@
-import { IEstablishmentSpecialty } from "./EstablishmentSpecialty"
-import { IEstablishmentType } from "./EstablishmentType"
-import { IHour } from "./Hour"
-import { ISocialNetwork } from "./Network"
-import { IPhone } from "./Phone"
-import { IShortTicket } from "./Ticket"
-import { ITime } from "./Time"
+import { IEstablishmentSpecialty } from "./IEstablishmentSpecialty"
+import { IEstablishmentType } from "./IEstablishmentType"
+import { IHour } from "./IHour"
+import { ISocialNetwork } from "./INetwork"
+import { IPhone } from "./IPhone"
+import { IShortTicket } from "./ITicket"
+import { ITime } from "./ITime"
 
 export interface IShortEstablishment {
   id: string

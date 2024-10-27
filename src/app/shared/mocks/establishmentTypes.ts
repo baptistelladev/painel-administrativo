@@ -1,5 +1,5 @@
-import { IShortEstablishment } from "../models/Establishment";
-import { IEstablishmentType } from "../models/EstablishmentType";
+import { IShortEstablishment } from "../models/IEstablishment";
+import { IEstablishmentType } from "../models/IEstablishmentType";
 
 export const ESTABLISHMENT_TYPES: IEstablishmentType[] = [
   {
