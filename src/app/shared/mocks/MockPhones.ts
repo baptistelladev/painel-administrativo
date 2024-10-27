@@ -1,7 +1,7 @@
 
 import { IPhone } from "../models/IPhone";
 
-export const PHONES: IPhone[] = [
+export const MOCK_PHONES: IPhone[] = [
   {
     ddd: '',
     number: '',

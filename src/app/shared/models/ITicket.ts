@@ -1,4 +1,4 @@
-export interface IShortTicket {
+export interface ITicket {
   text: any,
   value: string
 }

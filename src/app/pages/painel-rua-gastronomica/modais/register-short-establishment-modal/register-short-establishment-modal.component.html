@@ -114,7 +114,7 @@
                 toggleIcon="chevron-down-outline"
                 label-placement="floating">
                   <ion-select-option
-                  *ngFor="let type of ESTABLISHMENT_TYPES"
+                  *ngFor="let type of MOCK_CITY_PLACES_TYPE"
                   [value]="type.value">
                     {{ type.text.pt }}
                   </ion-select-option>
@@ -157,7 +157,7 @@
                 toggleIcon="chevron-down-outline"
                 label-placement="floating">
                   <ion-select-option
-                  *ngFor="let specialty of SPECIALTIES"
+                  *ngFor="let specialty of MOCK_SPECIALTIES"
                   [value]="specialty.value">
                     {{ specialty.text.pt }}
                   </ion-select-option>
@@ -497,7 +497,7 @@
                 toggleIcon="chevron-down-outline"
                 label-placement="floating">
                   <ion-select-option
-                  *ngFor="let ticket of TICKETS"
+                  *ngFor="let ticket of MOCK_TICKETS"
                   [value]="ticket.value">
                     {{ ticket.text }}
                   </ion-select-option>
@@ -519,7 +519,7 @@
           <ion-col size="12">
 
             <ion-item
-            *ngIf="formShortEstablishment.get('mainType')?.value === EstablishmentTypeEnum.EMPORIO"
+            *ngIf="formShortEstablishment.get('mainType')?.value === PlaceTypeEnum.EMPORIO"
             lines="none"
             mode="ios"
             class="simulate-bootstrap-alert mg-top-16 line-height-18 mg-bottom-16">
@@ -554,7 +554,7 @@
                 toggleIcon="chevron-down-outline"
                 label-placement="floating">
                   <ion-select-option
-                  *ngFor="let ticket of MARKET_TICKETS"
+                  *ngFor="let ticket of MOCK_MARKET_TICKETS"
                   [value]="ticket.value">
                     {{ ticket.text }}
                   </ion-select-option>
@@ -618,7 +618,7 @@
                     toggleIcon="chevron-down-outline"
                     label-placement="floating">
                       <ion-select-option
-                      *ngFor="let phone of PHONES"
+                      *ngFor="let phone of MOCK_PHONES"
                       [value]="phone.type">
                         {{ phone.text }}
                       </ion-select-option>
@@ -775,7 +775,7 @@
                     toggleIcon="chevron-down-outline"
                     label-placement="floating">
                       <ion-select-option
-                      *ngFor="let network of NETWORKS"
+                      *ngFor="let network of MOCK_NETWORKS"
                       [value]="network.value">
                         {{ network.text }}
                       </ion-select-option>

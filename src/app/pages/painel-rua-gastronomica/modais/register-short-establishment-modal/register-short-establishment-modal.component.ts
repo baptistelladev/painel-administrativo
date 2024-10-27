@@ -1,4 +1,3 @@
-import { SPECIALTIES } from './../../../../shared/mocks/specialties';
 
 
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
@@ -7,25 +6,26 @@ import { IonDatetime, ModalController } from '@ionic/angular';
 import { Observable,  Subscription } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
-import { EstablishmentTypeEnum } from 'src/app/shared/enums/EstablishmentType';
-import { DAYS } from 'src/app/shared/mocks/days';
-import { ESTABLISHMENT_TYPES } from 'src/app/shared/mocks/establishmentTypes';
-import { MARKET_TICKETS } from 'src/app/shared/mocks/marketTickets';
-import { NETWORKS } from 'src/app/shared/mocks/networks';
-import { PHONES } from 'src/app/shared/mocks/phones';
-import { TICKETS } from 'src/app/shared/mocks/tickets';
+import { PlaceTypeEnum } from 'src/app/shared/enums/PlaceType';
+import { MOCK_DAYS } from 'src/app/shared/mocks/MockDays';
+import { MOCK_CITY_PLACES_TYPE } from 'src/app/shared/mocks/MockCityPlacesType';
+import { MOCK_MARKET_TICKETS } from 'src/app/shared/mocks/MockMarketTickets';
+import { MOCK_NETWORKS } from 'src/app/shared/mocks/MockNetworks';
+import { MOCK_PHONES } from 'src/app/shared/mocks/MockPhones';
+import { MOCK_TICKETS } from 'src/app/shared/mocks/MockTickets';
 import { IAdress } from 'src/app/shared/models/IAddress';
-import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
-import { IEstablishmentSpecialty } from 'src/app/shared/models/IEstablishmentSpecialty';
-import { IEstablishmentType } from 'src/app/shared/models/IEstablishmentType';
+import { IPlace } from 'src/app/shared/models/IPlace';
+import { IPlaceSpecialty } from 'src/app/shared/models/IPlaceSpecialty';
+import { IPlaceType } from 'src/app/shared/models/IPlaceType';
 import { ISocialNetwork } from 'src/app/shared/models/INetwork';
 import { IPhone } from 'src/app/shared/models/IPhone';
-import { IShortTicket } from 'src/app/shared/models/ITicket';
+import { ITicket } from 'src/app/shared/models/ITicket';
 import { ITime } from 'src/app/shared/models/ITime';
 import * as RuaGastronomicaDeSantosStore from './../../../../shared/store/ruaGastronomicaDeSantos.state';
 import { Store } from '@ngrx/store';
 import { IHour } from 'src/app/shared/models/IHour';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
+import { MOCK_SPECIALTIES } from 'src/app/shared/mocks/MockSpecialties';
 
 @Component({
   selector: 'app-register-short-establishment-modal',
@@ -52,7 +52,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
   public formShortEstablishment: FormGroup;
 
-  public shortEstablishment: IShortEstablishment = {
+  public shortEstablishment: IPlace = {
     isBuilding: false,
     isPremium: false,
     id: '',
@@ -157,18 +157,18 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     ]
   }
 
-  public ESTABLISHMENT_TYPES: IEstablishmentType[] = ESTABLISHMENT_TYPES;
-  public TICKETS: IShortTicket[] = TICKETS;
-  public MARKET_TICKETS: IShortTicket[] = MARKET_TICKETS;
-  public NETWORKS: ISocialNetwork[] = NETWORKS;
-  public PHONES: IPhone[] = PHONES;
-  public DAYS: ITime[] = DAYS;
-  public SPECIALTIES: IEstablishmentSpecialty[] = SPECIALTIES;
+  public MOCK_CITY_PLACES_TYPE: IPlaceType[] = MOCK_CITY_PLACES_TYPE;
+  public MOCK_TICKETS: ITicket[] = MOCK_TICKETS;
+  public MOCK_MARKET_TICKETS: ITicket[] = MOCK_MARKET_TICKETS;
+  public MOCK_NETWORKS: ISocialNetwork[] = MOCK_NETWORKS;
+  public MOCK_PHONES: IPhone[] = MOCK_PHONES;
+  public MOCK_DAYS: ITime[] = MOCK_DAYS;
+  public MOCK_SPECIALTIES: IPlaceSpecialty[] = MOCK_SPECIALTIES;
 
-  public EstablishmentTypeEnum = EstablishmentTypeEnum;
+  public PlaceTypeEnum = PlaceTypeEnum;
 
-  public currentEstablishment: IShortEstablishment;
-  public establishment$: Observable<IShortEstablishment>;
+  public currentEstablishment: IPlace;
+  public establishment$: Observable<IPlace>;
   public establishmentSubscription: Subscription;
 
   constructor(
@@ -237,7 +237,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
     this.shortEstablishment.name = this.formShortEstablishment.get('name')?.value;
 
-    let foundType: IEstablishmentType | undefined = this.ESTABLISHMENT_TYPES.find((type: IEstablishmentType) => {
+    let foundType: IPlaceType | undefined = this.MOCK_CITY_PLACES_TYPE.find((type: IPlaceType) => {
       return type.value === this.formShortEstablishment.get('mainType')?.value
     })
 
@@ -272,7 +272,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       console.log(ticketValues);
 
 
-      let ticketsFiltered: IShortTicket[] = this.TICKETS.filter((ticket: IShortTicket) => ticketValues.some((value: string) => ticket.value === value) )
+      let ticketsFiltered: ITicket[] = this.MOCK_TICKETS.filter((ticket: ITicket) => ticketValues.some((value: string) => ticket.value === value) )
 
       this.shortEstablishment.ticket_info.tickets = ticketsFiltered;
 
@@ -287,7 +287,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     if (this.formShortEstablishment.get('marketTicketName')?.value && this.formShortEstablishment.get('marketTicketName')?.value.length > 0) {
       let ticketValues = this.formShortEstablishment.get('marketTicketName')?.value
 
-      let ticketsFiltered: IShortTicket[] = this.TICKETS.filter((ticket: IShortTicket) => ticketValues.some((value: string) => ticket.value === value) )
+      let ticketsFiltered: ITicket[] = this.MOCK_TICKETS.filter((ticket: ITicket) => ticketValues.some((value: string) => ticket.value === value) )
 
       this.shortEstablishment.market_ticket_info.tickets = ticketsFiltered;
 
@@ -298,7 +298,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     if (this.formShortEstablishment.get('networks')?.value && this.formShortEstablishment.get('networks')?.value.length > 0) {
       let networksValues = this.formShortEstablishment.get('networks')?.value;
 
-      let filteredNetworks: ISocialNetwork[] = [...this.NETWORKS].filter((network: ISocialNetwork) => {
+      let filteredNetworks: ISocialNetwork[] = [...this.MOCK_NETWORKS].filter((network: ISocialNetwork) => {
         return networksValues.some((obj: any) => {
           if (network.value === obj['value']) {
             network.user = obj['user']
@@ -316,7 +316,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     if (this.formShortEstablishment.get('phones')?.value && this.formShortEstablishment.get('phones')?.value.length > 0) {
       let phonesValues = this.formShortEstablishment.get('phones')?.value
 
-      let filteredPhones: IPhone[] = [...this.PHONES].filter((phone: IPhone) => {
+      let filteredPhones: IPhone[] = [...this.MOCK_PHONES].filter((phone: IPhone) => {
         return phonesValues.some((obj: any) => {
           if (phone.type === obj['type']) {
             phone.ddd = obj['ddd'];
@@ -333,7 +333,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       this.shortEstablishment.phones = [];
     }
 
-    let working_time = [...this.DAYS].map((day: ITime) => {
+    let working_time = [...this.MOCK_DAYS].map((day: ITime) => {
       switch (day.day_number) {
         case 0:
           day.opening_time = this.formShortEstablishment.get('sundaysHour')?.value;
@@ -374,7 +374,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     if (this.formShortEstablishment.get('specialty')?.value && this.formShortEstablishment.get('specialty')?.value.length > 0) {
       let specialtiesValues = this.formShortEstablishment.get('specialty')?.value
 
-      let specialtiesFiltered: IEstablishmentSpecialty[] = this.SPECIALTIES.filter((specialty: IEstablishmentSpecialty) => specialtiesValues.some((value: string) => specialty.value === value) )
+      let specialtiesFiltered: IPlaceSpecialty[] = this.MOCK_SPECIALTIES.filter((specialty: IPlaceSpecialty) => specialtiesValues.some((value: string) => specialty.value === value) )
 
       this.shortEstablishment.specialty = specialtiesFiltered;
 
@@ -420,7 +420,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   }
 
   public async mainTypeChanged(e: any) {
-    if (e.detail.value === EstablishmentTypeEnum.EMPORIO) {
+    if (e.detail.value === PlaceTypeEnum.EMPORIO) {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.addValidators([Validators.required]);
     } else {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.removeValidators([Validators.required]);
@@ -789,7 +789,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
     this.establishmentSubscription = this.establishment$
     .subscribe({
-      next: async (establishment: IShortEstablishment) => {
+      next: async (establishment: IPlace) => {
         this.currentEstablishment = establishment;
 
         if (this.currentEstablishment.name) {
@@ -799,7 +799,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     })
   }
 
-  public async fillFormAndVariablesWhenComesFromDetail(establishment: IShortEstablishment) {
+  public async fillFormAndVariablesWhenComesFromDetail(establishment: IPlace) {
 
     console.log(establishment);
 
@@ -812,7 +812,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     //this.formShortEstablishment.get('url')?.patchValue(establishment.value);
     this.removeEverythingFromString()
 
-    let specialties: string[] = establishment.specialty.map((specialty: IEstablishmentSpecialty) => {
+    let specialties: string[] = establishment.specialty.map((specialty: IPlaceSpecialty) => {
       return specialty.value
     })
 
@@ -842,7 +842,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.formShortEstablishment.get('acceptVale')?.patchValue(establishment.ticket_info.accept_ticket);
     this.formShortEstablishment.get('showVale')?.patchValue(establishment.ticket_info.show_field);
 
-    let ticketNames: string[] = establishment.ticket_info.tickets.map((ticket: IShortTicket) => {
+    let ticketNames: string[] = establishment.ticket_info.tickets.map((ticket: ITicket) => {
       return ticket.value
     })
 
@@ -850,7 +850,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
     this.formShortEstablishment.get('acceptMarketVale')?.patchValue(establishment.market_ticket_info.accept_ticket);
 
-    let marketTicketNames: string[] = establishment.market_ticket_info.tickets.map((ticket: IShortTicket) => {
+    let marketTicketNames: string[] = establishment.market_ticket_info.tickets.map((ticket: ITicket) => {
       return ticket.value
     })
 

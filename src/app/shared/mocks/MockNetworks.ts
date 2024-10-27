@@ -1,7 +1,7 @@
 import { ISocialNetwork } from "../models/INetwork";
 
 
-export const NETWORKS: ISocialNetwork[] = [
+export const MOCK_NETWORKS: ISocialNetwork[] = [
   {
     text: 'Instagram',
     value: 'INSTAGRAM',

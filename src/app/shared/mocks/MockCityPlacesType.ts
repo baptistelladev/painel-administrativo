@@ -1,7 +1,6 @@
-import { IShortEstablishment } from "../models/IEstablishment";
-import { IEstablishmentType } from "../models/IEstablishmentType";
+import { IPlaceType } from "../models/IPlaceType";
 
-export const ESTABLISHMENT_TYPES: IEstablishmentType[] = [
+export const MOCK_CITY_PLACES_TYPE: IPlaceType[] = [
   {
     text: {
       pt: 'Restaurante',

@@ -1,7 +1,7 @@
 
-import { IEstablishmentSpecialty } from "../models/IEstablishmentSpecialty";
+import { IPlaceSpecialty } from "../models/IPlaceSpecialty";
 
-export const SPECIALTIES: IEstablishmentSpecialty[] = [
+export const MOCK_SPECIALTIES: IPlaceSpecialty[] = [
   {
     value: 'BRASILEIRA',
     text: {
@@ -59,15 +59,3 @@ export const SPECIALTIES: IEstablishmentSpecialty[] = [
     }
   }
 ]
-
-
-
-export enum EstablishmentSpecialtyEnum {
-  BRASILEIRA = 'BRASILEIRA',
-  MEXICANA = 'MEXICANA',
-  JAPONESA = 'JAPONESA',
-  CHINESA = 'CHINESA',
-  ITALIANA = 'ITALIANA',
-  HAVAIANA = 'HAVAIANA',
-  DIVERSAS = 'DIVERSAS'
-}

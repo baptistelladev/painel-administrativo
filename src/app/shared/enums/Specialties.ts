@@ -1,11 +1,9 @@
-
-export enum EstablishmentSpecialtyEnum {
+export enum PlaceSpecialtyEnum {
   BRASILEIRA = 'BRASILEIRA',
   MEXICANA = 'MEXICANA',
   JAPONESA = 'JAPONESA',
   CHINESA = 'CHINESA',
   ITALIANA = 'ITALIANA',
   HAVAIANA = 'HAVAIANA',
-  NENHUMA = 'NENHUMA',
-  ARABE = 'ARABE'
+  DIVERSAS = 'DIVERSAS'
 }

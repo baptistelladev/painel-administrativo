@@ -1,12 +1,12 @@
-import { IEstablishmentSpecialty } from "./IEstablishmentSpecialty"
-import { IEstablishmentType } from "./IEstablishmentType"
+import { IPlaceSpecialty } from "./IPlaceSpecialty"
+import { IPlaceType } from "./IPlaceType"
 import { IHour } from "./IHour"
 import { ISocialNetwork } from "./INetwork"
 import { IPhone } from "./IPhone"
-import { IShortTicket } from "./ITicket"
+import { ITicket } from "./ITicket"
 import { ITime } from "./ITime"
 
-export interface IShortEstablishment {
+export interface IPlace {
   id: string
   name: string,
   value: string,
@@ -17,17 +17,17 @@ export interface IShortEstablishment {
     zip_code: string,
     type: any
   },
-  specialty: IEstablishmentSpecialty[],
-  mainType: IEstablishmentType,
+  specialty: IPlaceSpecialty[],
+  mainType: IPlaceType,
   market_ticket_info: {
     accept_ticket: boolean,
     show_field: boolean,
-    tickets: IShortTicket[]
+    tickets: ITicket[]
   },
   ticket_info: {
     accept_ticket: boolean,
     show_field: boolean,
-    tickets: IShortTicket[]
+    tickets: ITicket[]
   },
   petfriendly_info: {
     accept_petfriendly: boolean,

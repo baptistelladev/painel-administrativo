@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { collectionData, deleteDoc, Firestore, setDoc} from '@angular/fire/firestore';
 import { addDoc, collection, CollectionReference, doc, getDocs, query, QueryConstraint, where } from 'firebase/firestore';
 import { from, Observable } from 'rxjs';
-import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
+import { IPlace } from 'src/app/shared/models/IPlace';
 import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
 
 @Injectable({
@@ -15,7 +15,7 @@ export class PlacesService {
     private firestore : Firestore
   ) { }
 
-  public async addDoc(collectionName: string, establishment: IShortEstablishment): Promise<any> {
+  public async addDoc(collectionName: string, establishment: IPlace): Promise<any> {
     try {
       const docRef = await addDoc(collection(this.firestore, collectionName), establishment)
       establishment.id = docRef.id;
@@ -27,7 +27,7 @@ export class PlacesService {
     }
   }
 
-  public async setDoc(collectionName: string, docId: string, establishment: IShortEstablishment): Promise<any> {
+  public async setDoc(collectionName: string, docId: string, establishment: IPlace): Promise<any> {
     console.log('setDoc chamada com:', collectionName, docId, establishment);
     const docRef = doc(this.firestore, collectionName, docId);
 

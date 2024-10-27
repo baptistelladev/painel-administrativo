@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
-import { IShortParking } from 'src/app/shared/models/IParking';
+import { IParking } from 'src/app/shared/models/IParking';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,7 @@ export class ParkingsService {
     private firestore : Firestore
   ) { }
 
-  public async addDoc(collectionName: string, parking: IShortParking): Promise<any> {
+  public async addDoc(collectionName: string, parking: IParking): Promise<any> {
     try {
       const docRef = await addDoc(collection(this.firestore, collectionName), parking);
       console.log("Documento escrito com ID: ", docRef.id);

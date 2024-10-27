@@ -4,7 +4,7 @@ import { RegisterShortEstablishmentModalComponent } from './modais/register-shor
 import { RegisterShortParkingComponent } from './modais/register-short-parking/register-short-parking.component';
 import * as moment from 'moment';
 import { map, Observable, Subscription } from 'rxjs';
-import { IShortEstablishment } from 'src/app/shared/models/IEstablishment';
+import { IPlace } from 'src/app/shared/models/IPlace';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Store } from '@ngrx/store';
@@ -27,7 +27,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
   public hideLeftControl: boolean = false;
 
   public lenghts_to_save_time: {
-    list: IShortEstablishment[],
+    list: IPlace[],
     establishment_type: string,
     text: any,
     length: number,
@@ -157,8 +157,8 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
   public isLoadingLogo: boolean;
 
-  public short_establishments: IShortEstablishment[];
-  public establishments$: Observable<IShortEstablishment[]>;
+  public short_establishments: IPlace[];
+  public establishments$: Observable<IPlace[]>;
   public establishmentsSubscription: Subscription;
 
   public today: string = moment().format('LL');
@@ -229,16 +229,16 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
     this.establishmentsSubscription = this.establishments$
     .pipe(
-      map((establishments: IShortEstablishment[]) => {
+      map((establishments: IPlace[]) => {
         this.utilsService.orderByAdressNumberCrescent(establishments);
         return establishments
       })
     )
-    .subscribe((establishments: IShortEstablishment[]) => {
+    .subscribe((establishments: IPlace[]) => {
       this.short_establishments = establishments;
 
       this.lenghts_to_save_time = [...this.lenghts_to_save_time].map((option: any) => {
-        let list = this.short_establishments.filter((establishment: IShortEstablishment) => {
+        let list = this.short_establishments.filter((establishment: IPlace) => {
           return establishment.mainType.value === option['establishment_type'];
         })
 
@@ -254,7 +254,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     this.isLoadingLogo = false;
   }
 
-  public seeEstablishment(establishment: IShortEstablishment): void {
+  public seeEstablishment(establishment: IPlace): void {
     this.store.dispatch(RuaGastronomicaDeSantosStore.setCurrentEstablishment({ establishment: establishment } ))
     this.openModalToSeeStablishment();
   }
@@ -272,7 +272,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     return modal;
   }
 
-  public async showAlertToRemove(establishment: IShortEstablishment): Promise<HTMLIonAlertElement> {
+  public async showAlertToRemove(establishment: IPlace): Promise<HTMLIonAlertElement> {
     const alert = await this.alertCtrl.create({
       mode: 'ios',
       message: `Confirmar remoção de ${establishment.name}?`,

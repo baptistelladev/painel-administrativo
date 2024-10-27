@@ -5,7 +5,7 @@ import { CepService } from 'src/app/core/services/cep.service';
 import { ParkingsService } from 'src/app/core/services/firebase/parkings.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IAdress } from 'src/app/shared/models/IAddress';
-import { IShortParking } from 'src/app/shared/models/IParking';
+import { IParking } from 'src/app/shared/models/IParking';
 
 @Component({
   selector: 'app-register-short-parking',
@@ -18,7 +18,7 @@ export class RegisterShortParkingComponent  implements OnInit {
 
   public isRegistering: boolean;
 
-  public shortParking: IShortParking;
+  public shortParking: IParking;
 
   constructor(
     private formBuilder : FormBuilder,

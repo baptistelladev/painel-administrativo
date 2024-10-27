@@ -2,7 +2,7 @@
 import { IPhone } from "../models/IPhone";
 import { ITime } from "../models/ITime";
 
-export const DAYS: ITime[] = [
+export const MOCK_DAYS: ITime[] = [
   {
     day_number: 0,
     text: {

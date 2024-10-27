@@ -1,8 +1,8 @@
 import { createAction, createReducer, createSelector, on, props, createFeatureSelector } from "@ngrx/store";
-import { IShortEstablishment } from '../models/IEstablishment';
+import { IPlace } from '../models/IPlace';
 
 export interface IRuaGastronomicaDeSantosState {
-  currentEstablishment: IShortEstablishment
+  currentEstablishment: IPlace
 }
 
 export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState = {
@@ -115,7 +115,7 @@ export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState 
 // ACTIONS
 export const setCurrentEstablishment = createAction(
   '[APP] Definir estabelecimento selecionado',
-  props<{ establishment: IShortEstablishment }>()
+  props<{ establishment: IPlace }>()
 )
 
 export const clearCurrentEstablishment = createAction(
