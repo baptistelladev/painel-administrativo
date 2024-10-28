@@ -17,14 +17,51 @@
           <ion-col size="12">
             <ion-text mode="ios">
               <h1 class="fs-24 font-baloo color-gray-text">
-               <b>Informações</b> do estabelecimento
+                Fará parte <b>de alguma sugestão</b>
               </h1>
             </ion-text>
           </ion-col>
 
           <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('specialty')?.invalid &&
+            (formShortEstablishment.get('specialty')?.touched ||
+            formShortEstablishment.get('specialty')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                formControlName="suggestions"
+                (ionChange)="suggestionChanged($event)"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Quadro de sugestões'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let suggestion of suggestions"
+                  [value]="suggestion.value">
+                    {{ suggestion.name.text.pt }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
             <ion-text mode="ios">
               <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Informações</b> do estabelecimento
+              </h1>
             </ion-text>
           </ion-col>
 
@@ -150,7 +187,6 @@
                 [multiple]="true"
                 formControlName="specialty"
                 (ionChange)="specialtyChanged($event)"
-                formControlName="specialty"
                 [cancelText]="'Cancelar'"
                 [okText]="'Definir'"
                 [label]="'Especialidades'"
@@ -375,6 +411,47 @@
                 </p>
               </ion-text>
             </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('city')?.invalid &&
+            (formShortEstablishment.get('city')?.touched ||
+            formShortEstablishment.get('city')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                (ionChange)="cityChanged($event)"
+                formControlName="city"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Cidade'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let city of MOCK_CITIES"
+                  [value]="city.value">
+                    {{ city.name }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            formShortEstablishment.get('mainType')?.invalid &&
+            (formShortEstablishment.get('mainType')?.touched || formShortEstablishment.get('mainType')?.dirty)">
+              <p
+              *ngIf="formShortEstablishment.get('mainType')?.hasError('required')"
+              class="fs-13 color-danger">
+                Campo obrigatório
+              </p>
+            </ion-text>
           </ion-col>
 
           <ion-col size="12">

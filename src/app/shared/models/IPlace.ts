@@ -1,10 +1,10 @@
 import { IPlaceSpecialty } from "./IPlaceSpecialty"
 import { IPlaceType } from "./IPlaceType"
-import { IHour } from "./IHour"
 import { ISocialNetwork } from "./INetwork"
 import { IPhone } from "./IPhone"
 import { ITicket } from "./ITicket"
 import { ITime } from "./ITime"
+import { ICity } from "./ICity"
 
 export interface IPlace {
   id: string
@@ -17,6 +17,7 @@ export interface IPlace {
     zip_code: string,
     type: any
   },
+  origin: ICity,
   specialty: IPlaceSpecialty[],
   mainType: IPlaceType,
   market_ticket_info: {
@@ -49,9 +50,7 @@ export interface IPlace {
   phones: IPhone[],
   networks: ISocialNetwork[],
   isBuilding: boolean,
-  isPremium: boolean
-}
-
-export interface ILongEstablishment {
-
+  isPremium: boolean,
+  suggestions: string[],
+  created_at: string
 }

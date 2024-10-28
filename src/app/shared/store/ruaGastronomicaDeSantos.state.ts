@@ -2,11 +2,13 @@ import { createAction, createReducer, createSelector, on, props, createFeatureSe
 import { IPlace } from '../models/IPlace';
 
 export interface IRuaGastronomicaDeSantosState {
-  currentEstablishment: IPlace
+  currentPlace: IPlace
 }
 
 export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState = {
-  currentEstablishment: {
+  currentPlace: {
+    created_at: '',
+    suggestions: [],
     isBuilding: false,
     isPremium: false,
     id: '',
@@ -22,6 +24,12 @@ export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState 
         en: '',
         es: ''
       }
+    },
+    origin: {
+      value: '',
+      name: '',
+      sigla: '',
+      isDisabled: false
     },
     specialty: [
       {
@@ -126,7 +134,7 @@ export const ruaGastronomicaDeSantosReducer = createReducer(
   ruaGastronomicaDeSantosInitialState,
   on(
     setCurrentEstablishment,
-    (state, { establishment }): IRuaGastronomicaDeSantosState => ({ ...state, currentEstablishment: establishment })
+    (state, { establishment }): IRuaGastronomicaDeSantosState => ({ ...state, currentPlace: establishment })
   ),
   on(
     clearCurrentEstablishment,
@@ -139,5 +147,5 @@ export const selectRuaGastronomicaDeSantosState = createFeatureSelector<IRuaGast
 
 export const selectCurrentEstablishment = createSelector(
   selectRuaGastronomicaDeSantosState,
-  (state: IRuaGastronomicaDeSantosState) => state.currentEstablishment
+  (state: IRuaGastronomicaDeSantosState) => state.currentPlace
 );

@@ -1,9 +1,9 @@
 
 
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, ModalController } from '@ionic/angular';
-import { Observable,  Subscription } from 'rxjs';
+import { map, Observable,  Subscription } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { PlaceTypeEnum } from 'src/app/shared/enums/PlaceType';
@@ -26,13 +26,19 @@ import { Store } from '@ngrx/store';
 import { IHour } from 'src/app/shared/models/IHour';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { MOCK_SPECIALTIES } from 'src/app/shared/mocks/MockSpecialties';
+import { ICity } from 'src/app/shared/models/ICity';
+import { MOCK_CITIES } from 'src/app/shared/mocks/MockCities';
+import { CityEnum } from 'src/app/shared/enums/City';
+import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
+import { ISuggestion } from 'src/app/shared/models/ISuggestion';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-register-short-establishment-modal',
   templateUrl: './register-short-establishment-modal.component.html',
   styleUrls: ['./register-short-establishment-modal.component.scss'],
 })
-export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterViewInit {
+export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterViewInit, OnDestroy {
 
   public showSundays: boolean = false;
   public showTuesdays: boolean = false;
@@ -53,6 +59,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public formShortEstablishment: FormGroup;
 
   public shortEstablishment: IPlace = {
+    created_at: '',
     isBuilding: false,
     isPremium: false,
     id: '',
@@ -68,6 +75,12 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         en: '',
         es: ''
       }
+    },
+    origin: {
+      value: '',
+      name: '',
+      sigla: '',
+      isDisabled: false
     },
     specialty: [
       {
@@ -154,7 +167,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         baseUrl: '',
         user: ''
       }
-    ]
+    ],
+    suggestions: []
   }
 
   public MOCK_CITY_PLACES_TYPE: IPlaceType[] = MOCK_CITY_PLACES_TYPE;
@@ -164,6 +178,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public MOCK_PHONES: IPhone[] = MOCK_PHONES;
   public MOCK_DAYS: ITime[] = MOCK_DAYS;
   public MOCK_SPECIALTIES: IPlaceSpecialty[] = MOCK_SPECIALTIES;
+  public MOCK_CITIES: ICity[] = MOCK_CITIES;
 
   public PlaceTypeEnum = PlaceTypeEnum;
 
@@ -171,21 +186,38 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public establishment$: Observable<IPlace>;
   public establishmentSubscription: Subscription;
 
+  public suggestions: ISuggestion[];
+  public suggestions$: Observable<ISuggestion[]>;
+  public suggestionsSubscription: Subscription;
+
   constructor(
     private formBuilder : FormBuilder,
     private modalCtrl : ModalController,
     private placesService : PlacesService,
     private cepService : CepService,
-    private store : Store
+    private store : Store,
+    private suggestionsService : SuggestionsService
   ) { }
 
   ngOnInit() {
     this.initFormShortEstablishment();
     this.getCurrentEstablishmentFromNGRX();
+    this.getSuggestions();
   }
 
   ngAfterViewInit(): void {
 
+  }
+
+  public getSuggestions() {
+    this.suggestions$ = this.suggestionsService.getSuggestions(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA);
+
+    this.suggestionsSubscription = this.suggestions$
+    .subscribe((suggestions: ISuggestion[]) => {
+      this.suggestions = suggestions;
+      console.log(suggestions);
+
+    })
   }
 
   public initFormShortEstablishment(): void {
@@ -198,6 +230,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       street: ['', Validators.required ],
       neighborhood: ['', Validators.required ],
       number : ['', Validators.required ],
+      city : ['', Validators.required ],
       hasAirConditioned: [false, Validators.required ],
       showAirConditionedField: [true, Validators.required ],
       hasLiveMusic: [false, Validators.required ],
@@ -224,7 +257,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       url: ['', [Validators.required]],
       isBuilding: [false, [Validators.required]],
       sundaysHourToggle: false,
-      isPremium: [false, [ Validators.required ]]
+      isPremium: [false, [ Validators.required ]],
+      suggestions: []
     })
   }
 
@@ -399,7 +433,20 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         break;
     }
 
+    let selectedCity = this.MOCK_CITIES.find((city: ICity) => {
+      return city.value === this.formShortEstablishment.get('city')?.value;
+    })
+
+    if (selectedCity) {
+      delete selectedCity.isDisabled;
+      this.shortEstablishment.origin = selectedCity;
+    }
+
+    this.shortEstablishment.suggestions = this.formShortEstablishment.get('suggestions')?.value;
+
     if (type === 'create') {
+      this.shortEstablishment.created_at = moment().toISOString();
+
       await this.placesService.addDoc(CollectionsEnum.PLACES, this.shortEstablishment)
       .then(async () => {
         await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
@@ -425,6 +472,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     } else {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.removeValidators([Validators.required]);
     }
+  }
+
+  public cityChanged(e: any): void {
+    console.log(e);
   }
 
   public async getCep() {
@@ -456,12 +507,55 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
           break;
       }
 
+      switch (adress.localidade) {
+        case 'São Vicente':
+          this.formShortEstablishment.patchValue({ city: CityEnum.SAO_VICENTE });
+          break;
+
+        case 'Santos':
+          this.formShortEstablishment.patchValue({ city: CityEnum.SANTOS });
+          break;
+
+        case 'Praia Grande':
+        this.formShortEstablishment.patchValue({ city: CityEnum.PRAIA_GRANDE });
+          break;
+
+        case 'Guarujá':
+        this.formShortEstablishment.patchValue({ city: CityEnum.GUARUJA });
+          break;
+
+        case 'Peruíbe':
+        this.formShortEstablishment.patchValue({ city: CityEnum.PERUIBE });
+          break;
+
+        case 'Bertioga':
+        this.formShortEstablishment.patchValue({ city: CityEnum.BERTIOGA });
+          break;
+
+        case 'Cubatão':
+        this.formShortEstablishment.patchValue({ city: CityEnum.CUBATAO });
+          break;
+
+        case 'Itanhaém':
+        this.formShortEstablishment.patchValue({ city: CityEnum.ITANHAEM });
+          break;
+
+        case 'Mongaguá':
+        this.formShortEstablishment.patchValue({ city: CityEnum.MONGAGUA });
+          break;
+      }
+
+
       this.formShortEstablishment.patchValue({ street: shortStreetName });
       this.formShortEstablishment.patchValue({ neighborhood: adress.bairro });
       this.formShortEstablishment.patchValue({ type: type.charAt(0).toUpperCase() + type.slice(1).toLowerCase() });
      })
     }
 
+  }
+
+  public async suggestionChanged(e: any) {
+    console.log(e);
   }
 
   public async specialtyChanged(e: any) {
@@ -935,6 +1029,11 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
     this.formShortEstablishment.get('isBuilding')?.patchValue(establishment.isBuilding);
     this.formShortEstablishment.get('isPremium')?.patchValue(establishment.isPremium);
+    this.formShortEstablishment.get('city')?.patchValue(establishment.origin.value);
+    this.formShortEstablishment.get('suggestions')?.patchValue(establishment.suggestions);
+  }
 
+  ngOnDestroy() {
+    this.suggestionsSubscription.unsubscribe();
   }
 }

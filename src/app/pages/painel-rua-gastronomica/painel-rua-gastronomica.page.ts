@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import * as RuaGastronomicaDeSantosStore from './../../shared/store/ruaGastronomicaDeSantos.state';
 import Swiper from 'swiper';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
+import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
 
 @Component({
   selector: 'app-painel-rua-gastronomica',
@@ -225,7 +226,13 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
 
   public getEstablishments() {
-    this.establishments$ = this.placesService.getCollection(CollectionsEnum.PLACES, [{ field: 'SUGGESTIONS', operator: 'array-contains', value: 'RUA_GASTRONOMICA_DE_SANTOS' }]);
+    this.establishments$ = this.placesService
+    .getCollection(
+      CollectionsEnum.PLACES,
+      [
+        { field: 'suggestions', operator: 'array-contains', value: SuggestionsEnum.RUA_GASTRONOMICA_DE_SANTOS }
+      ]
+    );
 
     this.establishmentsSubscription = this.establishments$
     .pipe(
@@ -335,7 +342,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnDestroy(): void {
-    this.establishmentsSubscription.unsubscribe();
+
   }
 
 }
