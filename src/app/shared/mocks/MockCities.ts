@@ -1,58 +1,149 @@
+import { CityEnum } from "../enums/City";
 import { ICity } from "../models/ICity";
 
 export const MOCK_CITIES: ICity[] = [
   {
-    value: 'SAO_VICENTE',
+    value: CityEnum.SAO_VICENTE,
     name: 'São Vicente',
     sigla: 'sv',
-    isDisabled: false
+    isDisabled: false,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   },
   {
-    value: 'SANTOS',
+    value: CityEnum.SANTOS,
     name: 'Santos',
     sigla: 'santos',
-    isDisabled: false
+    isDisabled: false,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   },
   {
-    value: 'PRAIA_GRANDE',
+    value: CityEnum.PRAIA_GRANDE,
     name: 'Praia Grande',
     sigla: 'pg',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'na',
+      en: 'at',
+      es: 'en la'
+    }
   },
   {
-    value: 'GUARUJA',
+    value: CityEnum.GUARUJA,
     name: 'Guarujá',
     sigla: 'guaru',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'no',
+      en: 'at',
+      es: 'en el'
+    }
   },
   {
-    value: 'PERUIBE',
+    value: CityEnum.PERUIBE,
     name: 'Peruíbe',
     sigla: 'peruibe',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   },
   {
-    value: 'BERTIOGA',
+    value: CityEnum.BERTIOGA,
     name: 'Bertioga',
     sigla: 'bertioga',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   },
   {
-    value: 'CUBATAO',
+    value: CityEnum.CUBATAO,
     name: 'Cubatão',
     sigla: 'cubatao',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   },
   {
-    value: 'ITANHAEM',
+    value: CityEnum.ITANHAEM,
     name: 'Itanhaém',
     sigla: 'itanhaem',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   },
   {
-    value: 'MONGAGUA',
+    value: CityEnum.MONGAGUA,
     name: 'Mongaguá',
     sigla: 'mongagua',
-    isDisabled: true
+    isDisabled: true,
+    from: {
+      pt: 'de',
+      en: 'from',
+      es: 'de'
+    },
+    in: {
+      pt: 'em',
+      en: 'in',
+      es: 'en'
+    }
   }
 ]

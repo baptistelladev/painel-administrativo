@@ -6,18 +6,21 @@ export const MOCK_NETWORKS: ISocialNetwork[] = [
     text: 'Instagram',
     value: 'INSTAGRAM',
     baseUrl: 'https://www.instagram.com/',
-    user: ''
+    user: '',
+    appBaseUrl: ''
   },
   {
     text: 'YouTube',
     value: 'YOUTUBE',
     baseUrl: 'https://www.youtube.com/',
-    user: ''
+    user: '',
+    appBaseUrl: ''
   },
   {
     text: 'TikTok',
     value: 'TIKTOK',
     baseUrl: 'https://www.tiktok.com/',
-    user: ''
+    user: '',
+    appBaseUrl: ''
   }
 ]
