@@ -6,7 +6,7 @@ import { IonDatetime, ModalController } from '@ionic/angular';
 import { map, Observable,  Subscription } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
-import { PlaceTypeEnum } from 'src/app/shared/enums/PlaceType';
+import { PlaceTypeCityEnum } from 'src/app/shared/enums/PlaceType';
 import { MOCK_DAYS } from 'src/app/shared/mocks/MockDays';
 import { MOCK_CITY_PLACES_TYPE } from 'src/app/shared/mocks/MockCityPlacesType';
 import { MOCK_MARKET_TICKETS } from 'src/app/shared/mocks/MockMarketTickets';
@@ -32,6 +32,9 @@ import { CityEnum } from 'src/app/shared/enums/City';
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
 import { ISuggestion } from 'src/app/shared/models/ISuggestion';
 import * as moment from 'moment';
+import { LocationEnum } from 'src/app/shared/enums/Location';
+import { ILocation } from 'src/app/shared/models/ILocation';
+import { MOCK_LOCATION } from 'src/app/shared/mocks/MockLocation';
 
 @Component({
   selector: 'app-register-short-establishment-modal',
@@ -59,6 +62,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public formShortEstablishment: FormGroup;
 
   public shortEstablishment: IPlace = {
+    work_place: [],
     created_at: '',
     isBuilding: false,
     isPremium: false,
@@ -80,7 +84,17 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       value: '',
       name: '',
       sigla: '',
-      isDisabled: false
+      isDisabled: false,
+      from: {
+        pt: '',
+        en: '',
+        es: ''
+      },
+      in: {
+        pt: '',
+        en: '',
+        es: ''
+      }
     },
     specialty: [
       {
@@ -109,6 +123,11 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
           text: ''
         }
       ]
+    },
+    children_space: {
+      has_space: false,
+      show_field: false,
+      is_paid: false
     },
     market_ticket_info: {
       accept_ticket: false,
@@ -165,7 +184,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         text: '',
         value: '',
         baseUrl: '',
-        user: ''
+        user: '',
+        appBaseUrl: ''
       }
     ],
     suggestions: []
@@ -179,8 +199,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public MOCK_DAYS: ITime[] = MOCK_DAYS;
   public MOCK_SPECIALTIES: IPlaceSpecialty[] = MOCK_SPECIALTIES;
   public MOCK_CITIES: ICity[] = MOCK_CITIES;
+  public MOCK_LOCATION: ILocation[] = MOCK_LOCATION;
 
-  public PlaceTypeEnum = PlaceTypeEnum;
+  public PlaceTypeCityEnum = PlaceTypeCityEnum;
 
   public currentEstablishment: IPlace;
   public establishment$: Observable<IPlace>;
@@ -189,6 +210,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public suggestions: ISuggestion[];
   public suggestions$: Observable<ISuggestion[]>;
   public suggestionsSubscription: Subscription;
+
+
 
   constructor(
     private formBuilder : FormBuilder,
@@ -215,8 +238,6 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.suggestionsSubscription = this.suggestions$
     .subscribe((suggestions: ISuggestion[]) => {
       this.suggestions = suggestions;
-      console.log(suggestions);
-
     })
   }
 
@@ -239,6 +260,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       showBooking: [true, Validators.required ],
       isPetFriendly: [false, Validators.required ],
       showPetFriendly: [true, Validators.required ],
+      hasChildrenSpace: [false, Validators.required ],
+      showChildrenSpace: [true, Validators.required ],
+      childrenSpaceIsPaid: [false, Validators.required ],
       acceptVale: [false, Validators.required ],
       showVale: [true, Validators.required ],
       ticketName: '',
@@ -258,7 +282,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       isBuilding: [false, [Validators.required]],
       sundaysHourToggle: false,
       isPremium: [false, [ Validators.required ]],
-      suggestions: []
+      suggestions: [],
+      workAt: ['', [ Validators.required ]]
     })
   }
 
@@ -299,6 +324,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.shortEstablishment.ticket_info.accept_ticket = this.formShortEstablishment.get('acceptVale')?.value;
     this.shortEstablishment.ticket_info.show_field = this.formShortEstablishment.get('showVale')?.value;
 
+    this.shortEstablishment.children_space.has_space = this.formShortEstablishment.get('hasChildrenSpace')?.value;
+    this.shortEstablishment.children_space.show_field = this.formShortEstablishment.get('showChildrenSpace')?.value;
+    this.shortEstablishment.children_space.is_paid = this.formShortEstablishment.get('childrenSpaceIsPaid')?.value;
 
     if (this.formShortEstablishment.get('ticketName')?.value && this.formShortEstablishment.get('ticketName')?.value.length > 0) {
       let ticketValues = this.formShortEstablishment.get('ticketName')?.value
@@ -444,6 +472,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
     this.shortEstablishment.suggestions = this.formShortEstablishment.get('suggestions')?.value;
 
+    this.shortEstablishment.work_place = this.formShortEstablishment.get('workAt')?.value;
+
     if (type === 'create') {
       this.shortEstablishment.created_at = moment().toISOString();
 
@@ -467,7 +497,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   }
 
   public async mainTypeChanged(e: any) {
-    if (e.detail.value === PlaceTypeEnum.EMPORIO) {
+    if (e.detail.value === PlaceTypeCityEnum.EMPORIO) {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.addValidators([Validators.required]);
     } else {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.removeValidators([Validators.required]);
@@ -563,6 +593,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   }
 
   public async ticketChanged(e: any) {
+    console.log(e);
+  }
+
+  public async workAtChanged(e: any) {
     console.log(e);
   }
 
@@ -936,6 +970,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.formShortEstablishment.get('acceptVale')?.patchValue(establishment.ticket_info.accept_ticket);
     this.formShortEstablishment.get('showVale')?.patchValue(establishment.ticket_info.show_field);
 
+    this.formShortEstablishment.get('hasChildrenSpace')?.patchValue(establishment.children_space.has_space);
+    this.formShortEstablishment.get('showChildrenSpace')?.patchValue(establishment.children_space.show_field);
+    this.formShortEstablishment.get('childrenSpaceIsPaid')?.patchValue(establishment.children_space.is_paid);
+
     let ticketNames: string[] = establishment.ticket_info.tickets.map((ticket: ITicket) => {
       return ticket.value
     })
@@ -1031,6 +1069,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.formShortEstablishment.get('isPremium')?.patchValue(establishment.isPremium);
     this.formShortEstablishment.get('city')?.patchValue(establishment.origin.value);
     this.formShortEstablishment.get('suggestions')?.patchValue(establishment.suggestions);
+
+    this.formShortEstablishment.get('workAt')?.patchValue(establishment.work_place);
   }
 
   ngOnDestroy() {

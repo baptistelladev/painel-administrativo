@@ -471,6 +471,35 @@
           </ion-col>
 
           <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('workAt')?.invalid &&
+            (formShortEstablishment.get('workAt')?.touched ||
+            formShortEstablishment.get('workAt')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item mg-top-16 mg-bottom-16 label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                (ionChange)="workAtChanged($event)"
+                formControlName="workAt"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Onde fica'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let location of MOCK_LOCATION"
+                  [value]="location.value">
+                    {{ location.text.pt[1] }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
             <ion-text mode="ios">
               <hr class="rgs-divider">
             </ion-text>
@@ -508,8 +537,6 @@
             <ion-item mode="ios" lines="none" class="rgs-item-toggle">
               <ion-toggle justify="space-between" mode="ios" formControlName="showLiveMusic">Mostrar informação</ion-toggle>
             </ion-item>
-
-
           </ion-col>
 
           <ion-col size="12">
@@ -541,6 +568,26 @@
 
             <ion-item mode="ios" lines="none" class="rgs-item-toggle">
               <ion-toggle justify="space-between" mode="ios" formControlName="showPetFriendly">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="hasChildrenSpace">Espaço para criança</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="childrenSpaceIsPaid">O cliente deve pagar?</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="showChildrenSpace">Mostrar informação</ion-toggle>
             </ion-item>
           </ion-col>
 
@@ -596,7 +643,7 @@
           <ion-col size="12">
 
             <ion-item
-            *ngIf="formShortEstablishment.get('mainType')?.value === PlaceTypeEnum.EMPORIO"
+            *ngIf="formShortEstablishment.get('mainType')?.value === PlaceTypeCityEnum.EMPORIO"
             lines="none"
             mode="ios"
             class="simulate-bootstrap-alert mg-top-16 line-height-18 mg-bottom-16">

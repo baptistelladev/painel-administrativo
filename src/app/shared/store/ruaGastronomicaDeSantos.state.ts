@@ -7,6 +7,7 @@ export interface IRuaGastronomicaDeSantosState {
 
 export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState = {
   currentPlace: {
+    work_place: [],
     created_at: '',
     suggestions: [],
     isBuilding: false,
@@ -29,7 +30,17 @@ export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState 
       value: '',
       name: '',
       sigla: '',
-      isDisabled: false
+      isDisabled: false,
+      from: {
+        pt: '',
+        en: '',
+        es: ''
+      },
+      in: {
+        pt: '',
+        en: '',
+        es: ''
+      }
     },
     specialty: [
       {
@@ -81,6 +92,11 @@ export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState 
       has_air_conditioned: false,
       show_field: false
     },
+    children_space: {
+      has_space: false,
+      show_field: false,
+      is_paid: false
+    },
     booking_info: {
       accept_booking: false,
       show_field: false
@@ -113,6 +129,7 @@ export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState 
       {
         text: '',
         value: '',
+        appBaseUrl: '',
         baseUrl: '',
         user: ''
       }

@@ -7,5 +7,7 @@ export interface ISuggestion {
   },
   value: string,
   created_at: string,
-  updated_at: string
+  updated_at: string,
+  route: string,
+  address: any
 }
