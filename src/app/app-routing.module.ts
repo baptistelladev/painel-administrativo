@@ -4,12 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'painel-rua-gastronomica',
+    redirectTo: 'logado',
     pathMatch: 'full'
   },
   {
-    path: 'painel-rua-gastronomica',
-    loadChildren: () => import('./pages/painel-rua-gastronomica/painel-rua-gastronomica.module').then( m => m.PainelRuaGastronomicaPageModule)
+    path: 'logado',
+    loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule)
   }
 ];
 

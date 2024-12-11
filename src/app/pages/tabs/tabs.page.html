@@ -1,0 +1,59 @@
+
+<ion-split-pane when="xl" contentId="main" mode="md">
+  <ion-menu contentId="main">
+    <ion-content [forceOverscroll]="false">
+      <ion-grid class="no-pad-bottom">
+        <ion-row class="no-pad-bottom">
+          <ion-col size="12" class="no-pad-bottom">
+            <ion-text mode="ios" class="line-height-22">
+              <p class="fs-18 color-gray-6 font-baloo"><b>Menu</b></p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <ion-menu-toggle [autoHide]="false">
+        <ion-list mode="ios" lines="none">
+          <ion-item
+          class="line-height-16"
+          *ngFor="let item of menu"
+          mode="ios"
+          lines="none"
+          [button]="true"
+          [routerLink]="item.router"
+          routerLinkActive="is-active"
+          [detail]="textFromSelectedItem !== item.value"
+          (click)="textFromSelectedItem = item.value">
+            <ion-icon [name]="item.icon + '-outline'"></ion-icon>
+
+            <ion-text mode="ios">
+              <p class="fs-9 txt-uppercase title color-gray-mid">{{ item.title }}</p>
+              <p class="fs-16 page color-gray-text font-baloo">{{ item.text }}</p>
+            </ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-menu-toggle>
+    </ion-content>
+  </ion-menu>
+
+  <div class="ion-page" id="main">
+    <ion-header mode="ios" class="bg-gray-2 dark-border">
+      <ion-toolbar mode="ios" class="ion-bg-gray-2 no-ion-padding">
+        <ion-grid [fixed]="true">
+          <ion-row>
+            <ion-col size="12">
+              <div class="toolbar-wrapper">
+                <app-logo [size]="'big'"></app-logo>
+
+                <div class="menu-btn-wrapper">
+                  <ion-menu-button class="color-white" mode="ios"></ion-menu-button>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-header>
+    <ion-router-outlet></ion-router-outlet>
+  </div>
+</ion-split-pane>

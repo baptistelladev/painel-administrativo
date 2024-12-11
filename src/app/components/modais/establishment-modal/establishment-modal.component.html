@@ -17,6 +17,62 @@
           <ion-col size="12">
             <ion-text mode="ios">
               <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Localização</b> do estabelecimento
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('workAt')?.invalid &&
+            (formShortEstablishment.get('workAt')?.touched ||
+            formShortEstablishment.get('workAt')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                (ionChange)="workAtChanged($event)"
+                formControlName="workAt"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Onde fica'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let location of MOCK_LOCATION"
+                  [value]="location.value">
+                    {{ location.text.pt[1] }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            formShortEstablishment.get('workAt')?.invalid &&
+            (formShortEstablishment.get('workAt')?.touched || formShortEstablishment.get('workAt')?.dirty)">
+              <p
+              *ngIf="formShortEstablishment.get('workAt')?.hasError('required')"
+              class="fs-13 color-danger">
+                Campo obrigatório
+              </p>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
                 Fará parte <b>de alguma sugestão</b>
               </h1>
             </ion-text>
@@ -211,7 +267,7 @@
           <ion-col size="12">
             <ion-text mode="ios">
               <h1 class="fs-24 font-baloo color-gray-text">
-               <b>Localização</b> do estabelecimento
+               <b>Endereço</b> do estabelecimento
               </h1>
             </ion-text>
           </ion-col>
@@ -460,43 +516,14 @@
                 O serviço de cep irá buscar o endereço e preencher automaticamente, porém, nós iramos tirar a primeira parte do endereço (Rua) e substituiremos por Rua/Street/Calle para atender outros idiomas.
               </p>
 
-              <ng-container *ngIf="shortEstablishment.adress.type['pt']">
+              <ng-container *ngIf="establishment.adress.type['pt']">
                 <p class="fs-14 mg-bottom-8 mg-top-16">Veja abaixo:</p>
 
-                <p class="fs-12 color-gray-6">🇧🇷 {{ shortEstablishment.adress.type['pt'] }} {{ formShortEstablishment.get('street')?.value }}</p>
-                <p class="fs-12 color-gray-6">🇺🇸 {{ formShortEstablishment.get('street')?.value }} {{ shortEstablishment.adress.type['en'] }}</p>
-                <p class="fs-12 color-gray-6">🇪🇸 {{ shortEstablishment.adress.type['es'] }} {{ formShortEstablishment.get('street')?.value }}</p>
+                <p class="fs-12 color-gray-6">🇧🇷 {{ establishment.adress.type['pt'] }} {{ formShortEstablishment.get('street')?.value }}</p>
+                <p class="fs-12 color-gray-6">🇺🇸 {{ formShortEstablishment.get('street')?.value }} {{ establishment.adress.type['en'] }}</p>
+                <p class="fs-12 color-gray-6">🇪🇸 {{ establishment.adress.type['es'] }} {{ formShortEstablishment.get('street')?.value }}</p>
               </ng-container>
             </ion-text>
-          </ion-col>
-
-          <ion-col size="12">
-            <div
-            [ngClass]="{'has-error' : (formShortEstablishment.get('workAt')?.invalid &&
-            (formShortEstablishment.get('workAt')?.touched ||
-            formShortEstablishment.get('workAt')?.dirty))}"
-            class="rgs-select-wrapper full-width white-background-item mg-top-16 mg-bottom-16 label-w-white">
-              <ion-item
-              class="overflow-hidden"
-              lines="none"
-              mode="ios">
-                <ion-select
-                [multiple]="true"
-                (ionChange)="workAtChanged($event)"
-                formControlName="workAt"
-                [cancelText]="'Cancelar'"
-                [okText]="'Definir'"
-                [label]="'Onde fica'"
-                toggleIcon="chevron-down-outline"
-                label-placement="floating">
-                  <ion-select-option
-                  *ngFor="let location of MOCK_LOCATION"
-                  [value]="location.value">
-                    {{ location.text.pt[1] }}
-                  </ion-select-option>
-                </ion-select>
-              </ion-item>
-            </div>
           </ion-col>
 
           <ion-col size="12">
@@ -2167,7 +2194,6 @@
             formShortEstablishment.get('url')?.dirty))}"
             class="rgs-input-wrapper full-width white-background-item mg-right-16 ddd-wrapper label-w-white">
               <ion-item
-              [disabled]="true"
               class="disabled-w-opacity-1"
               lines="none"
               mode="ios">
@@ -2204,6 +2230,130 @@
                 <p class="color-gray-text fs-14">As pessoas conhecerão o <b>{{ formShortEstablishment.get('name')?.value }}</b> no www.anfitrionapp.com.br caso busquem pelo <b class="color-green">{{ formShortEstablishment.get('url')?.value }}</b></p>
               </ion-text>
             </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+                Caso o estabelecimento seja <b>na praia</b>
+              </h1>
+            </ion-text>
+
+            <ion-item
+            *ngIf="formShortEstablishment.get('workAt')?.value && !formShortEstablishment.get('workAt')?.value.includes(LocationEnum.PRAIA)"
+            lines="none"
+            mode="ios"
+            class="simulate-bootstrap-alert mg-top-16 line-height-18">
+              <ion-icon name="alert-circle-outline" slot="start" class="color-bootstrap-warning"></ion-icon>
+
+              <ion-text mode="ios" class="color-bootstrap-warning">
+                <p class="fs-12 mg-bottom-8"><b>Atenção</b></p>
+                <p class="fs-14">O estabelecimento em questão não funciona na parte da <b>praia</b>. Bloquearemos a sessão.</p>
+              </ion-text>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (formShortEstablishment.get('beach')?.invalid &&
+            (formShortEstablishment.get('beach')?.touched ||
+            formShortEstablishment.get('beach')?.dirty)), 'disable-without-ionic' : (formShortEstablishment.get('workAt')?.value && !formShortEstablishment.get('workAt')?.value.includes(LocationEnum.PRAIA)) || (MOCK_BEACHES && MOCK_BEACHES.length === 0) || !MOCK_BEACHES}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                (ionChange)="beachChanged($event)"
+                formControlName="beach"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Praia da cidade selecionada'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let beach of MOCK_BEACHES"
+                  [value]="beach.value">
+                    {{ beach.text.pt }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            formShortEstablishment.get('beach')?.invalid &&
+            (formShortEstablishment.get('beach')?.touched || formShortEstablishment.get('beach')?.dirty)">
+              <p
+              *ngIf="formShortEstablishment.get('beach')?.hasError('required')"
+              class="fs-13 color-danger">
+                Campo obrigatório
+              </p>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('mainBeach')?.invalid &&
+            (formShortEstablishment.get('mainBeach')?.touched ||
+            formShortEstablishment.get('mainBeach')?.dirty)), 'disable-without-ionic' : (formShortEstablishment.get('workAt')?.value && !formShortEstablishment.get('workAt')?.value.includes(LocationEnum.PRAIA)) || (MOCK_BEACHES && MOCK_BEACHES.length === 0) || !MOCK_BEACHES}"
+            class="rgs-input-wrapper full-width white-background-item mg-right-16 ddd-wrapper label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Lugar da praia'"
+                labelPlacement="floating"
+                formControlName="mainBeach"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              formShortEstablishment.get('mainBeach')?.invalid &&
+              (formShortEstablishment.get('mainBeach')?.touched || formShortEstablishment.get('mainBeach')?.dirty)">
+                <p
+                *ngIf="formShortEstablishment.get('mainBeach')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-14 color-gray-text">
+                Lugar principal da praia (Ex: Canal 2, Canal 5, etc...)
+              </p>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle" [ngClass]="{'disable-without-ionic' : (formShortEstablishment.get('workAt')?.value && !formShortEstablishment.get('workAt')?.value.includes(LocationEnum.PRAIA)) || (MOCK_BEACHES && MOCK_BEACHES.length === 0) || !MOCK_BEACHES}">
+              <ion-toggle justify="space-between" mode="ios" formControlName="makeDelivery">Entrega na areia/praia</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle" [ngClass]="{'disable-without-ionic' : (formShortEstablishment.get('workAt')?.value && !formShortEstablishment.get('workAt')?.value.includes(LocationEnum.PRAIA)) || (MOCK_BEACHES && MOCK_BEACHES.length === 0) || !MOCK_BEACHES}">
+              <ion-toggle justify="space-between" mode="ios" formControlName="deliveryIsFree">Entrega de graça</ion-toggle>
+            </ion-item>
           </ion-col>
         </ion-row>
       </ion-grid>

@@ -14,7 +14,7 @@ export const MOCK_TICKETS: ITicket[] = [
     value: 'VR'
   },
   {
-    text: 'Ticket Restaurante',
+    text: 'Ticker Restaurante',
     value: 'TICKET_RESTAURANTE'
   }
 ]

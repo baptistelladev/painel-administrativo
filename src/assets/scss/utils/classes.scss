@@ -120,3 +120,8 @@
 }
 
 .overflow-hidden { overflow: hidden; }
+
+// GLOBAL LINEAR
+.ion-content-w-linear-bg {
+  --background: linear-gradient(to top, var(--gray-ed) 15%, var(--white));
+}

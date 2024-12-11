@@ -1,0 +1,31 @@
+:host {
+
+  ion-text {
+    display: block;
+
+    &.as-link {
+      cursor: pointer;
+    }
+
+    p {
+      position: relative;
+      display: inline-block;
+      font-size: 18px;
+      position: relative;
+
+      &.big {
+        font-size: 22px;
+      }
+
+      &.extra-big {
+        font-size: 36px;
+      }
+
+      .dash {
+        position: absolute;
+        transform: translateY(-3px);
+        right: -10px;
+      }
+    }
+  }
+}

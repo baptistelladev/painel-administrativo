@@ -40,7 +40,8 @@ export const ruaGastronomicaDeSantosInitialState: IRuaGastronomicaDeSantosState 
         pt: '',
         en: '',
         es: ''
-      }
+      },
+      hasBeach: false
     },
     specialty: [
       {

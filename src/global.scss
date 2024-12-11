@@ -35,6 +35,7 @@
 @import './assets/scss/ionic/ion-chip.scss';
 @import './assets/scss/ionic/ion-fab.scss';
 @import './assets/scss/ionic/ion-modal.scss';
+@import './assets/scss/ionic/ion-segment.scss';
 
 
 /* GRID */
@@ -490,6 +491,82 @@ ion-card {
           border-top: 1px solid var(--gray-da);
         }
       }
+    }
+  }
+}
+
+
+.disable-without-ionic {
+  opacity: 1.6 !important;
+  pointer-events: none;
+}
+
+ion-header {
+  ion-toolbar {
+    --background: var(--white);
+    --min-height: 60px;
+
+    app-logo {
+      margin-bottom: -8px;
+    }
+  }
+
+  &.dark-border {
+    border-bottom: 1px solid var(--black);
+  }
+
+  &.general-header {
+    border-bottom: .5px solid var(--gray-fa);
+  }
+}
+
+.city-wrapper {
+  width: 100%;
+  max-width: 338px;
+  margin: 0;
+
+  ion-item {
+    --min-height: 0;
+    --padding-start: 0;
+
+    ion-text {
+      p {
+        &.city-name {
+          @include flexbox(center, flex-start, row);
+        }
+      }
+    }
+  }
+}
+
+.simulate-btn {
+  padding: 2px 8px;
+  color: var(--white);
+  background: linear-gradient(.351turn,#769834 43.71%,#547D0E 58.8%);
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  margin: 0 0 0 8px;
+  font-size: 9px;
+  text-transform: uppercase;
+  border: 1px solid var(--green-solid);
+}
+
+.toolbar-wrapper {
+  @include flexbox(center, space-between, row);
+  width: 100%;
+
+  .menu-btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    ion-menu-button {
+      margin-right: -10px;
+      min-height: 0;
+      height: 20px;
     }
   }
 }

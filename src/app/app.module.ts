@@ -1,3 +1,4 @@
+import { SharedModule } from './shared/shared.module';
 import { DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -17,6 +18,10 @@ import { StoreModule } from '@ngrx/store';
 import { ruaGastronomicaDeSantosReducer } from './shared/store/ruaGastronomicaDeSantos.state';
 import { environment } from 'src/environments/environment';
 register();
+
+import localePt from '@angular/common/locales/pt';
+import { registerLocaleData } from '@angular/common';
+registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
   declarations: [AppComponent],

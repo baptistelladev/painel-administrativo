@@ -5,8 +5,8 @@ forceOverscroll="false">
       <ion-row>
 
         <ion-col size="12">
-          <ion-text mode="ios" class="line-height-22">
-            <p class="fs-14 color-gray-6">Santos, {{ today }}.</p>
+          <ion-text mode="ios" class="line-height-18">
+            <p class="fs-14 color-gray-mid">Santos, {{ today }}.</p>
 
             <h2 class="fs-24 color-gray-text font-baloo">Gestão da <b>Rua Gastronômica de Santos</b></h2>
           </ion-text>
@@ -49,7 +49,7 @@ forceOverscroll="false">
           </ion-grid>
         </ion-col>
 
-        <ion-col size="12" *ngIf="short_establishments && short_establishments.length === 0">
+        <ion-col size="12" *ngIf="establishments && establishments.length === 0">
           <ion-text mode="ios">
             <p class="fs-14 color-gray-text">Como não encontramos pelo menos um estabelecimento, ainda não foi possível definir a quantidade.</p>
           </ion-text>
@@ -60,7 +60,6 @@ forceOverscroll="false">
 
   <div class="establishments-wrapper">
     <swiper-container
-
     (swiperreachbeginning)="swiperReachedBeginning()"
     (swiperreachend)="swiperReachedEnd()"
     class="full-width swiper-w-relative-pagination"
@@ -92,23 +91,25 @@ forceOverscroll="false">
         slidesPerView: 4.5
       },
       '1200' : {
-        slidesPerView: 5.2
+        slidesPerView: 3.8
       },
       '1300' : {
-        slidesPerView: 6.7
+        slidesPerView: 4.5
       },
       '1600' : {
-        slidesPerView: 8
-      }
-      ,
+        slidesPerView: 4.9
+      },
       '2000' : {
-        slidesPerView: 10.3
+        slidesPerView: 6.2
+      },
+      '2300' : {
+        slidesPerView: 7.3
       }
     }"
     [init]="true">
-      <ng-container *ngIf="short_establishments && short_establishments.length > 0">
+      <ng-container *ngIf="establishments && establishments.length > 0">
         <swiper-slide
-        *ngFor="let establishment of short_establishments; let i = index"
+        *ngFor="let establishment of establishments; let i = index"
         class="unlock-shadow-from-swiper auto-width">
           <ion-card
           mode="ios"
@@ -139,38 +140,42 @@ forceOverscroll="false">
               </ion-text>
             </ion-card-content>
 
-            <ion-card-footer mode="ios">
-              <ion-button
-              (click)="seeEstablishment(establishment)"
-              title="Ver detalhes"
-              mode="md"
-              class="full-width details">
-                Ver <b class="mg-left-5">detalhes</b> <ion-icon name="arrow-forward" class="mg-left-5"></ion-icon>
-              </ion-button>
+            <div class="button-list">
+              <ion-list mode="ios" lines="none">
+                <ion-item
+                (click)="seeEstablishment(establishment)"
+                mode="ios"
+                lines="none"
+                [button]="true"
+                class="reserve"
+                [detailIcon]="'eye-outline'">
+                  Ver <b class="mg-left-5">detalhes</b>
+                </ion-item>
 
-              <ion-button
-              (click)="showAlertToRemove(establishment)"
-              title="Remover cliente"
-              title="Remover detalhes"
-              mode="md"
-              class="full-width remove">
-                <b class="mg-right-5">Remover</b> cliente <ion-icon name="trash-outline" class="mg-left-5"></ion-icon>
-              </ion-button>
-            </ion-card-footer>
+                <ion-item
+                (click)="showAlertToRemove(establishment)"
+                mode="ios"
+                lines="none"
+                [button]="true"
+                [detailIcon]="'trash-outline'">
+                  <b class="mg-right-5">Remover</b> cliente
+                </ion-item>
+              </ion-list>
+            </div>
           </ion-card>
         </swiper-slide>
       </ng-container>
 
-      <ng-container *ngIf="!short_establishments">
+      <ng-container *ngIf="!establishments">
         <swiper-slide
         *ngFor="let establishment of [1,2,3,4,5]; let i = index"
         class="unlock-shadow-from-swiper auto-width">
-          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          <ion-skeleton-text [animated]="true" class="like-establishment"></ion-skeleton-text>
         </swiper-slide>
       </ng-container>
     </swiper-container>
 
-    <ion-grid [fixed]="true" *ngIf="short_establishments && short_establishments.length === 0">
+    <ion-grid [fixed]="true" *ngIf="establishments && establishments.length === 0">
       <ion-row>
         <ion-col size="12">
           <ion-text mode="ios">
@@ -182,7 +187,7 @@ forceOverscroll="false">
 
     <ion-grid [fixed]="true">
       <ion-row>
-        <ng-container *ngIf="short_establishments && short_establishments.length > 0">
+        <ng-container *ngIf="establishments && establishments.length > 0">
           <ion-col size="6">
             <div class="controls-wrapper">
               <ion-button
@@ -209,9 +214,9 @@ forceOverscroll="false">
 
           <ion-col size="6">
             <ion-text
-            class="color-gray-text fs-13 line-height-20 txt-lowercase txt-right"
+            class="fs-12 color-gray-mid line-height-20 txt-lowercase txt-right"
             mode="ios">
-              <p><span class="fs-16 font-w-bold">{{ short_establishments.length }}</span> estabelecimentos<ng-container *ngIf="short_establishments.length > 1">s</ng-container></p>
+              <p><span class="fs-14 font-w-bold">{{ establishments.length }}</span> estabelecimentos<ng-container *ngIf="establishments.length > 1">s</ng-container></p>
             </ion-text>
           </ion-col>
         </ng-container>
@@ -219,28 +224,5 @@ forceOverscroll="false">
     </ion-grid>
   </div>
 
-  <ion-fab
-  mode="ios"
-  slot="fixed"
-  vertical="bottom"
-  horizontal="end">
-    <ion-fab-button>
-      <ion-icon name="add-outline"></ion-icon>
-    </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button>
-        <ion-icon name="bulb-outline"></ion-icon>
-      </ion-fab-button>
-
-      <ion-fab-button
-      (click)="openModalToCreateStablishment()">
-        <ion-icon name="storefront-outline"></ion-icon>
-      </ion-fab-button>
-
-      <ion-fab-button
-      (click)="openModalToCreateParking()">
-        <ion-icon name="car-sport-outline"></ion-icon>
-      </ion-fab-button>
-    </ion-fab-list>
-  </ion-fab>
+  <app-add></app-add>
 </ion-content>

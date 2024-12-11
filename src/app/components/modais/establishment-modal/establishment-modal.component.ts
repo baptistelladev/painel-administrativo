@@ -1,7 +1,9 @@
 
+import { MOCK_SANTOS_BEACHES, MOCK_SAO_VICENTE_BEACHES } from '../../../shared/mocks/MockBeaches';
+
 
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, ModalController } from '@ionic/angular';
 import { map, Observable,  Subscription } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
@@ -21,7 +23,7 @@ import { ISocialNetwork } from 'src/app/shared/models/INetwork';
 import { IPhone } from 'src/app/shared/models/IPhone';
 import { ITicket } from 'src/app/shared/models/ITicket';
 import { ITime } from 'src/app/shared/models/ITime';
-import * as RuaGastronomicaDeSantosStore from './../../../../shared/store/ruaGastronomicaDeSantos.state';
+import * as RuaGastronomicaDeSantosStore from '../../../shared/store/ruaGastronomicaDeSantos.state';
 import { Store } from '@ngrx/store';
 import { IHour } from 'src/app/shared/models/IHour';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
@@ -32,16 +34,19 @@ import { CityEnum } from 'src/app/shared/enums/City';
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
 import { ISuggestion } from 'src/app/shared/models/ISuggestion';
 import * as moment from 'moment';
-import { LocationEnum } from 'src/app/shared/enums/Location';
 import { ILocation } from 'src/app/shared/models/ILocation';
 import { MOCK_LOCATION } from 'src/app/shared/mocks/MockLocation';
-
+import { IBeach } from 'src/app/shared/models/IBeach';
+import { LocationEnum } from 'src/app/shared/enums/Location';
+import { CurrencyPipe } from '@angular/common';
 @Component({
-  selector: 'app-register-short-establishment-modal',
-  templateUrl: './register-short-establishment-modal.component.html',
-  styleUrls: ['./register-short-establishment-modal.component.scss'],
+  selector: 'app-establishment-modal',
+  templateUrl: './establishment-modal.component.html',
+  styleUrls: ['./establishment-modal.component.scss'],
 })
-export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterViewInit, OnDestroy {
+export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDestroy {
+
+  public LocationEnum = LocationEnum;
 
   public showSundays: boolean = false;
   public showTuesdays: boolean = false;
@@ -61,7 +66,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
   public formShortEstablishment: FormGroup;
 
-  public shortEstablishment: IPlace = {
+  public establishment: IPlace = {
     work_place: [],
     created_at: '',
     isBuilding: false,
@@ -94,7 +99,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         pt: '',
         en: '',
         es: ''
-      }
+      },
+      hasBeach: false
     },
     specialty: [
       {
@@ -188,7 +194,49 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         appBaseUrl: ''
       }
     ],
-    suggestions: []
+    suggestions: [],
+    beachInfo: {
+      value: '',
+      city: '',
+      text: {
+        pt: '',
+        en: '',
+        es: ''
+      },
+      popularName: '',
+      located: {
+        from: {
+          value: '',
+          text: ''
+        },
+        operator: {
+          text: {
+            pt: '',
+            en: '',
+            es: ''
+          },
+          value: ''
+        },
+        to: {
+          value: '',
+          text: ''
+        }
+      },
+      in: {
+        pt: '',
+        en: '',
+        es: ''
+      },
+      location: {
+        lat: 0,
+        lng: 0
+      },
+      kmlCoordinates: []
+    },
+    delivery_sand: {
+      make_delivery: false,
+      delivery_is_free: false
+    }
   }
 
   public MOCK_CITY_PLACES_TYPE: IPlaceType[] = MOCK_CITY_PLACES_TYPE;
@@ -200,6 +248,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public MOCK_SPECIALTIES: IPlaceSpecialty[] = MOCK_SPECIALTIES;
   public MOCK_CITIES: ICity[] = MOCK_CITIES;
   public MOCK_LOCATION: ILocation[] = MOCK_LOCATION;
+  public MOCK_BEACHES: IBeach[];
 
   public PlaceTypeCityEnum = PlaceTypeCityEnum;
 
@@ -210,8 +259,6 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
   public suggestions: ISuggestion[];
   public suggestions$: Observable<ISuggestion[]>;
   public suggestionsSubscription: Subscription;
-
-
 
   constructor(
     private formBuilder : FormBuilder,
@@ -283,50 +330,60 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       sundaysHourToggle: false,
       isPremium: [false, [ Validators.required ]],
       suggestions: [],
-      workAt: ['', [ Validators.required ]]
+      workAt: ['', [ Validators.required ]],
+      beach: [''], // OBRIGATÓRIO QUANDO FOR NA PRAIA.
+      mainBeach: [''], // OBRIGATÓRIO QUANDO FOR NA PRAIA.,
+      makeDelivery: [false],
+      deliveryIsFree: [false]
     })
+  }
+
+  public beachChanged(e: any): void {
+    console.log(e.detail.value);
+
+
   }
 
   public async registerEstablishment(type: 'create' | 'update') {
     this.isRegistering = true;
 
     if (this.currentEstablishment.id) {
-      this.shortEstablishment.id = this.currentEstablishment.id;
+      this.establishment.id = this.currentEstablishment.id;
     }
 
-    this.shortEstablishment.name = this.formShortEstablishment.get('name')?.value;
+    this.establishment.name = this.formShortEstablishment.get('name')?.value;
 
     let foundType: IPlaceType | undefined = this.MOCK_CITY_PLACES_TYPE.find((type: IPlaceType) => {
       return type.value === this.formShortEstablishment.get('mainType')?.value
     })
 
     if (foundType) {
-      this.shortEstablishment.mainType = foundType;
+      this.establishment.mainType = foundType;
     }
 
-    this.shortEstablishment.adress.zip_code = this.formShortEstablishment.get('zip_code')?.value;
-    this.shortEstablishment.adress.street = this.formShortEstablishment.get('street')?.value;
-    this.shortEstablishment.adress.neighborhood = this.formShortEstablishment.get('neighborhood')?.value;
-    this.shortEstablishment.adress.number = this.formShortEstablishment.get('number')?.value;
+    this.establishment.adress.zip_code = this.formShortEstablishment.get('zip_code')?.value;
+    this.establishment.adress.street = this.formShortEstablishment.get('street')?.value;
+    this.establishment.adress.neighborhood = this.formShortEstablishment.get('neighborhood')?.value;
+    this.establishment.adress.number = this.formShortEstablishment.get('number')?.value;
 
-    this.shortEstablishment.air_conditioned_info.has_air_conditioned = this.formShortEstablishment.get('hasAirConditioned')?.value;
-    this.shortEstablishment.air_conditioned_info.show_field = this.formShortEstablishment.get('showAirConditionedField')?.value;
+    this.establishment.air_conditioned_info.has_air_conditioned = this.formShortEstablishment.get('hasAirConditioned')?.value;
+    this.establishment.air_conditioned_info.show_field = this.formShortEstablishment.get('showAirConditionedField')?.value;
 
-    this.shortEstablishment.booking_info.accept_booking = this.formShortEstablishment.get('hasBooking')?.value;
-    this.shortEstablishment.booking_info.show_field = this.formShortEstablishment.get('showBooking')?.value;
+    this.establishment.booking_info.accept_booking = this.formShortEstablishment.get('hasBooking')?.value;
+    this.establishment.booking_info.show_field = this.formShortEstablishment.get('showBooking')?.value;
 
-    this.shortEstablishment.livemusic_info.has_livemusic = this.formShortEstablishment.get('hasLiveMusic')?.value;
-    this.shortEstablishment.livemusic_info.show_field = this.formShortEstablishment.get('showLiveMusic')?.value;
+    this.establishment.livemusic_info.has_livemusic = this.formShortEstablishment.get('hasLiveMusic')?.value;
+    this.establishment.livemusic_info.show_field = this.formShortEstablishment.get('showLiveMusic')?.value;
 
-    this.shortEstablishment.petfriendly_info.accept_petfriendly = this.formShortEstablishment.get('isPetFriendly')?.value;
-    this.shortEstablishment.petfriendly_info.show_field = this.formShortEstablishment.get('showPetFriendly')?.value;
+    this.establishment.petfriendly_info.accept_petfriendly = this.formShortEstablishment.get('isPetFriendly')?.value;
+    this.establishment.petfriendly_info.show_field = this.formShortEstablishment.get('showPetFriendly')?.value;
 
-    this.shortEstablishment.ticket_info.accept_ticket = this.formShortEstablishment.get('acceptVale')?.value;
-    this.shortEstablishment.ticket_info.show_field = this.formShortEstablishment.get('showVale')?.value;
+    this.establishment.ticket_info.accept_ticket = this.formShortEstablishment.get('acceptVale')?.value;
+    this.establishment.ticket_info.show_field = this.formShortEstablishment.get('showVale')?.value;
 
-    this.shortEstablishment.children_space.has_space = this.formShortEstablishment.get('hasChildrenSpace')?.value;
-    this.shortEstablishment.children_space.show_field = this.formShortEstablishment.get('showChildrenSpace')?.value;
-    this.shortEstablishment.children_space.is_paid = this.formShortEstablishment.get('childrenSpaceIsPaid')?.value;
+    this.establishment.children_space.has_space = this.formShortEstablishment.get('hasChildrenSpace')?.value;
+    this.establishment.children_space.show_field = this.formShortEstablishment.get('showChildrenSpace')?.value;
+    this.establishment.children_space.is_paid = this.formShortEstablishment.get('childrenSpaceIsPaid')?.value;
 
     if (this.formShortEstablishment.get('ticketName')?.value && this.formShortEstablishment.get('ticketName')?.value.length > 0) {
       let ticketValues = this.formShortEstablishment.get('ticketName')?.value
@@ -336,25 +393,25 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
       let ticketsFiltered: ITicket[] = this.MOCK_TICKETS.filter((ticket: ITicket) => ticketValues.some((value: string) => ticket.value === value) )
 
-      this.shortEstablishment.ticket_info.tickets = ticketsFiltered;
+      this.establishment.ticket_info.tickets = ticketsFiltered;
 
     } else {
-      this.shortEstablishment.ticket_info.tickets = [];
+      this.establishment.ticket_info.tickets = [];
     }
 
     // ALIMENTAÇÃO
-    this.shortEstablishment.market_ticket_info.accept_ticket = this.formShortEstablishment.get('acceptMarketVale')?.value;
-    this.shortEstablishment.market_ticket_info.show_field = this.formShortEstablishment.get('showMarketVale')?.value;
+    this.establishment.market_ticket_info.accept_ticket = this.formShortEstablishment.get('acceptMarketVale')?.value;
+    this.establishment.market_ticket_info.show_field = this.formShortEstablishment.get('showMarketVale')?.value;
 
     if (this.formShortEstablishment.get('marketTicketName')?.value && this.formShortEstablishment.get('marketTicketName')?.value.length > 0) {
       let ticketValues = this.formShortEstablishment.get('marketTicketName')?.value
 
       let ticketsFiltered: ITicket[] = this.MOCK_TICKETS.filter((ticket: ITicket) => ticketValues.some((value: string) => ticket.value === value) )
 
-      this.shortEstablishment.market_ticket_info.tickets = ticketsFiltered;
+      this.establishment.market_ticket_info.tickets = ticketsFiltered;
 
     } else {
-      this.shortEstablishment.market_ticket_info.tickets = [];
+      this.establishment.market_ticket_info.tickets = [];
     }
 
     if (this.formShortEstablishment.get('networks')?.value && this.formShortEstablishment.get('networks')?.value.length > 0) {
@@ -370,9 +427,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         })
       });
 
-      this.shortEstablishment.networks = filteredNetworks;
+      this.establishment.networks = filteredNetworks;
     } else {
-      this.shortEstablishment.networks = [];
+      this.establishment.networks = [];
     }
 
     if (this.formShortEstablishment.get('phones')?.value && this.formShortEstablishment.get('phones')?.value.length > 0) {
@@ -389,10 +446,10 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
         })
       });
 
-      this.shortEstablishment.phones = filteredPhones;
+      this.establishment.phones = filteredPhones;
 
     } else {
-      this.shortEstablishment.phones = [];
+      this.establishment.phones = [];
     }
 
     let working_time = [...this.MOCK_DAYS].map((day: ITime) => {
@@ -429,35 +486,35 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
       return day;
     })
 
-    this.shortEstablishment.working_time = working_time;
+    this.establishment.working_time = working_time;
 
-    this.shortEstablishment.value = this.formShortEstablishment.get('url')?.value;
+    this.establishment.value = this.formShortEstablishment.get('url')?.value;
 
     if (this.formShortEstablishment.get('specialty')?.value && this.formShortEstablishment.get('specialty')?.value.length > 0) {
       let specialtiesValues = this.formShortEstablishment.get('specialty')?.value
 
       let specialtiesFiltered: IPlaceSpecialty[] = this.MOCK_SPECIALTIES.filter((specialty: IPlaceSpecialty) => specialtiesValues.some((value: string) => specialty.value === value) )
 
-      this.shortEstablishment.specialty = specialtiesFiltered;
+      this.establishment.specialty = specialtiesFiltered;
 
     } else {
-      this.shortEstablishment.specialty = [];
+      this.establishment.specialty = [];
     }
 
-    this.shortEstablishment.isBuilding = this.formShortEstablishment.get('isBuilding')?.value;
-    this.shortEstablishment.isPremium = this.formShortEstablishment.get('isPremium')?.value;
+    this.establishment.isBuilding = this.formShortEstablishment.get('isBuilding')?.value;
+    this.establishment.isPremium = this.formShortEstablishment.get('isPremium')?.value;
 
     switch (this.formShortEstablishment.get('type')?.value) {
       case 'rua':
-        this.shortEstablishment.adress.type.pt = 'Rua';
-        this.shortEstablishment.adress.type.en = 'Street';
-        this.shortEstablishment.adress.type.es = 'Calle';
+        this.establishment.adress.type.pt = 'Rua';
+        this.establishment.adress.type.en = 'Street';
+        this.establishment.adress.type.es = 'Calle';
         break;
 
       case 'avenida':
-        this.shortEstablishment.adress.type.pt = 'Avenida';
-        this.shortEstablishment.adress.type.en = 'Avenue';
-        this.shortEstablishment.adress.type.es = 'Avenida';
+        this.establishment.adress.type.pt = 'Avenida';
+        this.establishment.adress.type.en = 'Avenue';
+        this.establishment.adress.type.es = 'Avenida';
         break;
     }
 
@@ -467,28 +524,43 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
     if (selectedCity) {
       delete selectedCity.isDisabled;
-      this.shortEstablishment.origin = selectedCity;
+      this.establishment.origin = selectedCity;
     }
 
-    this.shortEstablishment.suggestions = this.formShortEstablishment.get('suggestions')?.value;
+    this.establishment.suggestions = this.formShortEstablishment.get('suggestions')?.value;
 
-    this.shortEstablishment.work_place = this.formShortEstablishment.get('workAt')?.value;
+    this.establishment.work_place = this.formShortEstablishment.get('workAt')?.value;
+
+    let selectedBeach = this.MOCK_BEACHES.find((beach: IBeach) => {
+      return beach.value === this.formShortEstablishment.get('beach')?.value;
+    })
+
+    if (selectedBeach) {
+      this.establishment.beachInfo = selectedBeach;
+    }
+
+    this.establishment.delivery_sand = {
+      make_delivery: this.formShortEstablishment.get('makeDelivery')?.value,
+      delivery_is_free: this.formShortEstablishment.get('deliveryIsFree')?.value
+    }
 
     if (type === 'create') {
-      this.shortEstablishment.created_at = moment().toISOString();
+      this.establishment.created_at = moment().toISOString();
 
-      await this.placesService.addDoc(CollectionsEnum.PLACES, this.shortEstablishment)
+      await this.placesService.addDoc(CollectionsEnum.PLACES, this.establishment)
       .then(async () => {
-        await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
+        await this.modalCtrl.dismiss({ establishment: this.establishment }, '', 'register-short-establishment');
         this.isRegistering = false;
+        this.formShortEstablishment.reset();
       }).catch(() => {
         this.isRegistering = false;
       })
     } else {
-      await this.placesService.setDoc(CollectionsEnum.PLACES, this.currentEstablishment.id, this.shortEstablishment)
+      await this.placesService.setDoc(CollectionsEnum.PLACES, this.currentEstablishment.id, this.establishment)
       .then(async () => {
-        await this.modalCtrl.dismiss({}, '', 'register-short-establishment');
+        await this.modalCtrl.dismiss({ establishment: this.establishment }, '', 'register-short-establishment');
         this.isRegistering = false;
+        this.formShortEstablishment.reset();
       }).catch(() => {
         this.isRegistering = false;
       })
@@ -504,8 +576,8 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     }
   }
 
-  public cityChanged(e: any): void {
-    console.log(e);
+  public cityChanged(e: any) {
+    this.defineBeachSelector(e.detail.value);
   }
 
   public async getCep() {
@@ -525,15 +597,15 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
 
       switch (type) {
         case 'rua':
-          this.shortEstablishment.adress.type.pt = 'Rua';
-          this.shortEstablishment.adress.type.en = 'Street';
-          this.shortEstablishment.adress.type.es = 'Calle';
+          this.establishment.adress.type.pt = 'Rua';
+          this.establishment.adress.type.en = 'Street';
+          this.establishment.adress.type.es = 'Calle';
           break;
 
         case 'avenida':
-          this.shortEstablishment.adress.type.pt = 'Avenida';
-          this.shortEstablishment.adress.type.en = 'Avenue';
-          this.shortEstablishment.adress.type.es = 'Avenida';
+          this.establishment.adress.type.pt = 'Avenida';
+          this.establishment.adress.type.en = 'Avenue';
+          this.establishment.adress.type.es = 'Avenida';
           break;
       }
 
@@ -896,7 +968,7 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.formShortEstablishment.reset();
     this.store.dispatch(RuaGastronomicaDeSantosStore.clearCurrentEstablishment());
 
-    this.currentEstablishment = this.shortEstablishment;
+    this.currentEstablishment = this.establishment;
 
     if (this.establishment$) {
       this.establishmentSubscription.unsubscribe();
@@ -932,9 +1004,9 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     console.log(establishment);
 
 
-    this.shortEstablishment.adress.type = { ...establishment.adress.type };
+    this.establishment.adress.type = { ...establishment.adress.type };
 
-    this.formShortEstablishment.get('type')?.patchValue(this.shortEstablishment.adress.type.pt);
+    this.formShortEstablishment.get('type')?.patchValue(this.establishment.adress.type.pt);
 
     this.formShortEstablishment.get('name')?.patchValue(establishment.name);
     //this.formShortEstablishment.get('url')?.patchValue(establishment.value);
@@ -1071,9 +1143,33 @@ export class RegisterShortEstablishmentModalComponent  implements OnInit, AfterV
     this.formShortEstablishment.get('suggestions')?.patchValue(establishment.suggestions);
 
     this.formShortEstablishment.get('workAt')?.patchValue(establishment.work_place);
+
+    this.defineBeachSelector(establishment.origin.value);
+
+    this.formShortEstablishment.get('mainBeach')?.patchValue(establishment.mainBeach);
+    this.formShortEstablishment.get('beach')?.patchValue(establishment.beachInfo?.value);
+    this.formShortEstablishment.get('makeDelivery')?.patchValue(establishment.delivery_sand?.make_delivery);
+    this.formShortEstablishment.get('deliveryIsFree')?.patchValue(establishment.delivery_sand?.delivery_is_free);
+  }
+
+  public defineBeachSelector(cityValue: string) {
+    switch (cityValue) {
+      case CityEnum.SANTOS:
+        this.MOCK_BEACHES = MOCK_SANTOS_BEACHES;
+        break;
+
+      case CityEnum.SAO_VICENTE:
+        this.MOCK_BEACHES = MOCK_SAO_VICENTE_BEACHES;
+        break;
+
+      default:
+        this.MOCK_BEACHES = [];
+        break;
+    }
   }
 
   ngOnDestroy() {
     this.suggestionsSubscription.unsubscribe();
   }
+
 }

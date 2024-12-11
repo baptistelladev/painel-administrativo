@@ -9,6 +9,7 @@ moment.locale('pt')
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+
   constructor() {
 
   }

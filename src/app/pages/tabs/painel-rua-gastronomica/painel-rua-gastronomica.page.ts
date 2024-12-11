@@ -1,14 +1,13 @@
+import { EstablishmentModalComponent } from '../../../components/modais/establishment-modal/establishment-modal.component';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
-import { RegisterShortEstablishmentModalComponent } from './modais/register-short-establishment-modal/register-short-establishment-modal.component';
-import { RegisterShortParkingComponent } from './modais/register-short-parking/register-short-parking.component';
+import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 import { map, Observable, Subscription } from 'rxjs';
 import { IPlace } from 'src/app/shared/models/IPlace';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Store } from '@ngrx/store';
-import * as RuaGastronomicaDeSantosStore from './../../shared/store/ruaGastronomicaDeSantos.state';
+import * as RuaGastronomicaDeSantosStore from './../../../shared/store/ruaGastronomicaDeSantos.state';
 import Swiper from 'swiper';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
@@ -158,7 +157,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
   public isLoadingLogo: boolean;
 
-  public short_establishments: IPlace[];
+  public establishments: IPlace[];
   public establishments$: Observable<IPlace[]>;
   public establishmentsSubscription: Subscription;
 
@@ -187,45 +186,19 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     private modalCtrl : ModalController,
     private utilsService : UtilsService,
     private store : Store,
-    private alertCtrl : AlertController
+    private alertCtrl : AlertController,
+    private toastCtrl : ToastController
   ) { }
 
   ngOnInit() {
-    this.getEstablishments();
+    this.getEstablimentsFromGastronomicStreet();
   }
 
   ngAfterViewInit(): void {
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
-  public async openModalToCreateStablishment(): Promise<HTMLIonModalElement> {
-    const modal = await this.modalCtrl.create({
-      component: RegisterShortEstablishmentModalComponent,
-      mode: 'ios',
-      cssClass: 'rgs-register',
-      id: 'register-short-establishment'
-    })
-
-    await modal.present();
-
-    return modal;
-  }
-
-  public async openModalToCreateParking(): Promise<HTMLIonModalElement> {
-    const modal = await this.modalCtrl.create({
-      component: RegisterShortParkingComponent,
-      mode: 'ios',
-      cssClass: 'rgs-register',
-      id: 'register-short-parking'
-    })
-
-    await modal.present();
-
-    return modal;
-  }
-
-
-  public getEstablishments() {
+  public getEstablimentsFromGastronomicStreet() {
     this.establishments$ = this.placesService
     .getCollection(
       CollectionsEnum.PLACES,
@@ -242,10 +215,10 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
       })
     )
     .subscribe((establishments: IPlace[]) => {
-      this.short_establishments = establishments;
+      this.establishments = establishments;
 
       this.lenghts_to_save_time = [...this.lenghts_to_save_time].map((option: any) => {
-        let list = this.short_establishments.filter((establishment: IPlace) => {
+        let list = this.establishments.filter((establishment: IPlace) => {
           return establishment.mainType.value === option['establishment_type'];
         })
 
@@ -268,13 +241,22 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
   public async openModalToSeeStablishment(): Promise<HTMLIonModalElement> {
     const modal = await this.modalCtrl.create({
-      component: RegisterShortEstablishmentModalComponent,
+      component: EstablishmentModalComponent,
       mode: 'ios',
       cssClass: 'rgs-register',
       id: 'register-short-establishment'
     })
 
     await modal.present();
+
+    // Capturando os dados retornados
+    const { data } = await modal.onWillDismiss();
+
+    await modal.onDidDismiss().then((res: any) => {
+      if (data?.establishment?.id) {
+        this.getEstablimentsFromGastronomicStreet()
+      }
+    })
 
     return modal;
   }

@@ -1,10 +1,4 @@
-
-@import './../../../assets/scss/utils/mixins.scss';
-
-ion-fab {
-  bottom: 32px;
-  right: 32px;
-}
+@import './../../../../assets/scss/utils/mixins.scss';
 
 ion-item {
   &.dashboard-item {
@@ -95,4 +89,49 @@ ion-list {
   padding: 16px 0;
   background: var(--gray-ed);
   box-shadow: inset 2px 0px 11px rgba(0, 0, 0, .2);
+}
+
+
+
+.button-list {
+  overflow: hidden;
+
+  ion-list {
+    background-color: transparent;
+    border-radius: 0;
+
+    ion-item {
+      --padding-start: 16px;
+      --padding-end: 0;
+      --padding-top: 16px;
+      --padding-bottom: 16px;
+      --inner-padding-end: 16px;
+      text-transform: none;
+      --background: var(--gray-fa);
+      border-radius: 0;
+      --border-radius: 0;
+      border-top: 0.5px solid var(--gray-da);
+      font-weight: 300;
+      --background: var(--transparent);
+      font-size: 14px;
+      --min-height: 0;
+      --color: var(--gray-text);
+      --background-hover: var(--gray-text);
+      border-bottom: 0;
+
+      &.reserve, &.main {
+        --color: var(--green);
+        --background-hover: var(--green);
+      }
+
+      &.coming-soon {
+        border-top: none;
+      }
+    }
+  }
+}
+
+.like-establishment {
+  height: 321px;
+  border-radius: 12px;
 }

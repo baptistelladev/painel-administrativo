@@ -66,3 +66,13 @@ ion-button {
     }
   }
 }
+
+ion-menu-button {
+  &.color-white {
+    --color: var(--white);
+  }
+
+  &.color-gray-text {
+    --color: var(--gray-text);
+  }
+}
