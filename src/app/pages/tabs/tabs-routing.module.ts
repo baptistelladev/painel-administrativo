@@ -22,6 +22,10 @@ const routes: Routes = [
         loadChildren: () => import('./lugares/lugares.module').then( m => m.LugaresPageModule)
       }
     ]
+  },
+  {
+    path: 'cidades',
+    loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
   }
 ];
 

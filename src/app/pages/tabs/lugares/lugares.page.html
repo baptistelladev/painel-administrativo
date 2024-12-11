@@ -1,21 +1,3 @@
-<ion-header mode="ios" class="bg-gray-2 dark-border">
-  <ion-toolbar mode="ios" class="ion-bg-gray-2 no-ion-padding">
-    <ion-grid [fixed]="true">
-      <ion-row>
-        <ion-col size="12">
-          <div class="toolbar-wrapper">
-            <app-logo [size]="'big'"></app-logo>
-
-            <div class="menu-btn-wrapper">
-              <ion-menu-button class="color-white" mode="ios"></ion-menu-button>
-            </div>
-          </div>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content
 [forceOverscroll]="false"
 class="ion-content-w-linear-bg">
@@ -30,20 +12,7 @@ class="ion-content-w-linear-bg">
               </p>
             </ion-text>
 
-            <div class="city-wrapper">
-              <ion-item
-              [button]="true"
-              [detail]="false"
-              mode="ios"
-              class="ion-bg-transparent ion-no-padding"
-              lines="none">
-                <ion-text
-                class="line-height-12"
-                mode="ios">
-                  <p class="fs-22 color-white font-baloo font-w-bold city-name">Santos <ion-chip mode="ios" class="simulate-btn">trocar</ion-chip></p>
-                </ion-text>
-              </ion-item>
-            </div>
+            <app-change-city-button [currentCity]="currentCity"></app-change-city-button>
           </ion-col>
 
           <ion-col size="6">

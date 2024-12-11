@@ -1,7 +1,7 @@
 
 <ion-split-pane when="xl" contentId="main" mode="md">
   <ion-menu contentId="main">
-    <ion-content [forceOverscroll]="false">
+    <ion-content [forceOverscroll]="false" class="ion-content-w-linear-bg">
       <ion-grid class="no-pad-bottom">
         <ion-row class="no-pad-bottom">
           <ion-col size="12" class="no-pad-bottom">
@@ -28,7 +28,7 @@
 
             <ion-text mode="ios">
               <p class="fs-9 txt-uppercase title color-gray-mid">{{ item.title }}</p>
-              <p class="fs-16 page color-gray-text font-baloo">{{ item.text }}</p>
+              <p class="fs-16 page color-gray-6 font-baloo font-w-bold">{{ item.text }}</p>
             </ion-text>
           </ion-item>
         </ion-list>
@@ -54,6 +54,9 @@
         </ion-grid>
       </ion-toolbar>
     </ion-header>
-    <ion-router-outlet></ion-router-outlet>
+
+    <ion-content [forceOverscroll]="false">
+      <ion-router-outlet></ion-router-outlet>
+    </ion-content>
   </div>
 </ion-split-pane>

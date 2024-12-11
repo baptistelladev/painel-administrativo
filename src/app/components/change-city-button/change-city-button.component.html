@@ -1,0 +1,15 @@
+<div class="city-wrapper">
+  <ion-item
+  (click)="openCityModal()"
+  [button]="true"
+  [detail]="false"
+  mode="ios"
+  class="ion-bg-transparent ion-no-padding"
+  lines="none">
+    <ion-text
+    class="line-height-12"
+    mode="ios">
+      <p class="fs-22 color-white font-baloo font-w-bold city-name">{{ currentCity.name }} <ion-chip mode="ios" class="simulate-btn">trocar</ion-chip></p>
+    </ion-text>
+  </ion-item>
+</div>

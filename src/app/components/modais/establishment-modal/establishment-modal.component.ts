@@ -23,7 +23,7 @@ import { ISocialNetwork } from 'src/app/shared/models/INetwork';
 import { IPhone } from 'src/app/shared/models/IPhone';
 import { ITicket } from 'src/app/shared/models/ITicket';
 import { ITime } from 'src/app/shared/models/ITime';
-import * as RuaGastronomicaDeSantosStore from '../../../shared/store/ruaGastronomicaDeSantos.state';
+import * as AppStore from './../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { IHour } from 'src/app/shared/models/IHour';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
@@ -966,7 +966,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public closeModal(): void {
     this.modalCtrl.dismiss();
     this.formShortEstablishment.reset();
-    this.store.dispatch(RuaGastronomicaDeSantosStore.clearCurrentEstablishment());
+    this.store.dispatch(AppStore.clearCurrentEstablishment());
 
     this.currentEstablishment = this.establishment;
 
@@ -985,7 +985,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   }
 
   public getCurrentEstablishmentFromNGRX(): void {
-    this.establishment$ = this.store.select(RuaGastronomicaDeSantosStore.selectCurrentEstablishment);
+    this.establishment$ = this.store.select(AppStore.selectCurrentEstablishment);
 
     this.establishmentSubscription = this.establishment$
     .subscribe({

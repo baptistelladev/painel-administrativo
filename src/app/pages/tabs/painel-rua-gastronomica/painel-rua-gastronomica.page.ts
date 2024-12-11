@@ -7,7 +7,7 @@ import { IPlace } from 'src/app/shared/models/IPlace';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Store } from '@ngrx/store';
-import * as RuaGastronomicaDeSantosStore from './../../../shared/store/ruaGastronomicaDeSantos.state';
+import * as AppStore from './../../../shared/store/app.state';
 import Swiper from 'swiper';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
@@ -235,7 +235,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
   }
 
   public seeEstablishment(establishment: IPlace): void {
-    this.store.dispatch(RuaGastronomicaDeSantosStore.setCurrentEstablishment({ establishment: establishment } ))
+    this.store.dispatch(AppStore.setCurrentEstablishment({ establishment: establishment } ))
     this.openModalToSeeStablishment();
   }
 

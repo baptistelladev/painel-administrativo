@@ -15,18 +15,25 @@ import { provideHttpClient } from '@angular/common/http';
 import {register} from 'swiper/element/bundle';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreModule } from '@ngrx/store';
-import { ruaGastronomicaDeSantosReducer } from './shared/store/ruaGastronomicaDeSantos.state';
 import { environment } from 'src/environments/environment';
 register();
 
 import localePt from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
+import { appReducer } from './shared/store/app.state';
+import { IonicStorageModule, Storage } from '@ionic/storage-angular';
 registerLocaleData(localePt, 'pt-BR');
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }), StoreModule.forRoot({ruaGastronomicaDeSantos: ruaGastronomicaDeSantosReducer })],
-  providers: [ {
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }), StoreModule.forRoot({app: appReducer }), IonicStorageModule.forRoot({
+    name: 'anfitrion-dashboard-storage',
+    storeName: 'anfitrion-dashboard-store',
+    dbKey: 'anfitrion-dashboard-key'
+  }),],
+  providers: [
+    Storage,
+    {
     provide: LOCALE_ID,
     useValue: "pt-BR"
   },

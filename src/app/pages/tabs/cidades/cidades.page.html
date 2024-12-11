@@ -1,0 +1,91 @@
+<ion-content
+[forceOverscroll]="false"
+class="ion-content-w-linear-bg">
+  <ion-header mode="ios" class="ion-no-border">
+    <ion-toolbar mode="ios" class="ion-bg-transparent no-ion-padding">
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col size="12">
+            <div class="header-container">
+              <div class="logo-container full-width ">
+                <ion-button
+                (click)="closeModal()"
+                class="back ion-color-gray-text back-btn no-ion-padding font-baloo"
+                [title]="'Voltar'"
+                fill="clear">
+                  <ion-icon name="chevron-back-outline"></ion-icon> <span class="font-w-thin mg-left-5">Voltar</span>
+                </ion-button>
+              </div>
+            </div>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-toolbar>
+  </ion-header>
+
+  <section class="cidades-wrapper">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <ion-text
+          class="txt-center color-gray-text full-width icon-title-text"
+          mode="ios">
+            <ion-icon
+            name="location-outline"
+            class="full-width fs-32 animate__animated animate__fadeInUp">
+            </ion-icon>
+
+            <h2 class="font-baloo">
+              escolha <span class="font-w-bold txt-lowercase">uma cidade</span>
+            </h2>
+
+            <p class="fs-16">
+              da Baixada Santista
+            </p>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="12"></ion-col>
+
+        <ion-col size="12">
+          <ion-item
+          lines="none"
+          mode="ios"
+          class="simulate-bootstrap-alert warning line-height-18">
+            <ion-icon name="warning-outline" slot="start" class="color-bootstrap-warning"></ion-icon>
+
+            <ion-text mode="ios" class="color-bootstrap-warning">
+              <p class="fs-12 mg-bottom-8">Atenção</p>
+              <p class="fs-14">Queremos atuar em toda a Baixada Santista e estamos trabalhando para que isso aconteça de forma gradual, <b>mas gostaríamos de ressaltar que neste momento liberamos somente para Santos e São Vicente</b>.</p>
+            </ion-text>
+          </ion-item>
+        </ion-col>
+
+        <ion-col
+        *ngFor="let city of MOCK_CITIES"
+        size="12">
+          <ion-item
+          class="city-item"
+          (click)="selectCity(city)"
+          [ngClass]="{ 'is-selected' : currentCity && currentCity.value === city.value }"
+          [detail]="false"
+          [button]="true"
+          mode="ios"
+          lines="none"
+          [disabled]="city.isDisabled">
+            <ion-text
+            mode="ios"
+            class="line-height-20">
+              <p class="fs-20 font-baloo city-name">{{ city.name }}</p>
+              <p class="color-gray-6 fs-10 selected-text txt-uppercase" *ngIf="currentCity && currentCity.value === city.value">selecionado</p>
+              <p class="color-gray-6 fs-10 selected-text txt-uppercase" *ngIf="!city.isDisabled && currentCity.value !== city.value">conheça</p>
+              <p class="color-gray-6 fs-10 selected-text txt-uppercase" *ngIf="city.isDisabled && currentCity.value !== city.value">em breve</p>
+            </ion-text>
+
+            <ion-checkbox [checked]="true" mode="md" slot="end" *ngIf="currentCity && currentCity.value === city.value"></ion-checkbox>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+</ion-content>

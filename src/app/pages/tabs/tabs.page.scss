@@ -1,11 +1,20 @@
 ion-list {
+  background: var(--transparent);
+  margin: 16px 0 0 0;
+
   ion-item {
     --padding-start: 32px;
     --padding-end: 32px;
     --inner-padding-end: 0;
-    border-bottom: 1px solid var(--gray-ec);
     --padding-top: 12px;
     --padding-bottom: 12px;
+    --background: var(--transparent);
+    border-top: 1px solid var(--white);
+    border-bottom: 1px solid var(--gray-ec);
+
+    &:first-child {
+      border-top: 1px solid var(--gray-ec);
+    }
 
     ion-icon {
       font-size: 22px;
@@ -15,6 +24,7 @@ ion-list {
 
     &.is-active {
       pointer-events: none;
+      --background: rgba(118, 152, 52, .1);
 
       ion-icon {
         color: var(--green);
@@ -22,9 +32,12 @@ ion-list {
 
       ion-text {
         p {
-          &.page {
-            font-weight: bold;
+          &.title {
             color: var(--gray-6);
+          }
+
+          &.page {
+            color: var(--green);
           }
         }
       }
