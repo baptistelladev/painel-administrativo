@@ -15,17 +15,21 @@ const routes: Routes = [
       },
       {
         path: 'painel-rua-gastronomica',
-        loadChildren: () => import('./painel-rua-gastronomica/painel-rua-gastronomica.module').then( m => m.PainelRuaGastronomicaPageModule)
+        loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes-na-baixada-santista/painel-rua-gastronomica/painel-rua-gastronomica.module').then( m => m.PainelRuaGastronomicaPageModule)
       },
       {
         path: 'lugares',
-        loadChildren: () => import('./lugares/lugares.module').then( m => m.LugaresPageModule)
+        loadChildren: () => import('./explorar/lugares/lugares.module').then( m => m.LugaresPageModule)
+      },
+      {
+        path: 'pessoas',
+        loadChildren: () => import('./explorar/pessoas/pessoas.module').then( m => m.PessoasPageModule)
+      },
+      {
+        path: 'cidades',
+        loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
       }
     ]
-  },
-  {
-    path: 'cidades',
-    loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
   }
 ];
 

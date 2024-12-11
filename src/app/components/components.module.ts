@@ -6,13 +6,15 @@ import { IonicModule } from '@ionic/angular';
 import { EstablishmentModalComponent } from './modais/establishment-modal/establishment-modal.component';
 import { LogoComponent } from './logo/logo.component';
 import { ChangeCityButtonComponent } from './change-city-button/change-city-button.component';
+import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
 
 @NgModule({
   declarations: [
     AddComponent,
     EstablishmentModalComponent,
     LogoComponent,
-    ChangeCityButtonComponent
+    ChangeCityButtonComponent,
+    MadeWLoveComponent
   ],
   imports: [
     SharedModule
@@ -21,7 +23,8 @@ import { ChangeCityButtonComponent } from './change-city-button/change-city-butt
     AddComponent,
     EstablishmentModalComponent,
     LogoComponent,
-    ChangeCityButtonComponent
+    ChangeCityButtonComponent,
+    MadeWLoveComponent
   ]
 })
 export class ComponentsModule { }

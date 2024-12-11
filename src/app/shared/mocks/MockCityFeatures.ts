@@ -1,6 +1,7 @@
 import { PlaceTypeCityEnum } from 'src/app/shared/enums/PlaceType';
 import { PeopleTypeCityEnum } from '../enums/PeopleType';
 import { LocationEnum } from '../enums/Location';
+
 export const MOCK_CITY_FEATURES = {
   places: [
     {

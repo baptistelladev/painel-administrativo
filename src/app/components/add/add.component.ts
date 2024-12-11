@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { EstablishmentModalComponent } from '../modais/establishment-modal/establishment-modal.component';
 
@@ -8,6 +8,8 @@ import { EstablishmentModalComponent } from '../modais/establishment-modal/estab
   styleUrls: ['./add.component.scss'],
 })
 export class AddComponent  implements OnInit {
+
+  @Input() feature : string;
 
   constructor(
     private modalCtrl : ModalController

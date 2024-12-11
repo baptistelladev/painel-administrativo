@@ -1,0 +1,197 @@
+<ion-content
+[forceOverscroll]="false"
+class="ion-content-w-linear-bg">
+  <section class="explorar-lugares">
+    <div class="segment-wrapper">
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid pad-left">
+                <b>Onde</b> você procura?
+              </p>
+            </ion-text>
+
+            <app-change-city-button [currentCity]="currentCity" (cityHasChanged)="locationChanged()"></app-change-city-button>
+          </ion-col>
+
+          <ion-col size="6">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <div class="segment-container">
+        <ion-segment
+        [(ngModel)]="selectedSegment"
+        (ionChange)="locationChanged()"
+        class="anf-main"
+        mode="ios">
+          <ion-segment-button
+          *ngFor="let segment of MOCK_LOCATION"
+          [value]="segment.value">
+            <ion-text mode="ios">
+              <p class="font-baloo fs-14">
+                {{ segment.text.pt[0] }} <b>{{ segment.text.pt[1] }}</b>
+              </p>
+            </ion-text>
+          </ion-segment-button>
+        </ion-segment>
+      </div>
+    </div>
+
+    <div class="explorar-content">
+      <div class="features-segment">
+        <ion-grid [fixed]="true">
+          <ion-row>
+            <!-- MOSTRAR PESSOAS [SOON] [attr.size-lg]="selectedSegment === LocationEnum.PRAIA ? 6 : 12" -->
+            <ion-col size="12" class="no-padding mg-bottom-16">
+              <ion-grid class="no-padding">
+                <ion-row>
+                  <ion-col size="12">
+                    <ion-text mode="ios">
+                      <p class="font-baloo fs-20 color-gray-text font-w-bold">
+                        Lugares <span class="font-default txt-lowercase fs-12 color-gray-mid font-w-normal" *ngIf="places && places.length > 0">({{ places.length }})</span>
+                      </p>
+                      <p class="fs-14 color-gray-text font-w-thin" *ngIf="selectedSegment === LocationEnum.CIDADE">
+                        Para quem quer conhecer ou encontrar um local para se alimentar.
+                      </p>
+                      <p class="fs-14 color-gray-text font-w-thin" *ngIf="selectedSegment === LocationEnum.PRAIA">
+                        Para quem quer conhecer ou procurar um local para se alimentar.
+                      </p>
+                    </ion-text>
+                  </ion-col>
+
+                  <ng-container *ngIf="!places">
+                    <ng-container *ngFor="let skeleton of [1,2,3,4,5,6,7]">
+                      <ion-col
+                      size="auto">
+                        <ion-skeleton-text mode="ios" [animated]="true" class="like-feature"></ion-skeleton-text>
+                      </ion-col>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="places && places.length > 0">
+                    <ng-container *ngFor="let place of FEATURES.places">
+                      <ion-col
+                      size="auto"
+                      *ngIf="place.show">
+                        <div
+                        class="feature-item-wrapper">
+                          <ion-badge *ngIf="place.atLeastOneLength" class="fs-12 color-green">{{ place.atLeastOneLength }}</ion-badge>
+
+                          <ion-item
+                          [disabled]="!place.atLeastOneLength"
+                          (click)="searchPlace(place)"
+                          [ngClass]="{ 'is-disabled': !place.atLeastOneLength }"
+                          [title]="place.text.pt"
+                          mode="ios"
+                          [detail]="false"
+                          [button]="true"
+                          lines="none">
+                            <ion-text
+                              mode="ios">
+                              <ion-icon [name]="place.icon + '-outline'" *ngIf="!place.loadIconsFromAssets"></ion-icon>
+                              <p class="fs-12 mg-top-5 color-gray-text">{{ place.text.pt }}</p>
+                            </ion-text>
+                          </ion-item>
+                        </div>
+                      </ion-col>
+                    </ng-container>
+                  </ng-container>
+
+                  <ion-col *ngIf="places && places.length === 0"
+                  size="12">
+                  <ion-text mode="ios">
+                    <p class="fs-14 color-gray-text font-w-thin">
+                      Não encontramos nenhum lugar por enquanto.
+                    </p>
+                  </ion-text>
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+
+            <!-- MOSTRAR PESSOAS [SOON]
+            <ion-col size="12" [attr.size-lg]="selectedSegment === LocationEnum.PRAIA ? 6 : 12" class="no-padding mg-bottom-16">
+              <ion-grid class="no-padding">
+                <ion-row>
+                  <ion-col [size]="12">
+                    <ion-text mode="ios">
+                      <p class="font-baloo fs-20 color-gray-text font-w-bold">
+                        {{ 'SHARED.PEOPLE' | translate }} <span class="font-default txt-lowercase fs-12 color-gray-mid font-w-normal" *ngIf="people && people.length > 0">({{ people.length }})</span>
+                      </p>
+                      <p class="fs-14 color-gray-text font-w-thin" *ngIf="selectedSegment === LocationEnum.CIDADE">
+                        {{ 'EXPLORE_PAGE.CITY_PEOPLE_EXPLORING' | translate }}.
+                      </p>
+                      <p class="fs-14 color-gray-text font-w-thin" *ngIf="selectedSegment === LocationEnum.PRAIA">
+                        {{ 'EXPLORE_PAGE.BEACH_PEOPLE_EXPLORING' | translate }}.
+                      </p>
+                    </ion-text>
+                  </ion-col>
+
+                  <ng-container *ngIf="lookingForPlaces">
+                    <ng-container *ngFor="let skeleton of [1,2,3]">
+                      <ion-col
+                      size="auto">
+                        <ion-skeleton-text mode="ios" [animated]="true" class="like-feature"></ion-skeleton-text>
+                      </ion-col>
+                    </ng-container>
+                  </ng-container>
+
+                  <ng-container *ngIf="!lookingForPeople">
+                    <ng-container *ngFor="let people of FEATURES.people">
+                      <ion-col
+                      *ngIf="people.show"
+                      size="auto">
+                        <div
+                        class="feature-item-wrapper">
+                          <ion-badge *ngIf="people.atLeastOneLength && (people.userRespectAgeLimit || people.userRespectAgeLimit === null)" class="fs-12 color-green">{{ people.atLeastOneLength }}</ion-badge>
+
+                          <ion-text mode="ios" class="forbidden" *ngIf="people.ageLimit === 18 && !people.userRespectAgeLimit">
+                            <p>🔞</p>
+                          </ion-text>
+
+                          <ion-item
+                          (click)="searchPlaceInTheCity(people)"
+                          [disabled]="people.isDisabled || !people.atLeastOneLength"
+                          [ngClass]="{ 'is-disabled': people.isDisabled || !people.atLeastOneLength }"
+                          [title]="people.text[currentLanguage.value]"
+                          mode="ios"
+                          [detail]="false"
+                          [button]="true"
+                          lines="none">
+                            <ion-text
+                              mode="ios">
+                              <ion-icon [name]="people.icon + '-outline'" *ngIf="!people.loadIconsFromAssets"></ion-icon>
+                              <p class="fs-12 mg-top-5 color-gray-text">{{ people.text[currentLanguage.value] }}</p>
+                            </ion-text>
+                          </ion-item>
+                        </div>
+                      </ion-col>
+                    </ng-container>
+                  </ng-container>
+                </ion-row>
+              </ion-grid>
+            </ion-col>
+            -->
+          </ion-row>
+        </ion-grid>
+      </div>
+    </div>
+
+  </section>
+
+  <app-add [feature]="'PLACE'"></app-add>
+</ion-content>
+
+<ion-footer mode="ios" class="general-footer bg-gray-ed">
+  <ion-toolbar mode="ios" class="ion-bg-gray-ed">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <app-made-w-love></app-made-w-love>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

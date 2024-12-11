@@ -1,4 +1,4 @@
-import { EstablishmentModalComponent } from '../../../components/modais/establishment-modal/establishment-modal.component';
+import { EstablishmentModalComponent } from '../../../../../components/modais/establishment-modal/establishment-modal.component';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -7,7 +7,7 @@ import { IPlace } from 'src/app/shared/models/IPlace';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { Store } from '@ngrx/store';
-import * as AppStore from './../../../shared/store/app.state';
+import * as AppStore from '../../../../../shared/store/app.state';
 import Swiper from 'swiper';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';

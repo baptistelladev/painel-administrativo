@@ -18,6 +18,13 @@ export class TabsPage implements OnInit {
       value: 'PLACES'
     },
     {
+      title: 'Na cidade e na praia',
+      text: 'Pessoas',
+      router: ['/logado/pessoas'],
+      icon: 'search',
+      value: 'PEOPLE'
+    },
+    {
       title: 'Sugestão',
       text: 'Rua Gastronômica de Santos',
       router: ['/logado/painel-rua-gastronomica'],

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { CidadesPage } from 'src/app/pages/tabs/cidades/cidades.page';
 import { ICity } from 'src/app/shared/models/ICity';
@@ -9,6 +9,8 @@ import { ICity } from 'src/app/shared/models/ICity';
   styleUrls: ['./change-city-button.component.scss'],
 })
 export class ChangeCityButtonComponent  implements OnInit {
+
+  @Output() cityHasChanged = new EventEmitter<any>();
 
   @Input() currentCity: ICity;
 
@@ -35,7 +37,7 @@ export class ChangeCityButtonComponent  implements OnInit {
 
     await modal.onDidDismiss().then((resp: any) => {
       if (resp.role === 'change') {
-        this.segmentChanged();
+        this.cityHasChanged.emit(true);
       }
     })
 
