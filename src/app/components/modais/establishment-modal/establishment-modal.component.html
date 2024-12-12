@@ -267,6 +267,101 @@
           <ion-col size="12">
             <ion-text mode="ios">
               <h1 class="fs-24 font-baloo color-gray-text">
+                Sobre <b>rodízio de comida</b>
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="offerFestival">Oferece <b>rodízio/festival</b>?</ion-toggle>
+            </ion-item>
+
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="showOfferFestival">Mostrar informação</ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12" formArrayName="festivals">
+            <div class="festivals-wrapper">
+              <div *ngFor="let festival of festivals.controls; let i = index" [formGroupName]="i" class="array-item">
+
+                <div class="item-title mg-bottom-16">
+                  <ion-text mode="ios">
+                    <p class="fs-14 color-gray-text">Festival <b>{{ i + 1 }}</b></p>
+                  </ion-text>
+
+                  <ion-button
+                  title="Remover festival"
+                  class="remove clear-danger"
+                  fill="clear"
+                  type="button"
+                  (click)="removeFestival(i)">
+                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                  </ion-button>
+                </div>
+
+                <div
+                [ngClass]="{'has-error' : (festivals.at(i).get('food_type')?.invalid &&
+                (festivals.at(i).get('food_type')?.touched ||
+                festivals.at(i).get('food_type')?.dirty))}"
+                class="rgs-select-wrapper full-width white-background-item mg-bottom-16 label-w-gray-fa">
+                  <ion-item
+                  class="overflow-hidden"
+                  lines="none"
+                  mode="ios">
+                    <ion-select
+                    (ionChange)="foodTypeFromFestivalChanged($event)"
+                    formControlName="food_type"
+                    [cancelText]="'Cancelar'"
+                    [okText]="'Definir'"
+                    [label]="'Tipo de festival'"
+                    toggleIcon="chevron-down-outline"
+                    label-placement="floating">
+                      <ion-select-option
+                      *ngFor="let type of MOCK_FESTIVAL_FOOD_TYPE"
+                      [value]="type.value">
+                        {{ type.text.pt }}
+                      </ion-select-option>
+                    </ion-select>
+                  </ion-item>
+
+                  <ion-text
+                  mode="ios"
+                  class="mg-top-8 d-block"
+                  *ngIf="
+                  festivals.at(i).get('food_type')?.invalid &&
+                  (festivals.at(i).get('food_type')?.touched || festivals.at(i).get('food_type')?.dirty)">
+                    <p
+                    *ngIf="festivals.at(i).get('food_type')?.hasError('required')"
+                    class="fs-13 color-danger">
+                      Campo obrigatório
+                    </p>
+                  </ion-text>
+                </div>
+              </div>
+
+              <ion-button
+              mode="md"
+              class="rgs-gray-solid fs-12"
+              fill="solid"
+              type="button"
+              shape="round"
+              (click)="addFestival()">
+                Adicionar festival
+              </ion-button>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
                <b>Endereço</b> do estabelecimento
               </h1>
             </ion-text>

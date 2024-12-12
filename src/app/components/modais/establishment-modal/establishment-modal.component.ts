@@ -1,3 +1,4 @@
+import { MOCK_FESTIVAL_FOOD_TYPE } from './../../../shared/mocks/MockFestivalFoodType';
 
 import { MOCK_SANTOS_BEACHES, MOCK_SAO_VICENTE_BEACHES } from '../../../shared/mocks/MockBeaches';
 
@@ -39,6 +40,8 @@ import { MOCK_LOCATION } from 'src/app/shared/mocks/MockLocation';
 import { IBeach } from 'src/app/shared/models/IBeach';
 import { LocationEnum } from 'src/app/shared/enums/Location';
 import { CurrencyPipe } from '@angular/common';
+import { IFestivalFood } from 'src/app/shared/models/IFestivalFood';
+import { IFestivalFoodType } from 'src/app/shared/models/IFestivalFoodType';
 @Component({
   selector: 'app-establishment-modal',
   templateUrl: './establishment-modal.component.html',
@@ -236,7 +239,12 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     delivery_sand: {
       make_delivery: false,
       delivery_is_free: false
-    }
+    },
+    festival_info: {
+      has_any_festival_type: false,
+      show_field: false,
+      festivals: []
+    },
   }
 
   public MOCK_CITY_PLACES_TYPE: IPlaceType[] = MOCK_CITY_PLACES_TYPE;
@@ -246,9 +254,10 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public MOCK_PHONES: IPhone[] = MOCK_PHONES;
   public MOCK_DAYS: ITime[] = MOCK_DAYS;
   public MOCK_SPECIALTIES: IPlaceSpecialty[] = MOCK_SPECIALTIES;
-  public MOCK_CITIES: ICity[] = MOCK_CITIES;
+  public MOCK_CITIES: ICity[] = [...MOCK_CITIES];
   public MOCK_LOCATION: ILocation[] = MOCK_LOCATION;
   public MOCK_BEACHES: IBeach[];
+  public MOCK_FESTIVAL_FOOD_TYPE: IFestivalFoodType[] = MOCK_FESTIVAL_FOOD_TYPE;
 
   public PlaceTypeCityEnum = PlaceTypeCityEnum;
 
@@ -334,7 +343,10 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
       beach: [''], // OBRIGATÓRIO QUANDO FOR NA PRAIA.
       mainBeach: [''], // OBRIGATÓRIO QUANDO FOR NA PRAIA.,
       makeDelivery: [false],
-      deliveryIsFree: [false]
+      deliveryIsFree: [false],
+      offerFestival: [false, [ Validators.required ]],
+      showOfferFestival: [false, [ Validators.required ]],
+      festivals: this.formBuilder.array([]),
     })
   }
 
@@ -523,26 +535,38 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     })
 
     if (selectedCity) {
-      delete selectedCity.isDisabled;
-      this.establishment.origin = selectedCity;
+      this.establishment.origin = { ...selectedCity };
+      delete this.establishment.origin.isDisabled
     }
 
     this.establishment.suggestions = this.formShortEstablishment.get('suggestions')?.value;
 
     this.establishment.work_place = this.formShortEstablishment.get('workAt')?.value;
 
-    let selectedBeach = this.MOCK_BEACHES.find((beach: IBeach) => {
-      return beach.value === this.formShortEstablishment.get('beach')?.value;
-    })
+    // EXCLUSIVO PARA LUGARES LOCALIZADOS NA PRAIA.
+    let selectedBeach: IBeach | undefined;
 
-    if (selectedBeach) {
-      this.establishment.beachInfo = selectedBeach;
+    if (this.formShortEstablishment.get('beach')?.value && this.MOCK_BEACHES) {
+      selectedBeach = this.MOCK_BEACHES.find((beach: IBeach) => {
+        return beach.value === this.formShortEstablishment.get('beach')?.value;
+      })
+
+      if (selectedBeach) {
+        this.establishment.beachInfo = selectedBeach;
+      }
     }
 
     this.establishment.delivery_sand = {
       make_delivery: this.formShortEstablishment.get('makeDelivery')?.value,
       delivery_is_free: this.formShortEstablishment.get('deliveryIsFree')?.value
     }
+
+    this.establishment.festival_info = {
+      has_any_festival_type: this.formShortEstablishment.get('offerFestival')?.value,
+      show_field: this.formShortEstablishment.get('showOfferFestival')?.value
+    }
+
+    /*
 
     if (type === 'create') {
       this.establishment.created_at = moment().toISOString();
@@ -565,6 +589,12 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
         this.isRegistering = false;
       })
     }
+
+    */
+
+    console.log(this.establishment);
+    this.isRegistering = false;
+
 
   }
 
@@ -668,6 +698,10 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     console.log(e);
   }
 
+  public async foodTypeFromFestivalChanged(e: any) {
+    console.log(e);
+  }
+
   public async workAtChanged(e: any) {
     console.log(e);
   }
@@ -679,6 +713,21 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public async networkChanged(e: any) {
     console.log(e);
 
+  }
+
+  get festivals(): FormArray {
+    return this.formShortEstablishment.get('festivals') as FormArray;
+  }
+
+  public addFestival(festival?: IFestivalFood) {
+    const festivalGroup = this.formBuilder.group({
+      food_type: ['', [ Validators.required ]]
+    });
+    this.festivals.push(festivalGroup);
+  }
+
+  public removeFestival(index: number) {
+    this.festivals.removeAt(index);
   }
 
   get phones(): FormArray {

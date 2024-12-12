@@ -4,7 +4,7 @@ ion-content {
   section {
     &.explorar-lugares {
       width: 100%;
-      border-top: 1px solid var(--gray-3);
+      border-top: 1px solid var(--gray-4);
 
       .explorar-content {
         padding-top: 32px;
@@ -14,7 +14,7 @@ ion-content {
         width: 100%;
         height: 114px;
         position: relative;
-        background: var(--gray-2);
+        background: var(--gray-3);
 
         .segment-container {
           position: absolute;

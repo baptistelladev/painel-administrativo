@@ -30,6 +30,10 @@ const routes: Routes = [
         loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
       }
     ]
+  },
+  {
+    path: 'explorar',
+    loadChildren: () => import('./explorar/explorar.module').then( m => m.ExplorarPageModule)
   }
 ];
 
