@@ -42,6 +42,9 @@ import { LocationEnum } from 'src/app/shared/enums/Location';
 import { CurrencyPipe } from '@angular/common';
 import { IFestivalFood } from 'src/app/shared/models/IFestivalFood';
 import { IFestivalFoodType } from 'src/app/shared/models/IFestivalFoodType';
+import { MOCK_FESTIVAL_CONSUMER_TYPE } from 'src/app/shared/mocks/MockConsumerFestivalType';
+import { MOCK_FESTIVAL_OPERATOR } from 'src/app/shared/mocks/MockFestivalOperator';
+import { MOCK_FESTIVAL_BENEFIT_TYPE } from 'src/app/shared/mocks/MockFestivalBenefitType';
 @Component({
   selector: 'app-establishment-modal',
   templateUrl: './establishment-modal.component.html',
@@ -258,6 +261,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public MOCK_LOCATION: ILocation[] = MOCK_LOCATION;
   public MOCK_BEACHES: IBeach[];
   public MOCK_FESTIVAL_FOOD_TYPE: IFestivalFoodType[] = MOCK_FESTIVAL_FOOD_TYPE;
+  public MOCK_FESTIVAL_CONSUMER_TYPE = MOCK_FESTIVAL_CONSUMER_TYPE;
+  public MOCK_FESTIVAL_OPERATOR = MOCK_FESTIVAL_OPERATOR;
+  public MOCK_FESTIVAL_BENEFIT_TYPE = MOCK_FESTIVAL_BENEFIT_TYPE;
 
   public PlaceTypeCityEnum = PlaceTypeCityEnum;
 
@@ -346,7 +352,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
       deliveryIsFree: [false],
       offerFestival: [false, [ Validators.required ]],
       showOfferFestival: [false, [ Validators.required ]],
-      festivals: this.formBuilder.array([]),
+      festivals: this.formBuilder.array([])
     })
   }
 
@@ -702,6 +708,14 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     console.log(e);
   }
 
+  public async consumerFestivalTypeChanged(e: any) {
+    console.log(e);
+  }
+
+  public async consumerBenefitTypeChanged(e: any) {
+    console.log(e);
+  }
+
   public async workAtChanged(e: any) {
     console.log(e);
   }
@@ -712,7 +726,27 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   public async networkChanged(e: any) {
     console.log(e);
+  }
 
+  public getRules(festivalIndex: number): FormArray {
+    return this.festivals.at(festivalIndex).get('rules') as FormArray;
+  }
+
+  public addRules(festivalIndex: number, rules?: any[]) {
+    const ruleGroup = this.formBuilder.group({
+      consumer_festival_type: ['', [ Validators.required ]],
+      operator: ['', [ Validators.required ]],
+      condition_start: ['', [ Validators.required ]],
+      condition_end: [''],
+      benefit_type: ['', [ Validators.required ]],
+      discount: ['0'],
+      price: ['0', [ Validators.required ]]
+    });
+    this.getRules(festivalIndex).push(ruleGroup);
+  }
+
+  public removeRule(festivalIndex: number, index: number) {
+    this.getRules(festivalIndex).removeAt(index);
   }
 
   get festivals(): FormArray {
@@ -721,7 +755,8 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   public addFestival(festival?: IFestivalFood) {
     const festivalGroup = this.formBuilder.group({
-      food_type: ['', [ Validators.required ]]
+      food_type: ['', [ Validators.required ]],
+      rules: this.formBuilder.array([]),
     });
     this.festivals.push(festivalGroup);
   }

@@ -284,11 +284,11 @@
 
           <ion-col size="12" formArrayName="festivals">
             <div class="festivals-wrapper">
-              <div *ngFor="let festival of festivals.controls; let i = index" [formGroupName]="i" class="array-item">
+              <div *ngFor="let festival of festivals.controls; let festivalIndex = index" [formGroupName]="festivalIndex" class="array-item">
 
                 <div class="item-title mg-bottom-16">
                   <ion-text mode="ios">
-                    <p class="fs-14 color-gray-text">Festival <b>{{ i + 1 }}</b></p>
+                    <p class="fs-14 color-gray-text"><b>Festival/Rodízio</b> {{ festivalIndex + 1 }}</p>
                   </ion-text>
 
                   <ion-button
@@ -296,15 +296,15 @@
                   class="remove clear-danger"
                   fill="clear"
                   type="button"
-                  (click)="removeFestival(i)">
+                  (click)="removeFestival(festivalIndex)">
                     <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
                   </ion-button>
                 </div>
 
                 <div
-                [ngClass]="{'has-error' : (festivals.at(i).get('food_type')?.invalid &&
-                (festivals.at(i).get('food_type')?.touched ||
-                festivals.at(i).get('food_type')?.dirty))}"
+                [ngClass]="{'has-error' : (festivals.at(festivalIndex).get('food_type')?.invalid &&
+                (festivals.at(festivalIndex).get('food_type')?.touched ||
+                festivals.at(festivalIndex).get('food_type')?.dirty))}"
                 class="rgs-select-wrapper full-width white-background-item mg-bottom-16 label-w-gray-fa">
                   <ion-item
                   class="overflow-hidden"
@@ -330,15 +330,305 @@
                   mode="ios"
                   class="mg-top-8 d-block"
                   *ngIf="
-                  festivals.at(i).get('food_type')?.invalid &&
-                  (festivals.at(i).get('food_type')?.touched || festivals.at(i).get('food_type')?.dirty)">
+                  festivals.at(festivalIndex).get('food_type')?.invalid &&
+                  (festivals.at(festivalIndex).get('food_type')?.touched || festivals.at(festivalIndex).get('food_type')?.dirty)">
                     <p
-                    *ngIf="festivals.at(i).get('food_type')?.hasError('required')"
+                    *ngIf="festivals.at(festivalIndex).get('food_type')?.hasError('required')"
                     class="fs-13 color-danger">
                       Campo obrigatório
                     </p>
                   </ion-text>
                 </div>
+
+                <ion-grid class="no-pad-sides no-pad-top">
+                  <ion-row>
+                    <!-- REGRAS DO FESTIVAL -->
+                    <ion-col size="12" formArrayName="rules" class="no-pad-sides">
+                      <div class="rules-wrapper">
+                        <div *ngFor="let rule of getRules(festivalIndex).controls; let ruleIndex = index" [formGroupName]="ruleIndex" class="array-item less-padding">
+                          <ion-grid class="no-pad-sides no-pad-top no-pad-bottom">
+                            <ion-row>
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div class="item-title mg-bottom-16">
+                                  <ion-text mode="ios">
+                                    <p class="fs-14 color-gray-text">Regras <b>do festival/rodízio</b></p>
+                                  </ion-text>
+
+                                  <ion-button
+                                  title="Remover regra"
+                                  class="remove clear-danger"
+                                  fill="clear"
+                                  type="button"
+                                  (click)="removeRule(festivalIndex, ruleIndex)">
+                                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                                  </ion-button>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div
+                                [ngClass]="{'has-error' : (getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.invalid &&
+                                (getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.touched ||
+                                getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.dirty))}"
+                                class="rgs-select-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-select
+                                    (ionChange)="consumerFestivalTypeChanged($event)"
+                                    formControlName="consumer_festival_type"
+                                    [cancelText]="'Cancelar'"
+                                    [okText]="'Definir'"
+                                    [label]="'Tipo'"
+                                    toggleIcon="chevron-down-outline"
+                                    label-placement="floating">
+                                      <ion-select-option
+                                      *ngFor="let consumerType of MOCK_FESTIVAL_CONSUMER_TYPE"
+                                      [value]="consumerType.value">
+                                        {{ consumerType.text.pt }}
+                                      </ion-select-option>
+                                    </ion-select>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.invalid &&
+                                  (getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.touched || getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.dirty)">
+                                    <p
+                                    *ngIf="getRules(festivalIndex).at(ruleIndex).get('consumer_festival_type')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div
+                                [ngClass]="{'has-error' : (getRules(festivalIndex).at(ruleIndex).get('operator')?.invalid &&
+                                (getRules(festivalIndex).at(ruleIndex).get('operator')?.touched ||
+                                getRules(festivalIndex).at(ruleIndex).get('operator')?.dirty))}"
+                                class="rgs-select-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-select
+                                    (ionChange)="consumerFestivalTypeChanged($event)"
+                                    formControlName="operator"
+                                    [cancelText]="'Cancelar'"
+                                    [okText]="'Definir'"
+                                    [label]="'Operador'"
+                                    toggleIcon="chevron-down-outline"
+                                    label-placement="floating">
+                                      <ion-select-option
+                                      *ngFor="let operator of MOCK_FESTIVAL_OPERATOR"
+                                      [value]="operator.value">
+                                        {{ operator.text.pt }}
+                                      </ion-select-option>
+                                    </ion-select>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getRules(festivalIndex).at(ruleIndex).get('operator')?.invalid &&
+                                  (getRules(festivalIndex).at(ruleIndex).get('operator')?.touched || getRules(festivalIndex).at(ruleIndex).get('operator')?.dirty)">
+                                    <p
+                                    *ngIf="getRules(festivalIndex).at(ruleIndex).get('operator')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+
+                              <ion-col class="no-pad-top no-pad-bottom" size="6">
+                                <div
+                                [ngClass]="{'has-error' : (getRules(festivalIndex).at(ruleIndex).get('condition_start')?.invalid &&
+                                (getRules(festivalIndex).at(ruleIndex).get('condition_start')?.touched ||
+                                getRules(festivalIndex).at(ruleIndex).get('condition_start')?.dirty))}"
+                                class="rgs-input-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-input
+                                    [maxlength]="2"
+                                    (keyup)="removeEverythingFromString()"
+                                    enterkeyhint="next"
+                                    mode="ios"
+                                    [label]="'início'"
+                                    labelPlacement="floating"
+                                    formControlName="condition_start"
+                                    type="text"
+                                    inputmode="number">
+                                    </ion-input>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getRules(festivalIndex).at(ruleIndex).get('condition_start')?.invalid &&
+                                  (getRules(festivalIndex).at(ruleIndex).get('condition_start')?.touched || getRules(festivalIndex).at(ruleIndex).get('condition_start')?.dirty)">
+                                    <p
+                                    *ngIf="getRules(festivalIndex).at(ruleIndex).get('condition_start')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+
+                              <ion-col class="no-pad-top no-pad-bottom" size="6">
+                                <div
+                                class="rgs-input-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-input
+                                    [maxlength]="2"
+                                    (keyup)="removeEverythingFromString()"
+                                    enterkeyhint="next"
+                                    mode="ios"
+                                    [label]="'fim'"
+                                    labelPlacement="floating"
+                                    formControlName="condition_end"
+                                    type="text"
+                                    inputmode="number">
+                                    </ion-input>
+                                  </ion-item>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div
+                                [ngClass]="{'has-error' : (getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.invalid &&
+                                (getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.touched ||
+                                getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.dirty))}"
+                                class="rgs-select-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-select
+                                    (ionChange)="consumerBenefitTypeChanged($event)"
+                                    formControlName="benefit_type"
+                                    [cancelText]="'Cancelar'"
+                                    [okText]="'Definir'"
+                                    [label]="'Benefício'"
+                                    toggleIcon="chevron-down-outline"
+                                    label-placement="floating">
+                                      <ion-select-option
+                                      *ngFor="let benefit of MOCK_FESTIVAL_BENEFIT_TYPE"
+                                      [value]="benefit.value">
+                                        {{ benefit.text.pt }}
+                                      </ion-select-option>
+                                    </ion-select>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.invalid &&
+                                  (getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.touched || getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.dirty)">
+                                    <p
+                                    *ngIf="getRules(festivalIndex).at(ruleIndex).get('benefit_type')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div
+                                class="rgs-input-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-input
+                                    [maxlength]="3"
+                                    (keyup)="removeEverythingFromString()"
+                                    enterkeyhint="next"
+                                    mode="ios"
+                                    [label]="'Desconto (caso haja)'"
+                                    labelPlacement="floating"
+                                    formControlName="discount"
+                                    type="text"
+                                    inputmode="number">
+                                      <ion-text mode="ios" slot="start" aria-hidden="true" *ngIf="getRules(festivalIndex).at(ruleIndex).get('discount')?.value">
+                                        <p class="color-gray-text fs-16">%</p>
+                                      </ion-text>
+                                    </ion-input>
+                                  </ion-item>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div
+                                [ngClass]="{'has-error' : (getRules(festivalIndex).at(ruleIndex).get('price')?.invalid &&
+                                (getRules(festivalIndex).at(ruleIndex).get('price')?.touched ||
+                                getRules(festivalIndex).at(ruleIndex).get('price')?.dirty))}"
+                                class="rgs-input-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-input
+                                    (keyup)="removeEverythingFromString()"
+                                    enterkeyhint="next"
+                                    mode="ios"
+                                    [label]="'Preço'"
+                                    labelPlacement="floating"
+                                    formControlName="price"
+                                    type="text"
+                                    inputmode="number">
+                                      <ion-text mode="ios" slot="start" aria-hidden="true" *ngIf="getRules(festivalIndex).at(ruleIndex).get('price')?.value">
+                                        <p class="color-gray-text fs-13">R$</p>
+                                      </ion-text>
+                                    </ion-input>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getRules(festivalIndex).at(ruleIndex).get('price')?.invalid &&
+                                  (getRules(festivalIndex).at(ruleIndex).get('price')?.touched || getRules(festivalIndex).at(ruleIndex).get('price')?.dirty)">
+                                    <p
+                                    *ngIf="getRules(festivalIndex).at(ruleIndex).get('price')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                        </div>
+
+                        <ion-button
+                        mode="md"
+                        class="rgs-gray-solid fs-12"
+                        fill="solid"
+                        type="button"
+                        shape="round"
+                        (click)="addRules(festivalIndex)">
+                          Adicionar regra
+                        </ion-button>
+                      </div>
+                    </ion-col>
+                  </ion-row>
+                </ion-grid>
               </div>
 
               <ion-button

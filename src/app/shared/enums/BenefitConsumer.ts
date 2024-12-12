@@ -1,5 +1,6 @@
 export enum BenefitConsumerEnum {
   CRIANCA = 'CRIANCA',
   BARIATRICOS = 'BARIATRICOS',
-  IDOSOS = 'IDOSOS'
+  IDOSOS = 'IDOSOS',
+  POR_PESSOA = 'POR_PESSOA'
 }

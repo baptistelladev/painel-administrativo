@@ -2,5 +2,6 @@ export enum BenefitTypeEnum {
   GRATIS = 'GRATIS',
   MEIA = 'MEIA',
   INTEGRAL = 'INTEGRAL',
-  OFF = 'OFF'
+  OFF = 'OFF',
+  SEM_BENEFICIO = 'SEM_BENEFICIO'
 }
