@@ -72,4 +72,5 @@ export interface IPlace {
     show_field?: boolean,
     festivals?: IFestivalFood[]
   },
+  last_update: string
 }

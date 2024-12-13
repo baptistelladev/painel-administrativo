@@ -1,3 +1,4 @@
+import { BenefitTypeEnum } from './../../../shared/enums/BenefitType';
 import { MOCK_FESTIVAL_FOOD_TYPE } from './../../../shared/mocks/MockFestivalFoodType';
 
 import { MOCK_SANTOS_BEACHES, MOCK_SAO_VICENTE_BEACHES } from '../../../shared/mocks/MockBeaches';
@@ -45,6 +46,7 @@ import { IFestivalFoodType } from 'src/app/shared/models/IFestivalFoodType';
 import { MOCK_FESTIVAL_CONSUMER_TYPE } from 'src/app/shared/mocks/MockConsumerFestivalType';
 import { MOCK_FESTIVAL_OPERATOR } from 'src/app/shared/mocks/MockFestivalOperator';
 import { MOCK_FESTIVAL_BENEFIT_TYPE } from 'src/app/shared/mocks/MockFestivalBenefitType';
+import { BenefitConsumerEnum } from 'src/app/shared/enums/BenefitConsumer';
 @Component({
   selector: 'app-establishment-modal',
   templateUrl: './establishment-modal.component.html',
@@ -73,6 +75,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public formShortEstablishment: FormGroup;
 
   public establishment: IPlace = {
+    last_update: '',
     work_place: [],
     created_at: '',
     isBuilding: false,
@@ -348,10 +351,10 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
       workAt: ['', [ Validators.required ]],
       beach: [''], // OBRIGATÓRIO QUANDO FOR NA PRAIA.
       mainBeach: [''], // OBRIGATÓRIO QUANDO FOR NA PRAIA.,
-      makeDelivery: [false],
-      deliveryIsFree: [false],
+      makeDeliveryOnTheBeach: [false],
+      deliveryIsFreeOnTheBeach: [false],
       offerFestival: [false, [ Validators.required ]],
-      showOfferFestival: [false, [ Validators.required ]],
+      showOfferFestival: [true, [ Validators.required ]],
       festivals: this.formBuilder.array([])
     })
   }
@@ -563,16 +566,23 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
 
     this.establishment.delivery_sand = {
-      make_delivery: this.formShortEstablishment.get('makeDelivery')?.value,
-      delivery_is_free: this.formShortEstablishment.get('deliveryIsFree')?.value
+      make_delivery: this.formShortEstablishment.get('makeDeliveryOnTheBeach')?.value,
+      delivery_is_free: this.formShortEstablishment.get('deliveryIsFreeOnTheBeach')?.value
     }
 
     this.establishment.festival_info = {
       has_any_festival_type: this.formShortEstablishment.get('offerFestival')?.value,
-      show_field: this.formShortEstablishment.get('showOfferFestival')?.value
+      show_field: this.formShortEstablishment.get('showOfferFestival')?.value,
+      festivals: this.formShortEstablishment.get('festivals')?.value
     }
 
-    /*
+    this.establishment.last_update = moment().toISOString();
+
+    if (this.establishment.festival_info.festivals && this.establishment.festival_info.festivals.length > 0) {
+      this.establishment.festival_info.festivals.forEach( (festival: IFestivalFood) => {
+        festival.last_update = moment().toISOString();
+      })
+    }
 
     if (type === 'create') {
       this.establishment.created_at = moment().toISOString();
@@ -595,13 +605,6 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
         this.isRegistering = false;
       })
     }
-
-    */
-
-    console.log(this.establishment);
-    this.isRegistering = false;
-
-
   }
 
   public async mainTypeChanged(e: any) {
@@ -648,38 +651,47 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
       switch (adress.localidade) {
         case 'São Vicente':
           this.formShortEstablishment.patchValue({ city: CityEnum.SAO_VICENTE });
+          this.defineBeachSelector(CityEnum.SAO_VICENTE);
           break;
 
         case 'Santos':
           this.formShortEstablishment.patchValue({ city: CityEnum.SANTOS });
+          this.defineBeachSelector(CityEnum.SANTOS);
           break;
 
         case 'Praia Grande':
-        this.formShortEstablishment.patchValue({ city: CityEnum.PRAIA_GRANDE });
+          this.formShortEstablishment.patchValue({ city: CityEnum.PRAIA_GRANDE });
+          this.defineBeachSelector(CityEnum.PRAIA_GRANDE);
           break;
 
         case 'Guarujá':
-        this.formShortEstablishment.patchValue({ city: CityEnum.GUARUJA });
+          this.formShortEstablishment.patchValue({ city: CityEnum.GUARUJA });
+          this.defineBeachSelector(CityEnum.GUARUJA);
           break;
 
         case 'Peruíbe':
-        this.formShortEstablishment.patchValue({ city: CityEnum.PERUIBE });
+          this.formShortEstablishment.patchValue({ city: CityEnum.PERUIBE });
+          this.defineBeachSelector(CityEnum.PERUIBE);
           break;
 
         case 'Bertioga':
-        this.formShortEstablishment.patchValue({ city: CityEnum.BERTIOGA });
+          this.formShortEstablishment.patchValue({ city: CityEnum.BERTIOGA });
+          this.defineBeachSelector(CityEnum.BERTIOGA);
           break;
 
         case 'Cubatão':
-        this.formShortEstablishment.patchValue({ city: CityEnum.CUBATAO });
+          this.formShortEstablishment.patchValue({ city: CityEnum.CUBATAO });
+          this.defineBeachSelector(CityEnum.CUBATAO);
           break;
 
         case 'Itanhaém':
-        this.formShortEstablishment.patchValue({ city: CityEnum.ITANHAEM });
+          this.formShortEstablishment.patchValue({ city: CityEnum.ITANHAEM });
+          this.defineBeachSelector(CityEnum.ITANHAEM);
           break;
 
         case 'Mongaguá':
-        this.formShortEstablishment.patchValue({ city: CityEnum.MONGAGUA });
+          this.formShortEstablishment.patchValue({ city: CityEnum.MONGAGUA });
+          this.defineBeachSelector(CityEnum.MONGAGUA);
           break;
       }
 
@@ -734,11 +746,11 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   public addRules(festivalIndex: number, rules?: any[]) {
     const ruleGroup = this.formBuilder.group({
-      consumer_festival_type: ['', [ Validators.required ]],
-      operator: ['', [ Validators.required ]],
-      condition_start: ['', [ Validators.required ]],
+      consumer_festival_type: [BenefitConsumerEnum.POR_PESSOA, [ Validators.required ]],
+      operator: [''],
+      condition_start: [''],
       condition_end: [''],
-      benefit_type: ['', [ Validators.required ]],
+      benefit_type: [BenefitTypeEnum.SEM_BENEFICIO, [ Validators.required ]],
       discount: ['0'],
       price: ['0', [ Validators.required ]]
     });
@@ -1232,8 +1244,11 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
     this.formShortEstablishment.get('mainBeach')?.patchValue(establishment.mainBeach);
     this.formShortEstablishment.get('beach')?.patchValue(establishment.beachInfo?.value);
-    this.formShortEstablishment.get('makeDelivery')?.patchValue(establishment.delivery_sand?.make_delivery);
-    this.formShortEstablishment.get('deliveryIsFree')?.patchValue(establishment.delivery_sand?.delivery_is_free);
+    this.formShortEstablishment.get('makeDeliveryOnTheBeach')?.patchValue(establishment.delivery_sand?.make_delivery);
+    this.formShortEstablishment.get('deliveryIsFreeOnTheBeach')?.patchValue(establishment.delivery_sand?.delivery_is_free);
+
+    this.formShortEstablishment.get('offerFestival')?.patchValue(establishment.festival_info?.has_any_festival_type);
+    this.formShortEstablishment.get('showOfferFestival')?.patchValue(establishment.festival_info?.show_field);
   }
 
   public defineBeachSelector(cityValue: string) {

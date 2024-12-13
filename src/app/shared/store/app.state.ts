@@ -36,6 +36,7 @@ export const appInitialState: IAppState = {
     hasBeach: false
   },
   currentPlace: {
+    last_update: '',
     work_place: [],
     created_at: '',
     suggestions: [],
