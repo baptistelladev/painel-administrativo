@@ -1,3 +1,4 @@
+import { IFestivalFood } from './../../../shared/models/IFestivalFood';
 import { BenefitTypeEnum } from './../../../shared/enums/BenefitType';
 import { MOCK_FESTIVAL_FOOD_TYPE } from './../../../shared/mocks/MockFestivalFoodType';
 
@@ -41,12 +42,14 @@ import { MOCK_LOCATION } from 'src/app/shared/mocks/MockLocation';
 import { IBeach } from 'src/app/shared/models/IBeach';
 import { LocationEnum } from 'src/app/shared/enums/Location';
 import { CurrencyPipe } from '@angular/common';
-import { IFestivalFood } from 'src/app/shared/models/IFestivalFood';
 import { IFestivalFoodType } from 'src/app/shared/models/IFestivalFoodType';
 import { MOCK_FESTIVAL_CONSUMER_TYPE } from 'src/app/shared/mocks/MockConsumerFestivalType';
 import { MOCK_FESTIVAL_OPERATOR } from 'src/app/shared/mocks/MockFestivalOperator';
 import { MOCK_FESTIVAL_BENEFIT_TYPE } from 'src/app/shared/mocks/MockFestivalBenefitType';
 import { BenefitConsumerEnum } from 'src/app/shared/enums/BenefitConsumer';
+import { IFestivalConsumerType } from 'src/app/shared/models/IFestivalConsumerType';
+import { IFestivalBenefitType } from 'src/app/shared/models/IFestivalBenefiType';
+import { IFestivalOperator } from 'src/app/shared/models/IFestivalOperator';
 @Component({
   selector: 'app-establishment-modal',
   templateUrl: './establishment-modal.component.html',
@@ -578,9 +581,60 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
     this.establishment.last_update = moment().toISOString();
 
+    // ATRIBUIR AO FESTIVAL OS RESPECTIVOS VALORES.
     if (this.establishment.festival_info.festivals && this.establishment.festival_info.festivals.length > 0) {
+
+      let blankSpaceToFillOptionWhenNotFound = {
+        value: '',
+        text: {
+          pt: '',
+          en: '',
+          es: ''
+        }
+      }
+
       this.establishment.festival_info.festivals.forEach( (festival: IFestivalFood) => {
         festival.last_update = moment().toISOString();
+
+        if (festival.food_type) {
+          festival.food_type = this.MOCK_FESTIVAL_FOOD_TYPE.find((festivalFoodType: any) => {
+            return festivalFoodType.value === festival.food_type
+          })
+        } else {
+          festival.food_type = blankSpaceToFillOptionWhenNotFound;
+        }
+
+        if (festival.rules && festival.rules.length > 0) {
+          festival.rules?.forEach((rule: any) => {
+
+            if (rule.consumer_festival_type) {
+              rule.consumer_festival_type = this.MOCK_FESTIVAL_CONSUMER_TYPE.find((consumerType: IFestivalConsumerType) => {
+                return consumerType.value === rule.consumer_festival_type
+              })
+            } else {
+              rule.consumer_festival_type = blankSpaceToFillOptionWhenNotFound;
+            }
+
+            if (rule.benefit_type) {
+              rule.benefit_type = this.MOCK_FESTIVAL_BENEFIT_TYPE.find((benefitType: IFestivalBenefitType) => {
+                return benefitType.value === rule.benefit_type;
+              })
+            } else {
+              rule.benefit_type = blankSpaceToFillOptionWhenNotFound;
+            }
+
+            if (rule.operator) {
+              rule.operator = this.MOCK_FESTIVAL_OPERATOR.find((operatorType: IFestivalOperator) => {
+                return operatorType.value === rule.operator;
+              });
+            } else {
+              rule.operator = blankSpaceToFillOptionWhenNotFound;
+            }
+
+            rule.price = Number(rule.price);
+            rule.discount = Number(rule.discount);
+          })
+        }
       })
     }
 
@@ -605,6 +659,8 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
         this.isRegistering = false;
       })
     }
+
+
   }
 
   public async mainTypeChanged(e: any) {

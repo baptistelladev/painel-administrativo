@@ -21,9 +21,9 @@ export const MOCK_FESTIVAL_OPERATOR: IFestivalOperator[] = [
   {
     value: BenefitOperatorsEnum.ACIMA,
     text: {
-      pt: 'acima',
-      en: 'above',
-      es: 'por encima'
+      pt: 'acima de',
+      en: 'over',
+      es: 'mayores de'
     }
   },
   {

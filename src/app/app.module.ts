@@ -24,13 +24,16 @@ import { appReducer } from './shared/store/app.state';
 import { IonicStorageModule, Storage } from '@ionic/storage-angular';
 registerLocaleData(localePt, 'pt-BR');
 
+import { passiveSupport } from 'passive-events-support/src/utils'
+passiveSupport({/*...*/})
+
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }), StoreModule.forRoot({app: appReducer }), IonicStorageModule.forRoot({
     name: 'anfitrion-dashboard-storage',
     storeName: 'anfitrion-dashboard-store',
     dbKey: 'anfitrion-dashboard-key'
-  }),],
+  })],
   providers: [
     Storage,
     {

@@ -565,7 +565,7 @@
                                     formControlName="discount"
                                     type="text"
                                     inputmode="number">
-                                      <ion-text mode="ios" slot="start" aria-hidden="true" *ngIf="getRules(festivalIndex).at(ruleIndex).get('discount')?.value">
+                                      <ion-text mode="ios" slot="end" aria-hidden="true" *ngIf="getRules(festivalIndex).at(ruleIndex).get('discount')?.value">
                                         <p class="color-gray-text fs-16">%</p>
                                       </ion-text>
                                     </ion-input>
