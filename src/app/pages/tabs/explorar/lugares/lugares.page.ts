@@ -22,6 +22,50 @@ import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 })
 export class LugaresPage implements OnInit, OnDestroy {
 
+  public cityResume: any[] = [
+    {
+      length: null,
+      title: 'cadastrados',
+      sub_title: 'na cidade',
+      value: 'LUGARES_CADASTRADOS'
+    },
+    {
+      length: null,
+      title: 'premium',
+      sub_title: 'na cidade',
+      value: 'LUGARES_PREMIUM'
+    },
+    {
+      length: null,
+      title: 'free',
+      sub_title: 'até o momento',
+      value: 'LUGARES_NAO_PREMIUM'
+    }
+  ]
+
+  public beachResume: any[] = [
+    {
+      length: null,
+      title: 'cadastrados',
+      sub_title: 'na praia',
+      value: 'LUGARES_CADASTRADOS'
+    },
+    {
+      length: null,
+      title: 'premium',
+      sub_title: 'na praia',
+      value: 'LUGARES_PREMIUM'
+    },
+    {
+      length: null,
+      title: 'free',
+      sub_title: 'até o momento',
+      value: 'LUGARES_NAO_PREMIUM'
+    }
+  ]
+
+  public resume: any[] | null;
+
   public currentCity: ICity;
   public currentCity$: Observable<ICity>;
   public currentCitySubscription: Subscription;
@@ -83,7 +127,56 @@ export class LugaresPage implements OnInit, OnDestroy {
     } else {
       this.FEATURES = this.MOCK_CITY_FEATURES;
       this.getPlacesFromCity();
+
       // MOSTRAR PESSOAS [SOON]  this.getPeopleFromCity();
+    }
+  }
+
+  public defineResume(origin: string, places: IPlace[]): void {
+    this.resume = null;
+    this.cityResume.forEach((resume: any) => { resume.length = null });
+    this.beachResume.forEach((resume: any) => { resume.length = null });
+
+    if (origin === LocationEnum.CIDADE) {
+      this.resume = this.cityResume;
+
+      this.cityResume.forEach((resume: any) => {
+        if (resume.value === 'LUGARES_CADASTRADOS') {
+          resume.length = places.length;
+        }
+
+        if (resume.value === 'LUGARES_PREMIUM') {
+          resume.length = places.filter((place: IPlace) => {
+            return place.isPremium
+          }).length
+        }
+
+        if (resume.value === 'LUGARES_NAO_PREMIUM') {
+          resume.length = places.filter((place: IPlace) => {
+            return !place.isPremium
+          }).length
+        }
+      })
+
+    } else {
+      this.resume = this.beachResume;
+      this.beachResume.forEach((resume: any) => {
+        if (resume.value === 'LUGARES_CADASTRADOS') {
+          resume.length = places.length;
+        }
+
+        if (resume.value === 'LUGARES_PREMIUM') {
+          resume.length = places.filter((place: IPlace) => {
+            return place.isPremium
+          }).length
+        }
+
+        if (resume.value === 'LUGARES_NAO_PREMIUM') {
+          resume.length = places.filter((place: IPlace) => {
+            return !place.isPremium
+          }).length
+        }
+      })
     }
   }
 
@@ -140,6 +233,8 @@ export class LugaresPage implements OnInit, OnDestroy {
         feature.atLeastOneLength = compressedInformation[feature.value] ? compressedInformation[feature.value] : 0
       })
 
+      this.defineResume(LocationEnum.CIDADE, places);
+
       this.lookingForPlaces = false;
     })
   }
@@ -172,6 +267,8 @@ export class LugaresPage implements OnInit, OnDestroy {
 
         console.log(feature.atLeastOneLength);
       })
+
+      this.defineResume(LocationEnum.PRAIA, places);
 
       this.lookingForPlaces = false
     })
