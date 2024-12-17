@@ -3,19 +3,13 @@
   <section class="painel-rua-gastronomica">
     <ion-grid [fixed]="true">
       <ion-row>
-
-        <ion-col size="12">
-          <ion-text mode="ios" class="line-height-18">
-            <h2 class="fs-24 color-gray-text font-baloo">Gestão da <b>Rua Gastronômica de Santos</b></h2>
-          </ion-text>
-        </ion-col>
-
         <ion-col size="12">
           <ion-grid class="no-padding">
             <ion-row class="no-padding">
               <ion-col size="12" class="no-pad-sides">
-                <ion-text mode="ios" class="d-block">
-                  <h2 class="fs-20 color-gray-text font-baloo">Visão <b>geral</b></h2>
+                <ion-text mode="ios" class="d-block line-height-20 color-gray-text">
+                  <h2 class="fs-20 font-baloo">Visão <b>geral</b></h2>
+                  <p class="fs-14">Rua Gastronômica de Santos</p>
                 </ion-text>
               </ion-col>
 
@@ -33,7 +27,7 @@
                 lines="none"
                 class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="font-baloo length" [ngClass]="[ info.list.length ? 'color-green' : 'color-danger']">{{ info.list.length }}</p>
+                    <p class="font-baloo length" [ngClass]="[ info.list.length ? 'color-green' : 'color-gray-text']">{{ info.list.length }}</p>
                     <p class="color-gray-text type fs-10 txt-uppercase" *ngIf="info.list.length < 2">
                       {{ info.text.pt }}
                     </p>
@@ -49,14 +43,14 @@
 
         <ion-col size="12" *ngIf="establishments && establishments.length === 0">
           <ion-text mode="ios">
-            <p class="fs-14 color-gray-text">Como não encontramos pelo menos um estabelecimento, ainda não foi possível definir a quantidade.</p>
+            <p class="fs-12 color-gray-mid">Como não encontramos pelo menos um estabelecimento, ainda não foi possível definir a quantidade.</p>
           </ion-text>
         </ion-col>
       </ion-row>
     </ion-grid>
   </section>
 
-  <div class="establishments-wrapper">
+  <div class="establishments-wrapper" [ngClass]="{ 'no-padding': establishments && establishments.length === 0 }">
     <swiper-container
     (swiperreachbeginning)="swiperReachedBeginning()"
     (swiperreachend)="swiperReachedEnd()"
@@ -145,12 +139,12 @@
                 mode="ios"
                 lines="none"
                 [button]="true"
-                class="reserve"
-                [detailIcon]="'eye-outline'">
+                class="reserve">
                   Ver <b class="mg-left-5">detalhes</b>
                 </ion-item>
 
                 <ion-item
+                class="remove"
                 (click)="showAlertToRemove(establishment)"
                 mode="ios"
                 lines="none"
@@ -173,18 +167,14 @@
       </ng-container>
     </swiper-container>
 
-    <ion-grid [fixed]="true" *ngIf="establishments && establishments.length === 0">
+    <ion-grid [fixed]="true">
       <ion-row>
-        <ion-col size="12">
+        <ion-col size="12" *ngIf="establishments && establishments.length === 0">
           <ion-text mode="ios">
             <p class="fs-14 color-gray-text">Não existem estabelecimento cadastrados.</p>
           </ion-text>
         </ion-col>
-      </ion-row>
-    </ion-grid>
 
-    <ion-grid [fixed]="true">
-      <ion-row>
         <ng-container *ngIf="establishments && establishments.length > 0">
           <ion-col size="6">
             <div class="controls-wrapper">
@@ -221,4 +211,6 @@
       </ion-row>
     </ion-grid>
   </div>
+
+  <app-add [feature]="'PLACE'"></app-add>
 </ion-content>

@@ -7,7 +7,7 @@
             <ion-button
             (click)="closeModal()"
             title="Fechar modal"
-            class="rgs-gray-solid fs-14"
+            class="rgs-gray-solid fs-12"
             mode="md"
             shape="round">
               Fechar modal
@@ -617,6 +617,7 @@
                         </div>
 
                         <ion-button
+                        title="Adicionar regra"
                         mode="md"
                         class="rgs-gray-solid fs-12"
                         fill="solid"
@@ -632,6 +633,7 @@
               </div>
 
               <ion-button
+              title="Adicionar festival"
               mode="md"
               class="rgs-gray-solid fs-12"
               fill="solid"
@@ -1249,6 +1251,7 @@
               </div>
 
               <ion-button
+              title="Adicionar telefone"
               mode="md"
               class="rgs-gray-solid fs-12"
               fill="solid"
@@ -1368,6 +1371,7 @@
               </div>
 
               <ion-button
+              title="Adicionar rede social"
               mode="md"
               class="rgs-gray-solid fs-12"
               fill="solid"
@@ -1461,6 +1465,7 @@
                         </ion-datetime>
 
                         <ion-button
+                        title="Definir entrada"
                         (click)="defineTimeFromSundaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
@@ -1528,6 +1533,7 @@
                         </ion-datetime>
 
                         <ion-button
+                        title="Definir saída"
                         (click)="defineTimeFromSundaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
@@ -1549,6 +1555,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"
@@ -1627,6 +1634,7 @@
                         </ion-datetime>
 
                         <ion-button
+                        title="Definir entrada"
                         (click)="defineTimeFromMondaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
@@ -1694,6 +1702,7 @@
                         </ion-datetime>
 
                         <ion-button
+                        title="Definir saída"
                         (click)="defineTimeFromMondaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
@@ -1715,6 +1724,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"
@@ -1796,7 +1806,7 @@
                         (click)="defineTimeFromTuesdaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir entrada">
                           Definir entrada {{ i }}
                         </ion-button>
                       </ng-template>
@@ -1863,7 +1873,7 @@
                         (click)="defineTimeFromTuesdaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir saída">
                           Definir saída {{ i }}
                         </ion-button>
                       </ng-template>
@@ -1881,6 +1891,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"
@@ -1962,7 +1973,7 @@
                         (click)="defineTimeFromWednesdaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir saída">
                           Definir entrada {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2029,7 +2040,7 @@
                         (click)="defineTimeFromWednesdaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir saída">
                           Definir saída {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2047,6 +2058,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"
@@ -2128,7 +2140,7 @@
                         (click)="defineTimeFromThursdaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir entrada">
                           Definir entrada {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2195,7 +2207,7 @@
                         (click)="defineTimeFromThursdaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir saída">
                           Definir saída {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2213,6 +2225,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"
@@ -2294,7 +2307,7 @@
                         (click)="defineTimeFromFridaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir entrada">
                           Definir entrada {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2361,7 +2374,7 @@
                         (click)="defineTimeFromFridaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir saída">
                           Definir saída {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2379,6 +2392,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"
@@ -2460,7 +2474,7 @@
                         (click)="defineTimeFromSaturdaysHour(i, 'open')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir entrada">
                           Definir entrada {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2527,7 +2541,7 @@
                         (click)="defineTimeFromSaturdaysHour(i, 'close')"
                         class="rgs-main-solid custom-button-for-time"
                         mode="md"
-                        title="Definir">
+                        title="Definir saída">
                           Definir saída {{ i }}
                         </ion-button>
                       </ng-template>
@@ -2545,6 +2559,7 @@
                 </div>
 
                 <ion-button
+                title="Adicionar horário"
                 mode="md"
                 class="rgs-gray-solid fs-12"
                 fill="solid"

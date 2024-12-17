@@ -266,7 +266,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
       mode: 'ios',
       message: `Confirmar remoção de ${establishment.name}?`,
       subHeader: `${establishment.name}`,
-      cssClass: 'rgs-alert',
+      cssClass: 'anfitrion-alert negative-btn',
       buttons: [
         {
           text: 'Cancelar',

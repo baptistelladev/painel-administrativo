@@ -8,6 +8,7 @@
   --neon: #01FE03;
 
   --green: #769834;
+  --green-rgb: 118, 152, 52;
   --green-dark: #547D0E;
   --green-resident:#4D5935;
 
@@ -41,6 +42,7 @@
   --transparent: transparent;
 
   --danger: #dc3545;
+  --danger-rgb: 220, 53, 69;
   --attention: #ffc107;
 
   --black: #000;
@@ -48,6 +50,28 @@
   --purple-tourist: #803499;
 
   --bootstrap-warning: #856404;
+  --bootstrap-warning-light-bg: #fff3cd;
+  --bootstrap-warning-border: #ffeeba;
+
+  --bootstrap-success: #155724;
+  --bootstrap-success-light-bg: #d4edda;
+  --bootstrap-success-border: #c3e6cb;
+
+  --bootstrap-danger: #58151c;
+  --bootstrap-danger-light-bg: #f8d7da;
+  --bootstrap-danger-border: #f1aeb5;
+
+  --bootstrap-gray: #383d41;
+  --bootstrap-gray-light-bg: #e2e3e5;
+  --bootstrap-gray-border: #d6d8db;
+
+  --bootstrap-tourist: #0c5460;
+  --bootstrap-tourist-light-bg: #d1ecf1;
+  --bootstrap-tourist-border: #bee5eb;
+
+  --bootstrap-resident: #863e02;
+  --bootstrap-resident-light-bg: rgba(255, 189, 30, 0.459);
+  --bootstrap-resident-border: #ff9718;
 
   /** PRINCIPAL **/
   --ion-color-primary: #769834;

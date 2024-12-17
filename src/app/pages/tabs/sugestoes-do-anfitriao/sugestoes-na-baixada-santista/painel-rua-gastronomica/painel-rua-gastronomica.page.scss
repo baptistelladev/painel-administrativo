@@ -116,12 +116,15 @@ ion-list {
       font-size: 14px;
       --min-height: 0;
       --color: var(--gray-text);
-      --background-hover: var(--gray-text);
       border-bottom: 0;
 
+      &.remove {
+        --color: var(--danger);
+      }
+
       &.reserve, &.main {
-        --color: var(--green);
-        --background-hover: var(--green);
+        --color: var(--gray-text);
+        --color-hover: var(--green);
       }
 
       &.coming-soon {

@@ -38,7 +38,7 @@ export class LugaresPage implements OnInit, OnDestroy {
     {
       length: null,
       title: 'free',
-      sub_title: 'até o momento',
+      sub_title: 'na cidade',
       value: 'LUGARES_NAO_PREMIUM'
     }
   ]

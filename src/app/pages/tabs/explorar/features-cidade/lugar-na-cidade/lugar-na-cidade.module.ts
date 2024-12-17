@@ -7,13 +7,14 @@ import { IonicModule } from '@ionic/angular';
 import { LugarNaCidadePageRoutingModule } from './lugar-na-cidade-routing.module';
 
 import { LugarNaCidadePage } from './lugar-na-cidade.page';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    LugarNaCidadePageRoutingModule
+    SharedModule,
+    LugarNaCidadePageRoutingModule,
+    ComponentsModule
   ],
   declarations: [LugarNaCidadePage]
 })
