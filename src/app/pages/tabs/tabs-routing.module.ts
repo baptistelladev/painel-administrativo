@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'painel-rua-gastronomica',
+        redirectTo: 'lugares',
         pathMatch: 'full'
       },
       {
@@ -19,7 +19,20 @@ const routes: Routes = [
       },
       {
         path: 'lugares',
-        loadChildren: () => import('./explorar/lugares/lugares.module').then( m => m.LugaresPageModule)
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./explorar/lugares/lugares.module').then( m => m.LugaresPageModule)
+          },
+          {
+            path: 'na-cidade/:place_type',
+            loadChildren: () => import('./explorar/features-cidade/lugar-na-cidade/lugar-na-cidade.module').then( m => m.LugarNaCidadePageModule)
+          },
+          {
+            path: 'na-praia/:place_type',
+            loadChildren: () => import('./explorar/features-praia/lugar-na-praia/lugar-na-praia.module').then( m => m.LugarNaPraiaPageModule)
+          }
+        ]
       },
       {
         path: 'pessoas',
@@ -30,10 +43,6 @@ const routes: Routes = [
         loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
       }
     ]
-  },
-  {
-    path: 'explorar',
-    loadChildren: () => import('./explorar/explorar.module').then( m => m.ExplorarPageModule)
   }
 ];
 

@@ -189,7 +189,7 @@ export class LugaresPage implements OnInit, OnDestroy {
   }
 
   public async searchPlaceInTheCity(place: any) {
-    this.navCtrl.navigateForward([`/logado/explorar/lugares-na-cidade/${place.route}`], {
+    this.navCtrl.navigateForward([`/logado/lugares/na-cidade/${place.route}`], {
       queryParams: {
         localidade: this.selectedSegment,
         cidade: this.currentCity.value
@@ -198,7 +198,7 @@ export class LugaresPage implements OnInit, OnDestroy {
   }
 
   public async searchPlaceAtTheBeach(place: any) {
-    this.navCtrl.navigateForward([`/logado/explorar/lugares-na-praia/${place.route}`], {
+    this.navCtrl.navigateForward([`/logado/lugares/na-praia/${place.route}`], {
       queryParams: {
         localidade: this.selectedSegment,
         cidade: this.currentCity.value
