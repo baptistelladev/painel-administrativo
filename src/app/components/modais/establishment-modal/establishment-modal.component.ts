@@ -50,6 +50,7 @@ import { BenefitConsumerEnum } from 'src/app/shared/enums/BenefitConsumer';
 import { IFestivalConsumerType } from 'src/app/shared/models/IFestivalConsumerType';
 import { IFestivalBenefitType } from 'src/app/shared/models/IFestivalBenefiType';
 import { IFestivalOperator } from 'src/app/shared/models/IFestivalOperator';
+import { MOCK_BEACH_PLACES_TYPE } from 'src/app/shared/mocks/MockBeachPlacesType';
 @Component({
   selector: 'app-establishment-modal',
   templateUrl: './establishment-modal.component.html',
@@ -256,7 +257,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     },
   }
 
+  public MOCK_PLACES_TYPE: IPlaceType[];
   public MOCK_CITY_PLACES_TYPE: IPlaceType[] = MOCK_CITY_PLACES_TYPE;
+  public MOCK_BEACH_PLACES_TYPE: IPlaceType[] = MOCK_BEACH_PLACES_TYPE;
   public MOCK_TICKETS: ITicket[] = MOCK_TICKETS;
   public MOCK_MARKET_TICKETS: ITicket[] = MOCK_MARKET_TICKETS;
   public MOCK_NETWORKS: ISocialNetwork[] = MOCK_NETWORKS;
@@ -364,8 +367,6 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   public beachChanged(e: any): void {
     console.log(e.detail.value);
-
-
   }
 
   public async registerEstablishment(type: 'create' | 'update') {
@@ -377,7 +378,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
     this.establishment.name = this.formShortEstablishment.get('name')?.value;
 
-    let foundType: IPlaceType | undefined = this.MOCK_CITY_PLACES_TYPE.find((type: IPlaceType) => {
+    let foundType: IPlaceType | undefined = this.MOCK_PLACES_TYPE.find((type: IPlaceType) => {
       return type.value === this.formShortEstablishment.get('mainType')?.value
     })
 
@@ -785,7 +786,22 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   }
 
   public async workAtChanged(e: any) {
-    console.log(e);
+    let values: string[] = e.detail.value
+
+    if (values.length === 1 && values[0] === LocationEnum.CIDADE) {
+      this.MOCK_PLACES_TYPE = this.MOCK_CITY_PLACES_TYPE;
+    }
+
+    if (values.length === 1 && values[0] === LocationEnum.PRAIA) {
+      this.MOCK_PLACES_TYPE = this.MOCK_BEACH_PLACES_TYPE;
+    }
+
+    if (values.length > 1) {
+      this.MOCK_PLACES_TYPE = [
+        ...this.MOCK_CITY_PLACES_TYPE,
+        ...this.MOCK_BEACH_PLACES_TYPE
+      ]
+    }
   }
 
   public async marketTicketChanged(e: any) {
@@ -800,15 +816,15 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     return this.festivals.at(festivalIndex).get('rules') as FormArray;
   }
 
-  public addRules(festivalIndex: number, rules?: any[]) {
+  public addRules(festivalIndex: number, rules?: any) {
     const ruleGroup = this.formBuilder.group({
-      consumer_festival_type: [BenefitConsumerEnum.POR_PESSOA, [ Validators.required ]],
-      operator: [''],
-      condition_start: [''],
-      condition_end: [''],
-      benefit_type: [BenefitTypeEnum.SEM_BENEFICIO, [ Validators.required ]],
-      discount: ['0'],
-      price: ['0', [ Validators.required ]]
+      consumer_festival_type: [rules ? rules.consumer_festival_type.value : '', [ Validators.required ]],
+      operator: [rules ? rules.operator.value : ''],
+      condition_start: [rules ? rules.condition_start : ''],
+      condition_end: [rules ? rules.condition_end : ''],
+      benefit_type: [rules ? rules.benefit_type.value : '', [ Validators.required ]],
+      discount: [rules ? rules.discount : ''],
+      price: [rules ? rules.price : '', [ Validators.required ]]
     });
     this.getRules(festivalIndex).push(ruleGroup);
   }
@@ -823,7 +839,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   public addFestival(festival?: IFestivalFood) {
     const festivalGroup = this.formBuilder.group({
-      food_type: ['', [ Validators.required ]],
+      food_type: [festival ? festival.food_type?.value : '', [ Validators.required ]],
       rules: this.formBuilder.array([]),
     });
     this.festivals.push(festivalGroup);
@@ -1170,6 +1186,23 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
     this.formShortEstablishment.get('specialty')?.patchValue(specialties);
 
+    this.formShortEstablishment.get('workAt')?.patchValue(establishment.work_place);
+
+    if (establishment.work_place.length === 1 && establishment.work_place[0] === LocationEnum.CIDADE) {
+      this.MOCK_PLACES_TYPE = this.MOCK_CITY_PLACES_TYPE;
+    }
+
+    if (establishment.work_place.length === 1 && establishment.work_place[0] === LocationEnum.PRAIA) {
+      this.MOCK_PLACES_TYPE = this.MOCK_BEACH_PLACES_TYPE;
+    }
+
+    if (establishment.work_place.length > 1) {
+      this.MOCK_PLACES_TYPE = [
+        ...this.MOCK_CITY_PLACES_TYPE,
+        ...this.MOCK_BEACH_PLACES_TYPE
+      ]
+    }
+
     this.formShortEstablishment.get('mainType')?.patchValue(establishment.mainType.value);
 
     this.formShortEstablishment.get('zip_code')?.patchValue(establishment.adress.zip_code);
@@ -1294,8 +1327,6 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     this.formShortEstablishment.get('city')?.patchValue(establishment.origin.value);
     this.formShortEstablishment.get('suggestions')?.patchValue(establishment.suggestions);
 
-    this.formShortEstablishment.get('workAt')?.patchValue(establishment.work_place);
-
     this.defineBeachSelector(establishment.origin.value);
 
     this.formShortEstablishment.get('mainBeach')?.patchValue(establishment.mainBeach);
@@ -1305,6 +1336,18 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
     this.formShortEstablishment.get('offerFestival')?.patchValue(establishment.festival_info?.has_any_festival_type);
     this.formShortEstablishment.get('showOfferFestival')?.patchValue(establishment.festival_info?.show_field);
+
+    if (establishment.festival_info?.festivals && establishment.festival_info?.festivals.length > 0) {
+      establishment.festival_info?.festivals.forEach((festival: IFestivalFood, festivalIndex: number) => {
+        this.addFestival(festival);
+
+        if (festival.rules && festival.rules.length > 0) {
+          festival.rules.forEach((rule: any) => {
+            this.addRules(festivalIndex, rule);
+          })
+        }
+      })
+    }
   }
 
   public defineBeachSelector(cityValue: string) {

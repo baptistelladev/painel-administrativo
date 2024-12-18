@@ -249,15 +249,6 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
     await modal.present();
 
-    // Capturando os dados retornados
-    const { data } = await modal.onWillDismiss();
-
-    await modal.onDidDismiss().then((res: any) => {
-      if (data?.establishment?.id) {
-        this.getEstablimentsFromGastronomicStreet()
-      }
-    })
-
     return modal;
   }
 

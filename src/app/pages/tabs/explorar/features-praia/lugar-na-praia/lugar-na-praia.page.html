@@ -1,13 +1,134 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>lugar-na-praia</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content
+#placesContent
+class="ion-content-w-linear-bg"
+[forceOverscroll]="false">
+  <section class="lugar-na-praia">
+    <ion-header mode="ios" class="ion-no-border">
+      <ion-toolbar mode="ios" class="ion-bg-white no-ion-padding">
+        <ion-grid [fixed]="true">
+          <ion-row>
+            <ion-col size="12">
+              <div class="header-container">
+                <div class="back-btn-wrapper">
+                  <ion-button
+                  (click)="back()"
+                  class="back ion-color-gray-text back-btn no-ion-padding font-baloo"
+                  [title]="'Voltar'"
+                  fill="clear">
+                    <ion-icon name="chevron-back-outline"></ion-icon> <span class="font-w-thin mg-left-5">Voltar</span>
+                  </ion-button>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-toolbar>
+    </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">lugar-na-praia</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <ion-grid [fixed]="true" class="no-pad-top">
+      <ion-row>
+
+        <ion-col size="12" class="no-pad-top">
+          <ion-text
+          class="txt-center color-gray-text full-width icon-title-text"
+          mode="ios">
+            <ion-icon [name]="placeTypeOBJ?.icon + '-outline'" class="full-width fs-32 animate__animated animate__fadeInUp"></ion-icon>
+
+            <h2 class="font-baloo">
+              Explorando <span class="font-w-bold txt-lowercase">{{ placeTypeOBJ?.text.pt }}</span>
+            </h2>
+
+            <p class="fs-16">
+              {{ currentCityAsParam?.in.pt }} {{ currentCityAsParam?.name }}
+            </p>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="12" *ngIf="places && places.length > 0">
+          <ion-text
+          class="txt-left color-gray-text"
+          mode="ios">
+            <p class="color-gray-text fs-14 font-w-thin txt-">
+              Veja a lista de lugares cadastrados na <span class="txt-lowercase">{{ currentLocationAsParam }}</span>
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <ion-grid [fixed]="true" class="no-pad-top">
+      <ion-row>
+        <ion-col *ngIf="places && places.length === 0" size="12" class="no-pad-top">
+          <ion-text mode="ios">
+            <p class="fs-14 color-gray-text font-w-thin">
+              Não encontramos estabelecimentos.
+            </p>
+          </ion-text>
+        </ion-col>
+
+        <ng-container *ngIf="places">
+          <ion-col size="12" size-sm="6" size-lg="4" *ngFor="let place of places">
+            <div class="general-card-wrapper">
+              <div class="general-card-container">
+
+                <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified" *ngIf="place.isPremium"></ion-icon>
+
+                <div class="general-card">
+                  <ion-item
+                  [button]="true"
+                  lines="none"
+                  mode="ios">
+                    <ion-avatar>
+                      <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                    </ion-avatar>
+
+                    <ion-text mode="ios" class="line-height-16">
+                      <p class="color-gray-text fs-15 font-baloo name"><b>{{ place.name }}</b></p>
+                      <p class="color-gray-mid fs-12">{{ place.beachInfo?.text.pt }}</p>
+
+                      <ion-chip
+                      *ngIf="place.delivery_sand"
+                      mode="ios"
+                      class="txt-uppercase as-badge deliver">
+                        Entrega na areia
+                      </ion-chip>
+                    </ion-text>
+                  </ion-item>
+
+                  <ion-item
+                  lines="none"
+                  mode="ios">
+                    <ion-button
+                    (click)="showAlertToRemove(place)"
+                    fill="solid"
+                    title="Remover"
+                    class="remover"
+                    mode="ios">
+                      <ion-icon name="trash-outline" class="mg-right-5"></ion-icon>
+                      Remover
+                    </ion-button>
+
+                    <ion-button
+                    (click)="seeEstablishment(place)"
+                    fill="solid"
+                    title="Ver"
+                    class="ver"
+                    mode="ios">
+                      Ver detalhes <ion-icon name="chevron-forward-outline" class="mg-left-5"></ion-icon>
+                    </ion-button>
+                  </ion-item>
+                </div>
+              </div>
+            </div>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="!places">
+          <ion-spinner [name]="'dots'" class="green-dots"></ion-spinner>
+        </ng-container>
+      </ion-row>
+    </ion-grid>
+
+    <app-add [feature]="'PLACE'"></app-add>
+  </section>
 </ion-content>
