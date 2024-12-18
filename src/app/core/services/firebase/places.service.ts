@@ -58,7 +58,7 @@ export class PlacesService {
     orderDirection: 'asc' | 'desc' = 'asc'
   ): Observable<any[]> {
     // Cria a referência da coleção
-    const colRef = collection(this.firestore, collectionName);
+    const colRef = collection(this.firestore, collectionName) as CollectionReference;
 
     // Constrói a lista de restrições da consulta
     const queryConstraints: QueryConstraint[] = filters.map(filter =>
@@ -66,20 +66,40 @@ export class PlacesService {
     );
 
     if (orderByField) {
-      queryConstraints.push(orderBy(orderByField, orderDirection));
+      // Verifica se a consulta já possui um orderBy
+      const hasOrderBy = queryConstraints.some(constraint => constraint instanceof QueryConstraint && constraint.type === 'orderBy');
+
+      if (!hasOrderBy) {
+        queryConstraints.push(orderBy(orderByField, orderDirection));
+      }
     }
 
     // Cria a consulta com todos os filtros
     const q = query(colRef, ...queryConstraints);
 
-    // Converte o onSnapshot em um Observable para refletir atualizações em tempo real
-    return new Observable<IPlace[]>(observer => {
-      onSnapshot(q, querySnapshot => {
-        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as IPlace));
-        observer.next(data);
-      }, error => {
-        observer.error(error);
-      });
+    // Converte a `Promise` resultante do `getDocs` em um `Observable`
+    return new Observable<any[]>(observer => {
+      // Adiciona o listener de snapshot para a consulta
+      const unsubscribe = onSnapshot(
+        q,
+        querySnapshot => {
+          // Mapeia os dados dos documentos
+          const data = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          })) as IPlace[];
+
+          // Emite os dados atualizados para o Observable
+          observer.next(data);
+        },
+        error => {
+          // Emite erro, caso algo falhe
+          observer.error(error);
+        }
+      );
+
+      // Cleanup: remove o listener quando o Observable for cancelado
+      return () => unsubscribe();
     });
   }
 }
