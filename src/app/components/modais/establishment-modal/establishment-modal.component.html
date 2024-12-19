@@ -190,6 +190,29 @@
 
           <ion-col size="12">
             <div
+            [ngClass]="{
+            'has-error' : (formShortEstablishment.get('sub_name')?.invalid &&
+            (formShortEstablishment.get('sub_name')?.touched ||
+            formShortEstablishment.get('sub_name')?.dirty))}"
+            class="rgs-input-wrapper  full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Sub nome ou local'"
+                labelPlacement="floating"
+                formControlName="sub_name"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
             [ngClass]="{'has-error' : (formShortEstablishment.get('mainType')?.invalid &&
             (formShortEstablishment.get('mainType')?.touched ||
             formShortEstablishment.get('mainType')?.dirty))}"
@@ -617,14 +640,99 @@
                         </div>
 
                         <ion-button
-                        title="Adicionar regra"
+                          title="Adicionar regra"
+                          mode="md"
+                          class="rgs-gray-solid fs-12 mg-right-16"
+                          fill="solid"
+                          type="button"
+                          shape="round"
+                          (click)="addRules(festivalIndex)">
+                            Adicionar regra
+                          </ion-button>
+                      </div>
+                    </ion-col>
+
+                    <ion-col size="12">
+                      <ion-text mode="ios">
+                        <hr class="rgs-divider">
+                      </ion-text>
+                    </ion-col>
+
+                    <!-- CORTESIAS DO FESTIVAL -->
+                    <ion-col size="12" formArrayName="courtesies" class="no-pad-sides">
+                      <div class="courtesies-wrapper">
+                        <div *ngFor="let courtesy of getCourtesies(festivalIndex).controls; let courtesyIndex = index" [formGroupName]="courtesyIndex" class="array-item less-padding">
+                          <ion-grid class="no-pad-sides no-pad-top no-pad-bottom">
+                            <ion-row>
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div class="item-title mg-bottom-16">
+                                  <ion-text mode="ios">
+                                    <p class="fs-14 color-linear">Cortesias <b>inclusas</b></p>
+                                  </ion-text>
+
+                                  <ion-button
+                                  title="Remover regra"
+                                  class="remove clear-danger"
+                                  fill="clear"
+                                  type="button">
+                                    <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+                                  </ion-button>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                                <div
+                                [ngClass]="{'has-error' : (getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.invalid &&
+                                (getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.touched ||
+                                getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.dirty))}"
+                                class="rgs-select-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-select
+                                    (ionChange)="consumerFestivalTypeChanged($event)"
+                                    formControlName="consumer_festival_type"
+                                    [cancelText]="'Cancelar'"
+                                    [okText]="'Definir'"
+                                    [label]="'Tipo'"
+                                    toggleIcon="chevron-down-outline"
+                                    label-placement="floating">
+                                      <ion-select-option
+                                      *ngFor="let consumerType of MOCK_FESTIVAL_CONSUMER_TYPE"
+                                      [value]="consumerType.value">
+                                        {{ consumerType.text.pt }}
+                                      </ion-select-option>
+                                    </ion-select>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.invalid &&
+                                  (getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.touched || getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.dirty)">
+                                    <p
+                                    *ngIf="getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                        </div>
+
+                        <ion-button
+                        title="Adicionar cortesia"
                         mode="md"
-                        class="rgs-gray-solid fs-12"
+                        class="rgs-main-solid fs-12"
                         fill="solid"
                         type="button"
                         shape="round"
-                        (click)="addRules(festivalIndex)">
-                          Adicionar regra
+                        (click)="addCourtesies(festivalIndex)">
+                          Adicionar cortesia
                         </ion-button>
                       </div>
                     </ion-col>

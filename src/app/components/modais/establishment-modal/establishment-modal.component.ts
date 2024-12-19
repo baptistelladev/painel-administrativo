@@ -86,6 +86,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     isPremium: false,
     id: '',
     name: '',
+    sub_name: '',
     value: '',
     adress: {
       number: '',
@@ -314,6 +315,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   public initFormShortEstablishment(): void {
     this.formShortEstablishment = this.formBuilder.group({
+      sub_name: [''],
       name: ['', [ Validators.required, Validators.minLength(2) ]],
       specialty: [''],
       mainType: ['', [ Validators.required ]],
@@ -377,6 +379,8 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
 
     this.establishment.name = this.formShortEstablishment.get('name')?.value;
+
+    this.establishment.sub_name = this.formShortEstablishment.get('sub_name')?.value;
 
     let foundType: IPlaceType | undefined = this.MOCK_PLACES_TYPE.find((type: IPlaceType) => {
       return type.value === this.formShortEstablishment.get('mainType')?.value
@@ -833,6 +837,21 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     this.getRules(festivalIndex).removeAt(index);
   }
 
+  public getCourtesies(festivalIndex: number): FormArray {
+    return this.festivals.at(festivalIndex).get('courtesies') as FormArray;
+  }
+
+  public addCourtesies(festivalIndex: number, courtesies?: any) {
+    const ruleGroup = this.formBuilder.group({
+      cortesy: [courtesies ? courtesies.value : '', [ Validators.required ]]
+    });
+    this.getCourtesies(festivalIndex).push(ruleGroup);
+  }
+
+  public removeCourtesy(festivalIndex: number, index: number) {
+    this.getCourtesies(festivalIndex).removeAt(index);
+  }
+
   get festivals(): FormArray {
     return this.formShortEstablishment.get('festivals') as FormArray;
   }
@@ -841,6 +860,8 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     const festivalGroup = this.formBuilder.group({
       food_type: [festival ? festival.food_type?.value : '', [ Validators.required ]],
       rules: this.formBuilder.array([]),
+      has_courtesy: [festival ? festival.has_courtesy : false, [ Validators.required ]],
+      courtesies: this.formBuilder.array([])
     });
     this.festivals.push(festivalGroup);
   }
@@ -1177,6 +1198,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     this.formShortEstablishment.get('type')?.patchValue(this.establishment.adress.type.pt);
 
     this.formShortEstablishment.get('name')?.patchValue(establishment.name);
+    this.formShortEstablishment.get('sub_name')?.patchValue(establishment.sub_name);
     //this.formShortEstablishment.get('url')?.patchValue(establishment.value);
     this.removeEverythingFromString()
 
