@@ -620,19 +620,6 @@
                                       </ion-text>
                                     </ion-input>
                                   </ion-item>
-
-                                  <ion-text
-                                  mode="ios"
-                                  class="mg-top-8 d-block"
-                                  *ngIf="
-                                  getRules(festivalIndex).at(ruleIndex).get('price')?.invalid &&
-                                  (getRules(festivalIndex).at(ruleIndex).get('price')?.touched || getRules(festivalIndex).at(ruleIndex).get('price')?.dirty)">
-                                    <p
-                                    *ngIf="getRules(festivalIndex).at(ruleIndex).get('price')?.hasError('required')"
-                                    class="fs-13 color-danger">
-                                      Campo obrigatório
-                                    </p>
-                                  </ion-text>
                                 </div>
                               </ion-col>
                             </ion-row>

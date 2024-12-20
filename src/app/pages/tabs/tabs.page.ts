@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
 
 @Component({
   selector: 'app-tabs',
@@ -29,7 +30,14 @@ export class TabsPage implements OnInit {
       text: 'Rua Gastronômica de Santos',
       router: ['/logado/painel-rua-gastronomica'],
       icon: 'bulb',
-      value: 'RUA_GASTRONOMICA_DE_SANTOS'
+      value: SuggestionsEnum.RUA_GASTRONOMICA_DE_SANTOS
+    },
+    {
+      title: 'Sugestão',
+      text: 'Festival de comida japonesa',
+      router: ['/logado/festival-de-comida-japonesa'],
+      icon: 'bulb',
+      value: SuggestionsEnum.FESTIVAL_COMIDA_JAPONESA
     }
   ]
 

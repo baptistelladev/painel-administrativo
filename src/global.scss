@@ -519,13 +519,14 @@ ion-header {
 }
 
 .city-wrapper {
-  width: 100%;
-  max-width: 338px;
   margin: 0;
+  @include flexbox(center, flex-end, row);
 
   ion-item {
     --min-height: 0;
     --padding-start: 0;
+    --inner-padding-end: 0;
+    --padding-end: 0;
 
     ion-text {
       p {
@@ -746,6 +747,10 @@ ion-chip.as-badge {
   margin: 0;
   max-height: 15px;
 
+  &.fs-10 {
+    font-size: 10px;
+  }
+
   &.positioned {
     position: absolute;
     right: 10px;
@@ -772,4 +777,22 @@ ion-chip.as-badge {
     background: var(--bootstrap-resident-light-bg);
     color: var(--bootstrap-resident);
   }
+
+  &.gray-text {
+    --background: var(--gray-text);
+    color: var(--white);
+  }
+}
+
+.swiper-inset-wrapper {
+  width: 100%;
+  height: auto;
+  padding: 16px 0;
+  background: var(--gray-ed);
+  box-shadow: inset 2px 0px 11px rgba(0, 0, 0, .2);
+}
+
+app-change-city-button {
+  display: block;
+  margin-top: -3px;
 }

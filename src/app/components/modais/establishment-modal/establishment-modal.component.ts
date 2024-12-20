@@ -843,7 +843,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
       condition_end: [rules ? rules.condition_end : ''],
       benefit_type: [rules ? rules.benefit_type.value : '', [ Validators.required ]],
       discount: [rules ? rules.discount : ''],
-      price: [rules ? rules.price : '', [ Validators.required ]]
+      price: [rules ? rules.price : '']
     });
     this.getRules(festivalIndex).push(ruleGroup);
   }
