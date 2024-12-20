@@ -367,6 +367,10 @@
                   <ion-row>
                     <!-- REGRAS DO FESTIVAL -->
                     <ion-col size="12" formArrayName="rules" class="no-pad-sides">
+                      <ion-text mode="ios">
+                        <p class="fs-14 color-gray-text mg-bottom-16">Regras <b>do festival/rodízio</b></p>
+                      </ion-text>
+
                       <div class="rules-wrapper">
                         <div *ngFor="let rule of getRules(festivalIndex).controls; let ruleIndex = index" [formGroupName]="ruleIndex" class="array-item less-padding">
                           <ion-grid class="no-pad-sides no-pad-top no-pad-bottom">
@@ -374,7 +378,7 @@
                               <ion-col size="12" class="no-pad-top no-pad-bottom">
                                 <div class="item-title mg-bottom-16">
                                   <ion-text mode="ios">
-                                    <p class="fs-14 color-gray-text">Regras <b>do festival/rodízio</b></p>
+                                    <p class="fs-14 color-gray-text">Regra <b>{{ ruleIndex }}</b></p>
                                   </ion-text>
 
                                   <ion-button
@@ -482,7 +486,6 @@
                                   mode="ios">
                                     <ion-input
                                     [maxlength]="2"
-                                    (keyup)="removeEverythingFromString()"
                                     enterkeyhint="next"
                                     mode="ios"
                                     [label]="'início'"
@@ -517,7 +520,6 @@
                                   mode="ios">
                                     <ion-input
                                     [maxlength]="2"
-                                    (keyup)="removeEverythingFromString()"
                                     enterkeyhint="next"
                                     mode="ios"
                                     [label]="'fim'"
@@ -580,7 +582,6 @@
                                   mode="ios">
                                     <ion-input
                                     [maxlength]="3"
-                                    (keyup)="removeEverythingFromString()"
                                     enterkeyhint="next"
                                     mode="ios"
                                     [label]="'Desconto (caso haja)'"
@@ -607,7 +608,6 @@
                                   lines="none"
                                   mode="ios">
                                     <ion-input
-                                    (keyup)="removeEverythingFromString()"
                                     enterkeyhint="next"
                                     mode="ios"
                                     [label]="'Preço'"
@@ -652,14 +652,24 @@
                       </div>
                     </ion-col>
 
-                    <ion-col size="12">
+                    <ion-col size="12" class="no-pad-sides">
                       <ion-text mode="ios">
                         <hr class="rgs-divider">
                       </ion-text>
                     </ion-col>
 
+                    <ion-col size="12" class="no-pad-sides no-pad-top">
+                      <ion-item mode="ios" lines="none" class="rgs-item-toggle ion-bg-transparent">
+                        <ion-toggle justify="space-between" mode="ios" formControlName="has_courtesy">Possui cortesia</ion-toggle>
+                      </ion-item>
+                    </ion-col>
+
                     <!-- CORTESIAS DO FESTIVAL -->
                     <ion-col size="12" formArrayName="courtesies" class="no-pad-sides">
+                      <ion-text mode="ios">
+                        <p class="fs-14 color-linear mg-bottom-16">Cortesias <b>inclusas</b></p>
+                      </ion-text>
+
                       <div class="courtesies-wrapper">
                         <div *ngFor="let courtesy of getCourtesies(festivalIndex).controls; let courtesyIndex = index" [formGroupName]="courtesyIndex" class="array-item less-padding">
                           <ion-grid class="no-pad-sides no-pad-top no-pad-bottom">
@@ -667,10 +677,11 @@
                               <ion-col size="12" class="no-pad-top no-pad-bottom">
                                 <div class="item-title mg-bottom-16">
                                   <ion-text mode="ios">
-                                    <p class="fs-14 color-linear">Cortesias <b>inclusas</b></p>
+                                    <p class="fs-14 color-linear">Cortesia <b>{{ courtesyIndex + 1 }}</b></p>
                                   </ion-text>
 
                                   <ion-button
+                                  (click)="removeCourtesy(festivalIndex, courtesyIndex)"
                                   title="Remover regra"
                                   class="remove clear-danger"
                                   fill="clear"
@@ -680,11 +691,48 @@
                                 </div>
                               </ion-col>
 
-                              <ion-col size="12" class="no-pad-top no-pad-bottom">
+                              <ion-col size="4" class="no-pad-top no-pad-bottom">
                                 <div
-                                [ngClass]="{'has-error' : (getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.invalid &&
-                                (getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.touched ||
-                                getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.dirty))}"
+                                [ngClass]="{'has-error' : (getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.invalid &&
+                                (getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.touched ||
+                                getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.dirty))}"
+                                class="rgs-input-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
+                                  <ion-item
+                                  class="overflow-hidden"
+                                  lines="none"
+                                  mode="ios">
+                                    <ion-input
+                                    [maxlength]="3"
+                                    enterkeyhint="next"
+                                    mode="ios"
+                                    [label]="'Qtde'"
+                                    labelPlacement="floating"
+                                    formControlName="number"
+                                    type="text"
+                                    inputmode="number">
+                                    </ion-input>
+                                  </ion-item>
+
+                                  <ion-text
+                                  mode="ios"
+                                  class="mg-top-8 d-block"
+                                  *ngIf="
+                                  getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.invalid &&
+                                  (getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.touched || getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.dirty)">
+                                    <p
+                                    *ngIf="getCourtesies(festivalIndex).at(courtesyIndex).get('number')?.hasError('required')"
+                                    class="fs-13 color-danger">
+                                      Campo obrigatório
+                                    </p>
+                                  </ion-text>
+                                </div>
+                              </ion-col>
+
+                              <ion-col size="8" class="no-pad-top no-pad-bottom">
+                                <div
+                                [ngClass]="{'has-error' : (getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.invalid &&
+                                (getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.touched ||
+                                getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.dirty))}"
                                 class="rgs-select-wrapper full-width white-background-item label-w-gray-fa mg-bottom-16">
                                   <ion-item
                                   class="overflow-hidden"
@@ -692,16 +740,16 @@
                                   mode="ios">
                                     <ion-select
                                     (ionChange)="consumerFestivalTypeChanged($event)"
-                                    formControlName="consumer_festival_type"
+                                    formControlName="courtesy"
                                     [cancelText]="'Cancelar'"
                                     [okText]="'Definir'"
-                                    [label]="'Tipo'"
+                                    [label]="'Tipo de cortesia'"
                                     toggleIcon="chevron-down-outline"
                                     label-placement="floating">
                                       <ion-select-option
-                                      *ngFor="let consumerType of MOCK_FESTIVAL_CONSUMER_TYPE"
-                                      [value]="consumerType.value">
-                                        {{ consumerType.text.pt }}
+                                      *ngFor="let courtesy of MOCK_COURTESIES"
+                                      [value]="courtesy.value">
+                                        {{ courtesy.text.pt }}
                                       </ion-select-option>
                                     </ion-select>
                                   </ion-item>
@@ -710,10 +758,10 @@
                                   mode="ios"
                                   class="mg-top-8 d-block"
                                   *ngIf="
-                                  getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.invalid &&
-                                  (getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.touched || getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.dirty)">
+                                  getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.invalid &&
+                                  (getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.touched || getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.dirty)">
                                     <p
-                                    *ngIf="getCourtesies(festivalIndex).at(courtesyIndex).get('consumer_festival_type')?.hasError('required')"
+                                    *ngIf="getCourtesies(festivalIndex).at(courtesyIndex).get('courtesy')?.hasError('required')"
                                     class="fs-13 color-danger">
                                       Campo obrigatório
                                     </p>

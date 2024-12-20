@@ -1,0 +1,7 @@
+
+export enum CourtesyEnum {
+  SOBREMESA = 'SOBREMESA',
+  SORVETE = 'SORVETE',
+  BRIGADEIRO = 'BRIGADEIRO',
+  REFRIGERANTE = 'REFRIGERANTE'
+}

@@ -51,6 +51,8 @@ import { IFestivalConsumerType } from 'src/app/shared/models/IFestivalConsumerTy
 import { IFestivalBenefitType } from 'src/app/shared/models/IFestivalBenefiType';
 import { IFestivalOperator } from 'src/app/shared/models/IFestivalOperator';
 import { MOCK_BEACH_PLACES_TYPE } from 'src/app/shared/mocks/MockBeachPlacesType';
+import { MOCK_COURTESIES } from 'src/app/shared/mocks/MockCortesies';
+import { ICourtesy } from 'src/app/shared/models/ICourtesy';
 @Component({
   selector: 'app-establishment-modal',
   templateUrl: './establishment-modal.component.html',
@@ -274,6 +276,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public MOCK_FESTIVAL_CONSUMER_TYPE = MOCK_FESTIVAL_CONSUMER_TYPE;
   public MOCK_FESTIVAL_OPERATOR = MOCK_FESTIVAL_OPERATOR;
   public MOCK_FESTIVAL_BENEFIT_TYPE = MOCK_FESTIVAL_BENEFIT_TYPE;
+  public MOCK_COURTESIES = MOCK_COURTESIES;
 
   public PlaceTypeCityEnum = PlaceTypeCityEnum;
 
@@ -609,6 +612,20 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
           festival.food_type = blankSpaceToFillOptionWhenNotFound;
         }
 
+        if (festival.courtesies && festival.courtesies.length > 0) {
+          festival.courtesies?.forEach((courtesyFromForm: any) => {
+            if (courtesyFromForm.courtesy) {
+              courtesyFromForm.courtesy = this.MOCK_COURTESIES.find((courtesy: ICourtesy) => {
+                return courtesy.value === courtesyFromForm.courtesy
+              })
+            } else {
+              courtesyFromForm.courtesy = blankSpaceToFillOptionWhenNotFound
+            }
+
+            courtesyFromForm.number = Number(courtesyFromForm.number);
+          })
+        }
+
         if (festival.rules && festival.rules.length > 0) {
           festival.rules?.forEach((rule: any) => {
 
@@ -664,8 +681,6 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
         this.isRegistering = false;
       })
     }
-
-
   }
 
   public async mainTypeChanged(e: any) {
@@ -841,9 +856,11 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     return this.festivals.at(festivalIndex).get('courtesies') as FormArray;
   }
 
-  public addCourtesies(festivalIndex: number, courtesies?: any) {
+  public addCourtesies(festivalIndex: number, courtesy?: any) {
+
     const ruleGroup = this.formBuilder.group({
-      cortesy: [courtesies ? courtesies.value : '', [ Validators.required ]]
+      courtesy: [courtesy ? courtesy.courtesy.value : '', [ Validators.required ]],
+      number: [courtesy ? courtesy.number : '', [ Validators.required ]]
     });
     this.getCourtesies(festivalIndex).push(ruleGroup);
   }
@@ -1366,6 +1383,12 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
         if (festival.rules && festival.rules.length > 0) {
           festival.rules.forEach((rule: any) => {
             this.addRules(festivalIndex, rule);
+          })
+        }
+
+        if (festival.courtesies && festival.courtesies.length > 0) {
+          festival.courtesies.forEach((courtesy: any) => {
+            this.addCourtesies(festivalIndex, courtesy);
           })
         }
       })

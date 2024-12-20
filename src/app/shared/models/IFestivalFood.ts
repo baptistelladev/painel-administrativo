@@ -16,5 +16,8 @@ export interface IFestivalFood {
     }
   ],
   has_courtesy?: boolean
-  courtesies?: ICourtesy
+  courtesies?: {
+    number: number,
+    courtesy: ICourtesy
+  }[]
 }
