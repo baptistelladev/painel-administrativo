@@ -155,31 +155,9 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     }
   ]
 
-  public isLoadingLogo: boolean;
-
   public establishments: IPlace[];
   public establishments$: Observable<IPlace[]>;
   public establishmentsSubscription: Subscription;
-
-  public today: string = moment().format('LL');
-
-  public LINKS: any[] = [
-    {
-      text: 'Google',
-      subtext: 'Console Firebase',
-      href: 'https://console.firebase.google.com/u/5/project/ruagastronomicadesantos-314/overview?hl=pt-br'
-    },
-    {
-      text: 'Google',
-      subtext: 'Firestore',
-      href: 'https://console.firebase.google.com/u/5/project/ruagastronomicadesantos-314/firestore?hl=pt-br'
-    },
-    {
-      text: 'Google',
-      subtext: 'Analytics',
-      href: 'https://console.firebase.google.com/u/5/project/ruagastronomicadesantos-314/analytics/app/web:ZmM0NWUwODMtM2NjMS00MThiLTllYmUtZTcyZjI1M2E4Nzcy/streamview/realtime~2Foverview%3Ffpn%3D630646945223?hl=pt-br'
-    }
-  ]
 
   constructor(
     private placesService : PlacesService,
@@ -228,10 +206,6 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
         return option;
       })
     })
-  }
-
-  public imageHasLoaded() {
-    this.isLoadingLogo = false;
   }
 
   public seeEstablishment(establishment: IPlace): void {

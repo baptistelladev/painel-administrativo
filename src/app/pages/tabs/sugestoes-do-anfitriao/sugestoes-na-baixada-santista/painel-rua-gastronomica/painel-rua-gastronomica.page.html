@@ -1,4 +1,5 @@
 <ion-content
+class="ion-content-w-linear-bg"
 [forceOverscroll]="false">
   <section class="painel-rua-gastronomica">
     <ion-grid [fixed]="true">
@@ -50,7 +51,7 @@
     </ion-grid>
   </section>
 
-  <div class="establishments-wrapper" [ngClass]="{ 'no-padding': establishments && establishments.length === 0 }">
+  <div class="swiper-inset-wrapper" [ngClass]="{ 'no-padding': establishments && establishments.length === 0 }">
     <swiper-container
     (swiperreachbeginning)="swiperReachedBeginning()"
     (swiperreachend)="swiperReachedEnd()"
@@ -112,12 +113,8 @@
             <ion-card-content class="txt-center" mode="ios">
               <div class="logo-wrapper mg-bottom-12">
                 <div class="logo-container"
-                [ngClass]="{'has-image': !isLoadingLogo, 'logo-needs-gray-2' : establishment.value === 'galeteria-santista'}">
-                  <ion-spinner name="lines-sharp-small" *ngIf="isLoadingLogo"></ion-spinner>
-
+                [ngClass]="{'logo-needs-gray-2' : establishment.value === 'galeteria-santista'}">
                   <ion-img
-                  *ngIf="!isLoadingLogo"
-                  (ionImgDidLoad)="imageHasLoaded()"
                   [src]="'./../../../../assets/images/establishments/' + establishment.value + (establishment.value === 'bistro-14' || establishment.value === 'galeteria-santista' ? '.png' : '.jpg')">
                   </ion-img>
                 </div>

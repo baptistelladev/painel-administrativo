@@ -1,0 +1,204 @@
+<ion-content
+class="ion-content-w-linear-bg"
+[forceOverscroll]="false">
+  <section class="festival-de-comida-japonesa">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <ion-grid class="no-padding">
+            <ion-row class="no-padding">
+              <ion-col size="12" class="no-pad-sides">
+                <ion-text mode="ios" class="d-block line-height-20 color-gray-text">
+                  <h2 class="fs-20 font-baloo">Visão <b>geral</b></h2>
+                  <p class="fs-14">Festival de comida japonesa</p>
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-col>
+
+        <ion-col size="12" class="no-pad-bottom txt-right">
+          <ion-text mode="ios">
+            <p class="fs-12 color-gray-mid">
+              Cidade
+            </p>
+          </ion-text>
+
+          <app-change-city-button [currentCity]="currentCity" (cityHasChanged)="getPlaces()"></app-change-city-button>
+        </ion-col>
+
+        <ion-col size="12" *ngIf="places && places.length === 0">
+          <ion-text mode="ios">
+            <p class="fs-12 color-gray-mid">Como não encontramos pelo menos um estabelecimento, ainda não foi possível definir a quantidade.</p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <div class="swiper-inset-wrapper" [ngClass]="{ 'no-padding': places && places.length === 0 }">
+    <swiper-container
+    [attr.centered-slides]="false"
+    speed="5000"
+    [init]="true"
+    (swiperslidechange)="listenForSwiperForControl($event)"
+    class="full-width swiper-w-relative-pagination"
+    #japaneseSwiper
+    free-mode="true"
+    slides-offset-before="16"
+    slides-offset-after="16"
+    initial-slide="0"
+    [slides-per-view]="1.3"
+    [attr.space-between]="16"
+    [breakpoints]="{
+      '320' : {
+        slidesPerView: 1.3
+      },
+      '445' : {
+        slidesPerView: 1.7
+      },
+      '700' : {
+        slidesPerView: 2.3
+      },
+      '800' : {
+        slidesPerView: 2.6
+      },
+      '960' : {
+        slidesPerView: 3.2
+      },
+      '1200' : {
+        slidesPerView: 4.5
+      },
+      '1500' : {
+        slidesPerView: 4.9
+      }
+    }">
+      <ng-container *ngIf="places && places.length > 0">
+        <swiper-slide
+        *ngFor="let place of places; let i = index"
+        class="unlock-shadow-from-swiper auto-width">
+
+          <div class="japa-card">
+            <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified" *ngIf="place.isPremium"></ion-icon>
+
+            <div class="japa-card-content">
+
+              <div class="info-wrapper">
+                <div class="logo-wrapper txt-center">
+                  <div class="logo-container">
+                    <ion-img
+                    [src]="'./../../../../../assets/images/establishments/seu-miyagi.jpg'">
+                    </ion-img>
+                  </div>
+                </div>
+
+                <div class="info">
+                  <ion-text mode="ios" class="txt-left">
+                    <p class="color-gray-text txt-uppercase type font-w-thin type fs-9">
+                      {{ place.mainType.text.pt }}
+                    </p>
+                    <h2 class="color-gray-text font-baloo name fs-16"><b>{{ place.name }} {{ place.sub_name }}</b></h2>
+                  </ion-text>
+                </div>
+              </div>
+
+              <ul class="rules">
+                <li *ngFor="let rule of place.festival_info.festivals[0].rules">
+                  <ng-container>
+                    <p class="color-gray-mid fs-12">
+                      {{ rule.consumer_festival_type?.text.pt }} {{ rule.operator?.text.pt }} {{ rule.condition_start }} <ng-container *ngIf="rule.condition_start">anos</ng-container> <ng-container *ngIf="rule.operator.value === BenefitOperatorsEnum.ENTRE"><span class="mg-left-5">e {{ rule.condition_end }} anos</span></ng-container></p>
+                      <span class="separator"></span>
+                    <p class="color-green fs-16 font-w-bold" *ngIf="rule.price && rule.price !== 0 && rule.price !== '0'">{{ rule.price | currency }}</p>
+                    <p class="color-gray-mid fs-14 font-w-bold txt-lowercase" *ngIf="!rule.price || rule.price === 0 || rule.price === '0'"><ng-container *ngIf="rule.discount && rule.discount !== 0 && rule.discount !== '0'">{{ rule.discount }}%</ng-container> {{ rule.benefit_type?.text.pt }}</p>
+                  </ng-container>
+                </li>
+              </ul>
+
+              <div class="included" *ngIf="place.festival_info.festivals[0].courtesies && place.festival_info.festivals[0].courtesies.length > 0">
+                <ion-chip class="as-badge gray-text fs-10 mg-bottom-5">Incluso no festival</ion-chip>
+
+                <ion-text mode="ios" class="color-gray-text">
+                  <p class="fs-14 mg-top-5 txt-lowercase">
+                    <ng-container *ngFor="let courtesy of place.festival_info.festivals[0].courtesies; let isFirst = first"><span [ngClass]="{'mg-left-5': !isFirst}"><span class="color-gray-mid">&#x2022;</span> {{ courtesy.number }} {{ courtesy.courtesy.text.pt }}</span></ng-container>
+                  </p>
+                </ion-text>
+              </div>
+
+              <div class="button-list">
+                <ion-list mode="ios" lines="none">
+                  <ion-item
+                  [title]="'Ver perfil'"
+                  (click)="seePlace(place, $event)"
+                  mode="ios"
+                  lines="none"
+                  [button]="true">
+                    Ver <b class="mg-left-5">perfil</b>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </div>
+
+            <ion-text mode="ios" class="color-gray-mid txt-right mg-top-8 d-block">
+              <p class="fs-10">última atualização</p>
+              <p class="fs-12">{{ place.festival_info.festivals[0].last_update | momentDate: 'pt' }}</p>
+            </ion-text>
+          </div>
+        </swiper-slide>
+      </ng-container>
+
+      <ng-container *ngIf="!places">
+        <swiper-slide
+        *ngFor="let establishment of [1,2,3,4,5,6]; let i = index"
+        class="unlock-shadow-from-swiper auto-width">
+          <ion-skeleton-text [animated]="true" class="like-cards"></ion-skeleton-text>
+        </swiper-slide>
+      </ng-container>
+    </swiper-container>
+
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12" *ngIf="places && places.length === 0">
+          <ion-text mode="ios">
+            <p class="fs-14 color-gray-text">Não existem estabelecimento cadastrados.</p>
+          </ion-text>
+        </ion-col>
+
+        <ng-container *ngIf="places && places.length > 0">
+          <ion-col size="6">
+            <div class="controls-wrapper">
+              <ion-button
+              [disabled]="hideLeftControl"
+              (click)="slideToPrev()"
+              mode="md"
+              class="rgs-main-solid fs-14 mg-right-8"
+              shape="round"
+              title="">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+              </ion-button>
+
+              <ion-button
+              [disabled]="hideRightControl"
+              (click)="slideToNext()"
+              mode="md"
+              class="rgs-main-solid fs-14"
+              shape="round"
+              title="">
+                <ion-icon name="arrow-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-col>
+
+          <ion-col size="6" *ngIf="places">
+            <ion-text
+            class="fs-12 color-gray-mid line-height-20 txt-lowercase txt-right"
+            mode="ios">
+              <p><span class="fs-14 font-w-bold">{{ places.length }}</span> estabelecimentos<ng-container *ngIf="places && places.length > 1">s</ng-container></p>
+            </ion-text>
+          </ion-col>
+        </ng-container>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <app-add [feature]="'PLACE'"></app-add>
+</ion-content>

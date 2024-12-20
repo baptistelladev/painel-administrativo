@@ -1,0 +1,172 @@
+@import './../../../../../../assets/scss/utils/mixins.scss';
+
+ion-content {
+  section {
+    &.festival-de-comida-japonesa {
+      width: 100%;
+      position: relative;
+      height: auto;
+    }
+  }
+}
+
+ion-skeleton-text {
+  border-radius: 4px;
+  margin: 0;
+
+  &.like-cards {
+    height: 266.5px;
+    width: 100%;
+    border-radius: 12px;
+  }
+}
+
+.japa-card {
+  width: 100%;
+  position: relative;
+  transition: all 200ms ease;
+
+  &:hover {
+    .japa-card-content {
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    }
+  }
+
+  ion-icon {
+    &.verified {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 22px;
+    }
+  }
+
+  .japa-card-content {
+    width: 100%;
+    background: linear-gradient(to bottom, var(--white), var(--transparent));
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    padding: 0;
+    transition: all 200ms ease;
+
+    .included {
+      padding: 0 16px 16px 16px;
+    }
+
+    .info-wrapper {
+      @include flexbox(center, flex-start, row);
+      padding: 16px;
+
+      .info {
+        padding: 0 0 0 16px;
+        max-width: calc(100% - 70px);
+        display: block;
+        width: 100%;
+
+        ion-text {
+          width: 100%;
+
+          p {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            &.type {
+              color: var(--gray-text);
+              margin: 0 0 2px 0;
+              font-size: 9px;
+            }
+
+            &.number {
+              margin: 5px 0 0 0;
+            }
+          }
+
+          h2 {
+            &.name {
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
+        }
+      }
+
+      .logo-wrapper {
+        position: relative;
+
+        .logo-container {
+          width: 70px;
+          height: 70px;
+          border-radius: 100px;
+          margin: 0;
+          overflow: hidden;
+          @include flexbox(center, center, row);
+          transition: all 200ms ease;
+          background: var(--white);
+
+          &.logo-needs-gray-2 {
+            background: var(--gray-2);
+          }
+        }
+      }
+    }
+
+
+    ul.rules {
+      padding: 0 16px 16px 16px;
+      margin: 0;
+      list-style: none;
+
+      li {
+        @include flexbox(flex-end, flex-start, row);
+        width: 100%;
+        margin-bottom: 4px;
+
+        span.separator {
+          flex: 1;
+          border-bottom: 1px dotted var(--gray-da);
+          margin: 0 5px;
+          min-width: 20px;
+        }
+      }
+    }
+
+    .button-list {
+      overflow: hidden;
+
+      ion-list {
+        background-color: transparent;
+        border-radius: 0;
+
+        ion-item {
+          --padding-start: 16px;
+          --padding-end: 0;
+          --padding-top: 16px;
+          --padding-bottom: 16px;
+          --inner-padding-end: 16px;
+          text-transform: none;
+          --background: var(--gray-fa);
+          border-radius: 0;
+          --border-radius: 0;
+          border-top: 0.5px solid var(--gray-da);
+          font-weight: 300;
+          --background: var(--transparent);
+          font-size: 14px;
+          --min-height: 0;
+          --color: var(--gray-text);
+          --background-hover: var(--gray-text);
+
+          &.reserve, &.main {
+            --color: var(--green);
+            --background-hover: var(--green);
+          }
+
+          &.coming-soon {
+            border-top: none;
+          }
+        }
+      }
+    }
+  }
+}
