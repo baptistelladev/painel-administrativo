@@ -76,8 +76,6 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     this.currentCitySubscription = this.currentCity$
     .subscribe((city: ICity) => {
       this.currentCity = city;
-        console.log(this.currentCity);
-
     })
   }
 
@@ -89,14 +87,7 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
       if (suggestion.id) {
         this.currentSuggestion = suggestion;
 
-        // await this.setFilters();
-        // await this.initialFilter(FilterEnum.ALL);
-        // await this.defineActiveFilter(FilterEnum.ALL);
-
-        this.getPlaces([
-          { field: 'suggestions', operator: 'array-contains', value: this.currentSuggestion?.value },
-          { field: 'origin.value', operator: '==', value: 'SANTOS' } // this.currentCity?.value
-        ]);
+        this.getPlacesFromCurrentCity();
       } else {
         this.getSuggestionFromUrl();
       }
@@ -124,15 +115,7 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
         next: async (suggestion: any[]) => {
           if (suggestion) {
             this.currentSuggestion = suggestion[0];
-
-            // await this.setFilters();
-            // await this.initialFilter(FilterEnum.ALL);
-            // await this.defineActiveFilter(FilterEnum.ALL);
-
-            this.getPlaces([
-              { field: 'suggestions', operator: 'array-contains', value: this.currentSuggestion?.value },
-              { field: 'origin.value', operator: '==', value: 'SANTOS' } // this.currentCity?.value
-            ]);
+            this.getPlacesFromCurrentCity();
           }
         }
       })
@@ -141,7 +124,16 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     }
   }
 
+  public getPlacesFromCurrentCity(): void {
+    this.getPlaces([
+      { field: 'suggestions', operator: 'array-contains', value: this.currentSuggestion?.value },
+      { field: 'origin.value', operator: '==', value: this.currentCity?.value }
+    ]);
+  }
+
   public getPlaces(filters: IFirebaseFilter[] = []) {
+    this.places = null;
+
     this.places$ = this.placesService
       .getCollection(
         CollectionsEnum.PLACES,
@@ -165,8 +157,6 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
       )
       .subscribe((places: IPlace[]) => {
         this.places = places;
-        console.log(this.places);
-
       })
   }
 

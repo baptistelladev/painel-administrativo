@@ -14,6 +14,7 @@ import { MOCK_BEACH_FEATURES } from 'src/app/shared/mocks/MockBeachFeatures';
 import { MOCK_CITY_FEATURES } from 'src/app/shared/mocks/MockCityFeatures';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
+import { FeaturesEnum } from 'src/app/shared/enums/Features';
 
 @Component({
   selector: 'app-lugares',
@@ -21,6 +22,8 @@ import { CollectionsEnum } from 'src/app/shared/enums/Collection';
   styleUrls: ['./lugares.page.scss'],
 })
 export class LugaresPage implements OnInit, OnDestroy {
+
+  public FeaturesEnum = FeaturesEnum;
 
   public cityResume: any[] = [
     {

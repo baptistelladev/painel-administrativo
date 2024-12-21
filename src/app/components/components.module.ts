@@ -7,6 +7,7 @@ import { EstablishmentModalComponent } from './modais/establishment-modal/establ
 import { LogoComponent } from './logo/logo.component';
 import { ChangeCityButtonComponent } from './change-city-button/change-city-button.component';
 import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
+import { SuggestionModalComponent } from './modais/suggestion-modal/suggestion-modal.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
     EstablishmentModalComponent,
     LogoComponent,
     ChangeCityButtonComponent,
-    MadeWLoveComponent
+    MadeWLoveComponent,
+    SuggestionModalComponent
   ],
   imports: [
     SharedModule
@@ -24,7 +26,8 @@ import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
     EstablishmentModalComponent,
     LogoComponent,
     ChangeCityButtonComponent,
-    MadeWLoveComponent
+    MadeWLoveComponent,
+    SuggestionModalComponent
   ]
 })
 export class ComponentsModule { }

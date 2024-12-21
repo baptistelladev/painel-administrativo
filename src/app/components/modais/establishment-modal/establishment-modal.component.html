@@ -873,7 +873,7 @@
               formShortEstablishment.get('type')?.invalid &&
               (formShortEstablishment.get('type')?.touched || formShortEstablishment.get('type')?.dirty)">
                 <p
-                *ngIf="formShortEstablishment.get('street')?.hasError('required')"
+                *ngIf="formShortEstablishment.get('type')?.hasError('required')"
                 class="fs-13 color-danger">
                   Campo obrigatório
                 </p>

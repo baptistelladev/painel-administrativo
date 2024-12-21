@@ -1,0 +1,276 @@
+<ion-content
+#sugestoesContent
+[forceOverscroll]="false"
+class="ion-content-w-linear-bg">
+  <section class="sugestoes border-gray-at-top">
+    <div class="sugestoes-hero">
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col size="12">
+            <ion-text mode="ios" class="line-height-22">
+              <p class="color-gray-mid fs-12">
+                Sugestões do anfitrião
+              </p>
+              <p class="color-white fs-20 font-baloo">
+                na região da <span><b>Baixada Santista</b></span>
+              </p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <div class="swiper-inset-wrapper" [ngClass]="{ 'no-padding': suggestionsBaixadaSantista && suggestionsBaixadaSantista.length === 0 }">
+      <ion-grid [fixed]="true" *ngIf="suggestionsBaixadaSantista && suggestionsBaixadaSantista.length > 0" class="no-pad-top">
+        <ion-row>
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-14 color-gray-text font-w-thin">Estas dicas aparecerão na sessão da <b>Baixada Santista</b>, no topo da página de Dicas do site/app.</p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+
+      <swiper-container
+      #baixadaSantistaSwiper
+      free-mode="true"
+      class="full-width swiper-w-relative-pagination"
+      speed="5000"
+      [attr.centered-slides]="false"
+      slides-offset-before="16"
+      slides-offset-after="16"
+      initial-slide="0"
+      (swiperslidechange)="listenForSwiperForControl($event)"
+      [attr.slides-per-view]="'auto'"
+      [attr.space-between]="16"
+      [init]="true">
+        <!-- SE EXISTIR MAIS DE UMA OPÇÃO -->
+        <ng-container *ngIf="suggestionsBaixadaSantista && suggestionsBaixadaSantista.length > 0">
+          <swiper-slide
+          *ngFor="let suggestion of suggestionsBaixadaSantista; let i = index"
+          class="unlock-shadow-from-swiper auto-width">
+            <div class="anf-baixada-wrapper">
+              <div class="anf-baixada-container">
+                <ion-item
+                [button]="true"
+                [detail]="false"
+                class="ion-bg-transparent tip-item"
+                lines="none"
+                mode="ios">
+                  <ion-icon [name]="suggestion.icon + '-outline'" class="color-gray-mid" *ngIf="suggestion.icon"></ion-icon>
+
+                  <ion-text mode="ios">
+                    <p class="color-gray-mid fs-14">{{ suggestion.name.title.pt }}</p>
+                    <p class="description fs-18 color-gray-text font-w-bold">{{ suggestion.name.text.pt }}</p>
+                  </ion-text>
+                </ion-item>
+
+                <div class="indication">
+                  <div class="two-chips-side-by-side">
+                    <ion-chip
+                    *ngIf="suggestion.hashtag.value"
+                    mode="ios"
+                    class="txt-uppercase as-badge gray">
+                      {{ suggestion.hashtag.text.pt }}
+                    </ion-chip>
+
+                    <ion-chip
+                    *ngFor="let indication of suggestion.indication"
+                    [ngClass]="indication?.value === ProfileType.MORADOR ? 'resident' : 'tourist'"
+                    mode="ios"
+                    class="txt-uppercase as-badge">
+                      {{ indication.pluralText?.pt }}
+                    </ion-chip>
+                  </div>
+                </div>
+
+                <ion-list mode="ios" lines="none">
+                  <ion-item
+                  title="Ver detalhes"
+                  mode="ios"
+                  button="true"
+                  lines="none"
+                  detailIcon="open-outline"
+                  class="">
+                    Ver <span class="mg-left-5"><b>detalhes</b></span>
+                  </ion-item>
+
+                  <ion-item
+                  (click)="seeSuggestion(suggestion)"
+                  title="Ver painel"
+                  mode="ios"
+                  button="true"
+                  lines="none"
+                  class="">
+                    Ver <span class="mg-left-5"><b>painel</b></span>
+                  </ion-item>
+
+                  <ion-item
+                  title="Remover sugestão"
+                  (click)="showAlertToRemove(suggestion)"
+                  [detailIcon]="'trash-outline'"
+                  mode="ios"
+                  button="true"
+                  lines="none"
+                  class="remove">
+                    Remover <span class="mg-left-5"><b>sugestão</b></span>
+                  </ion-item>
+                </ion-list>
+              </div>
+            </div>
+          </swiper-slide>
+        </ng-container>
+      </swiper-container>
+
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col size="12" *ngIf="suggestionsBaixadaSantista && suggestionsBaixadaSantista.length === 0">
+            <ion-text mode="ios">
+              <p class="fs-14 color-gray-text">Não existem estabelecimento cadastrados.</p>
+            </ion-text>
+          </ion-col>
+
+          <ng-container *ngIf="suggestionsBaixadaSantista && suggestionsBaixadaSantista.length > 0">
+            <ion-col size="6">
+              <div class="controls-wrapper" *ngIf="suggestionsBaixadaSantista && suggestionsBaixadaSantista.length > 1">
+                <ion-button
+                [disabled]="hideLeftControl || (suggestionsBaixadaSantista && suggestionsBaixadaSantista.length === 1)"
+                (click)="slideToPrev()"
+                mode="md"
+                class="rgs-main-solid fs-14 mg-right-8"
+                shape="round"
+                title="">
+                  <ion-icon name="arrow-back-outline"></ion-icon>
+                </ion-button>
+
+                <ion-button
+                [disabled]="hideRightControl || (suggestionsBaixadaSantista && suggestionsBaixadaSantista.length === 1)"
+                (click)="slideToNext()"
+                mode="md"
+                class="rgs-main-solid fs-14"
+                shape="round"
+                title="">
+                  <ion-icon name="arrow-forward-outline"></ion-icon>
+                </ion-button>
+              </div>
+            </ion-col>
+
+            <ion-col size="6" class="txt-right">
+              <ion-text mode="ios">
+                <p class="fs-12 color-gray-mid">
+                  <b class="fs-14">{{ suggestionsBaixadaSantista.length }}</b> <span class="txt-lowercase mg-left-5"><ng-container *ngIf="suggestionsBaixadaSantista?.length === 1">sugestão</ng-container> <ng-container *ngIf="suggestionsBaixadaSantista && suggestionsBaixadaSantista.length > 1">sugestões</ng-container></span>.
+                </p>
+              </ion-text>
+            </ion-col>
+          </ng-container>
+        </ion-row>
+      </ion-grid>
+    </div>
+
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <ion-text mode="ios" class="line-height-18">
+            <p class="color-gray-text fs-14">
+              <ion-text mode="ios">
+                <p class="font-baloo fs-20 color-gray-text font-w-normal">
+                  Lugares <b>em Santos</b> <span class="font-default txt-lowercase fs-12 color-gray-mid font-w-normal mg-left-5" *ngIf="suggestionsSelectedCity && suggestionsSelectedCity.length > 0">({{ suggestionsSelectedCity.length }})</span>
+                </p>
+                <p class="fs-14 color-gray-text font-w-thin mg-top-5">
+                  Lista de sugestões cadastradas para a cidade de Santos.
+                </p>
+                <p class="color-gray-text fs-14 mg-top-16 font-w-thin" *ngIf="suggestionsSelectedCity && suggestionsSelectedCity.length === 0">Não temos nenhuma sugestão ainda.</p>
+              </ion-text>
+            </p>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let suggestion of suggestionsSelectedCity">
+          <div class="anf-baixada-wrapper ion-margin">
+            <div class="anf-baixada-container">
+              <ion-item
+              [button]="true"
+              [detail]="false"
+              class="ion-bg-transparent tip-item"
+              lines="none"
+              mode="ios">
+                <ion-icon [name]="suggestion.icon + '-outline'" class="color-gray-mid" *ngIf="suggestion.icon"></ion-icon>
+
+                <ion-text mode="ios">
+                  <p class="color-gray-mid fs-14">{{ suggestion.name.title.pt }}</p>
+                  <p class="description fs-18 color-gray-text font-w-bold">{{ suggestion.name.text.pt }}</p>
+                </ion-text>
+              </ion-item>
+
+              <div class="indication">
+                <div class="two-chips-side-by-side">
+                  <ion-chip
+                  *ngIf="suggestion.hashtag.value"
+                  mode="ios"
+                  class="txt-uppercase as-badge gray">
+                    {{ suggestion.hashtag.text.pt }}
+                  </ion-chip>
+
+                  <ion-chip
+                  *ngFor="let indication of suggestion.indication"
+                  [ngClass]="indication?.value === ProfileType.MORADOR ? 'resident' : 'tourist'"
+                  mode="ios"
+                  class="txt-uppercase as-badge">
+                    {{ indication.pluralText?.pt }}
+                  </ion-chip>
+                </div>
+              </div>
+
+              <ion-list mode="ios" lines="none">
+                <ion-item
+                title="Ver detalhes"
+                mode="ios"
+                button="true"
+                lines="none"
+                detailIcon="open-outline"
+                class="">
+                  Ver <span class="mg-left-5"><b>detalhes</b></span>
+                </ion-item>
+
+                <ion-item
+                (click)="seeSuggestion(suggestion)"
+                title="Ver painel"
+                mode="ios"
+                button="true"
+                lines="none"
+                class="">
+                  Ver <span class="mg-left-5"><b>painel</b></span>
+                </ion-item>
+
+                <ion-item
+                title="Remover sugestão"
+                (click)="showAlertToRemove(suggestion)"
+                [detailIcon]="'trash-outline'"
+                mode="ios"
+                button="true"
+                lines="none"
+                class="remove">
+                  Remover <span class="mg-left-5"><b>sugestão</b></span>
+                </ion-item>
+              </ion-list>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <app-add [feature]="FeaturesEnum.SUGESTOES"></app-add>
+</ion-content>
+
+<ion-footer mode="ios" class="general-footer bg-gray-ed">
+  <ion-toolbar mode="ios" class="ion-bg-gray-ed">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <app-made-w-love></app-made-w-love>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

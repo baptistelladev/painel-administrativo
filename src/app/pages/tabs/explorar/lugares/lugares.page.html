@@ -1,7 +1,7 @@
 <ion-content
 [forceOverscroll]="false"
 class="ion-content-w-linear-bg">
-  <section class="explorar-lugares">
+  <section class="explorar-lugares border-gray-at-top">
     <div class="segment-wrapper">
       <ion-grid [fixed]="true">
         <ion-row>
@@ -229,10 +229,9 @@ class="ion-content-w-linear-bg">
         </ion-grid>
       </div>
     </div>
-
   </section>
 
-  <app-add [feature]="'PLACE'"></app-add>
+  <app-add [feature]="FeaturesEnum.LUGARES"></app-add>
 </ion-content>
 
 <ion-footer mode="ios" class="general-footer bg-gray-ed">

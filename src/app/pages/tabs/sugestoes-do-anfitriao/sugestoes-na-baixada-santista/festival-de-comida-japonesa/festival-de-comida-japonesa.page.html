@@ -20,11 +20,11 @@ class="ion-content-w-linear-bg"
         <ion-col size="12" class="no-pad-bottom txt-right">
           <ion-text mode="ios">
             <p class="fs-12 color-gray-mid">
-              Cidade
+              Você está em
             </p>
           </ion-text>
 
-          <app-change-city-button [currentCity]="currentCity" (cityHasChanged)="getPlaces()"></app-change-city-button>
+          <app-change-city-button [currentCity]="currentCity" (cityHasChanged)="getPlacesFromCurrentCity()"></app-change-city-button>
         </ion-col>
 
         <ion-col size="12" *ngIf="places && places.length === 0">

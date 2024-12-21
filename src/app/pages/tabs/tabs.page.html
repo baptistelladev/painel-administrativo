@@ -17,6 +17,7 @@
           <ion-item
           class="line-height-16"
           *ngFor="let item of menu"
+          [disabled]="item.isDisabled"
           mode="ios"
           lines="none"
           [button]="true"
@@ -27,8 +28,8 @@
             <ion-icon [name]="item.icon + '-outline'"></ion-icon>
 
             <ion-text mode="ios">
-              <p class="fs-9 txt-uppercase title color-gray-mid">{{ item.title }}</p>
               <p class="fs-16 page color-gray-6 font-baloo font-w-bold">{{ item.text }}</p>
+              <p class="fs-9 txt-uppercase title color-gray-mid">{{ item.title }}</p>
             </ion-text>
           </ion-item>
         </ion-list>
@@ -36,7 +37,7 @@
     </ion-content>
   </ion-menu>
 
-  <div class="ion-page" id="main">
+  <div class="ion-page bg-white" id="main">
     <ion-header mode="ios" class="bg-gray-3 dark-border">
       <ion-toolbar mode="ios" class="ion-bg-gray-3 no-ion-padding">
         <ion-grid [fixed]="true">
@@ -55,8 +56,8 @@
       </ion-toolbar>
     </ion-header>
 
-    <ion-content [forceOverscroll]="false">
-      <ion-router-outlet></ion-router-outlet>
+    <ion-content [forceOverscroll]="false" class="ion-bg-white">
+      <ion-router-outlet id="main"></ion-router-outlet>
     </ion-content>
   </div>
 </ion-split-pane>

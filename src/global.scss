@@ -796,3 +796,17 @@ app-change-city-button {
   display: block;
   margin-top: -3px;
 }
+
+.border-gray-at-top {
+  border-top: 1px solid var(--gray-4);
+}
+
+.two-chips-side-by-side {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  ion-chip.as-badge:not(:last-child) {
+    margin: 0 5px 0 0;
+  }
+}

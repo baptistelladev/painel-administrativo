@@ -10,16 +10,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'lugares',
+        redirectTo: 'dashboard',
         pathMatch: 'full'
-      },
-      {
-        path: 'festival-de-comida-japonesa',
-        loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes-na-baixada-santista/festival-de-comida-japonesa/festival-de-comida-japonesa.module').then( m => m.FestivalDeComidaJaponesaPageModule)
-      },
-      {
-        path: 'painel-rua-gastronomica',
-        loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes-na-baixada-santista/painel-rua-gastronomica/painel-rua-gastronomica.module').then( m => m.PainelRuaGastronomicaPageModule)
       },
       {
         path: 'lugares',
@@ -45,6 +37,27 @@ const routes: Routes = [
       {
         path: 'cidades',
         loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
+      },
+      {
+        path: 'dashboard',
+        loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+      },
+      {
+        path: 'sugestoes-do-anfitriao',
+        children: [
+          {
+            path: '',
+            loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes/sugestoes.module').then( m => m.SugestoesPageModule)
+          },
+          {
+            path: 'festival-de-comida-japonesa',
+            loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes-na-baixada-santista/festival-de-comida-japonesa/festival-de-comida-japonesa.module').then( m => m.FestivalDeComidaJaponesaPageModule)
+          },
+          {
+            path: 'rua-gastronomica-de-santos',
+            loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes-na-baixada-santista/painel-rua-gastronomica/painel-rua-gastronomica.module').then( m => m.PainelRuaGastronomicaPageModule)
+          }
+        ]
       }
     ]
   }

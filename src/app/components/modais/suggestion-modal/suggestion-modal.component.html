@@ -1,0 +1,960 @@
+<ion-content>
+  <section class="suggestion">
+    <form [formGroup]="suggestionFormGroup">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12" class="txt-right">
+            <ion-button
+            (click)="closeModal()"
+            title="Fechar modal"
+            class="rgs-gray-solid fs-12"
+            mode="md"
+            shape="round">
+              Fechar modal
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Endereço</b> da sugestão
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="specificAddress" (ionChange)="checkSpecificAdress()">
+                {{ this.suggestionFormGroup.get('specificAddress')?.value ? 'Endereço' : 'Lugar específico' }}
+              </ion-toggle>
+            </ion-item>
+          </ion-col>
+
+          <ng-container *ngIf="!suggestionFormGroup.get('specificAddress')?.value">
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('specific_place_pt')?.invalid &&
+              (suggestionFormGroup.get('specific_place_pt')?.touched ||
+              suggestionFormGroup.get('specific_place_pt')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Lugar específico'"
+                  labelPlacement="floating"
+                  formControlName="specific_place_pt"
+                  type="text"
+                  inputmode="text">
+                    <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('specific_place_pt')?.value">
+                      <p class="fs-22">🇧🇷</p>
+                    </ion-text>
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('specific_place_pt')?.invalid &&
+                (suggestionFormGroup.get('specific_place_pt')?.touched || suggestionFormGroup.get('specific_place_pt')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('specific_place')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('specific_place_en')?.invalid &&
+              (suggestionFormGroup.get('specific_place_en')?.touched ||
+              suggestionFormGroup.get('specific_place_en')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Lugar específico'"
+                  labelPlacement="floating"
+                  formControlName="specific_place_en"
+                  type="text"
+                  inputmode="text">
+                    <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('specific_place_en')?.value">
+                      <p class="fs-22">🇺🇸</p>
+                    </ion-text>
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('specific_place_en')?.invalid &&
+                (suggestionFormGroup.get('specific_place_en')?.touched || suggestionFormGroup.get('specific_place_en')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('specific_place_en')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('specific_place_es')?.invalid &&
+              (suggestionFormGroup.get('specific_place_es')?.touched ||
+              suggestionFormGroup.get('specific_place_es')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Lugar específico'"
+                  labelPlacement="floating"
+                  formControlName="specific_place_es"
+                  type="text"
+                  inputmode="text">
+                    <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('specific_place_es')?.value">
+                      <p class="fs-22">🇪🇸</p>
+                    </ion-text>
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('specific_place_es')?.invalid &&
+                (suggestionFormGroup.get('specific_place_es')?.touched || suggestionFormGroup.get('specific_place_es')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('specific_place_es')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+          </ng-container>
+
+          <ng-container *ngIf="suggestionFormGroup.get('specificAddress')?.value">
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('zip_code')?.invalid &&
+              (suggestionFormGroup.get('zip_code')?.touched ||
+              suggestionFormGroup.get('zip_code')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  (keyup)="getCep()"
+                  maxlength="8"
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'CEP'"
+                  labelPlacement="floating"
+                  formControlName="zip_code"
+                  type="text"
+                  inputmode="numeric">
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('zip_code')?.invalid &&
+                (suggestionFormGroup.get('zip_code')?.touched || suggestionFormGroup.get('zip_code')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('zip_code')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                  <p
+                  *ngIf="suggestionFormGroup.get('zip_code')?.hasError('minlength')"
+                  class="fs-13 color-danger">
+                    Necessário 8 caracteres
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('type')?.invalid &&
+              (suggestionFormGroup.get('type')?.touched ||
+              suggestionFormGroup.get('type')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Tipo'"
+                  labelPlacement="floating"
+                  formControlName="type"
+                  type="text"
+                  inputmode="text">
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('type')?.invalid &&
+                (suggestionFormGroup.get('type')?.touched || suggestionFormGroup.get('type')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('type')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('street')?.invalid &&
+              (suggestionFormGroup.get('street')?.touched ||
+              suggestionFormGroup.get('street')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Nome da rua'"
+                  labelPlacement="floating"
+                  formControlName="street"
+                  type="text"
+                  inputmode="text">
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('street')?.invalid &&
+                (suggestionFormGroup.get('street')?.touched || suggestionFormGroup.get('street')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('street')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                  <p
+                  *ngIf="suggestionFormGroup.get('street')?.hasError('minlength')"
+                  class="fs-13 color-danger">
+                    Rua inválida
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+
+            <ion-col size="12">
+              <div
+              [ngClass]="{
+              'has-error' : (suggestionFormGroup.get('neighborhood')?.invalid &&
+              (suggestionFormGroup.get('neighborhood')?.touched ||
+              suggestionFormGroup.get('neighborhood')?.dirty))}"
+              class="rgs-input-wrapper full-width white-background-item label-w-white">
+                <ion-item
+                lines="none"
+                mode="ios">
+                  <ion-input
+                  enterkeyhint="next"
+                  mode="ios"
+                  [label]="'Bairro'"
+                  labelPlacement="floating"
+                  formControlName="neighborhood"
+                  type="text"
+                  inputmode="text">
+                  </ion-input>
+                </ion-item>
+
+                <ion-text
+                mode="ios"
+                class="mg-top-8 d-block"
+                *ngIf="
+                suggestionFormGroup.get('neighborhood')?.invalid &&
+                (suggestionFormGroup.get('neighborhood')?.touched || suggestionFormGroup.get('neighborhood')?.dirty)">
+                  <p
+                  *ngIf="suggestionFormGroup.get('neighborhood')?.hasError('required')"
+                  class="fs-13 color-danger">
+                    Campo obrigatório
+                  </p>
+                  <p
+                  *ngIf="suggestionFormGroup.get('neighborhood')?.hasError('minlength')"
+                  class="fs-13 color-danger">
+                    Bairro inválido
+                  </p>
+                </ion-text>
+              </div>
+            </ion-col>
+
+            <ion-col size="12">
+              <ion-text mode="ios">
+                <p class="fs-14 color-gray-text">
+                  O serviço de cep irá buscar o endereço e preencher automaticamente, porém, nós iramos tirar a primeira parte do endereço (Rua) e substituiremos por Rua/Street/Calle para atender outros idiomas.
+                </p>
+
+                <ng-container *ngIf="suggestion?.address?.type?.['pt']">
+                  <p class="fs-14 mg-bottom-8 mg-top-16">Veja abaixo:</p>
+
+                  <p class="fs-12 color-gray-6">🇧🇷 {{ suggestion.address.type['pt'] }} {{ suggestionFormGroup.get('street')?.value }}</p>
+                  <p class="fs-12 color-gray-6">🇺🇸 {{ suggestionFormGroup.get('street')?.value }} {{ suggestion.address.type['en'] }}</p>
+                  <p class="fs-12 color-gray-6">🇪🇸 {{ suggestion.address.type['es'] }} {{ suggestionFormGroup.get('street')?.value }}</p>
+                </ng-container>
+              </ion-text>
+            </ion-col>
+          </ng-container>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Localização</b> (lat e long)
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="6">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('lat')?.invalid &&
+            (suggestionFormGroup.get('lat')?.touched ||
+            suggestionFormGroup.get('lat')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Latitude'"
+                labelPlacement="floating"
+                formControlName="lat"
+                type="text"
+                inputmode="numeric">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('lat')?.invalid &&
+              (suggestionFormGroup.get('lat')?.touched || suggestionFormGroup.get('lat')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('lat')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="6">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('lng')?.invalid &&
+            (suggestionFormGroup.get('lng')?.touched ||
+            suggestionFormGroup.get('lng')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Longitude'"
+                labelPlacement="floating"
+                formControlName="lng"
+                type="text"
+                inputmode="numeric">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('lng')?.invalid &&
+              (suggestionFormGroup.get('lng')?.touched || suggestionFormGroup.get('lng')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('lng')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Informações</b> da sugestão
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('text_pt')?.invalid &&
+            (suggestionFormGroup.get('text_pt')?.touched ||
+            suggestionFormGroup.get('text_pt')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Texto principal (pt)'"
+                labelPlacement="floating"
+                formControlName="text_pt"
+                type="text"
+                inputmode="text">
+                  <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('text_pt')?.value">
+                    <p class="fs-22">🇧🇷</p>
+                  </ion-text>
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('text_pt')?.invalid &&
+              (suggestionFormGroup.get('text_pt')?.touched || suggestionFormGroup.get('text_pt')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('text_pt')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('text_en')?.invalid &&
+            (suggestionFormGroup.get('text_en')?.touched ||
+            suggestionFormGroup.get('text_en')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Texto principal (en)'"
+                labelPlacement="floating"
+                formControlName="text_en"
+                type="text"
+                inputmode="text">
+                  <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('text_en')?.value">
+                    <p class="fs-22">🇺🇸</p>
+                  </ion-text>
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('text_en')?.invalid &&
+              (suggestionFormGroup.get('text_en')?.touched || suggestionFormGroup.get('text_en')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('text_en')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('text_es')?.invalid &&
+            (suggestionFormGroup.get('text_es')?.touched ||
+            suggestionFormGroup.get('text_es')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Texto principal (es)'"
+                labelPlacement="floating"
+                formControlName="text_es"
+                type="text"
+                inputmode="text">
+                  <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('text_es')?.value">
+                    <p class="fs-22">🇪🇸</p>
+                  </ion-text>
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('text_es')?.invalid &&
+              (suggestionFormGroup.get('text_es')?.touched || suggestionFormGroup.get('text_es')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('text_es')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('title_pt')?.invalid &&
+            (suggestionFormGroup.get('title_pt')?.touched ||
+            suggestionFormGroup.get('title_pt')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Sub texto (pt)'"
+                labelPlacement="floating"
+                formControlName="title_pt"
+                type="text"
+                inputmode="text">
+                  <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('title_pt')?.value">
+                    <p class="fs-22">🇧🇷</p>
+                  </ion-text>
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('title_pt')?.invalid &&
+              (suggestionFormGroup.get('title_pt')?.touched || suggestionFormGroup.get('title_pt')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('title_pt')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('title_en')?.invalid &&
+            (suggestionFormGroup.get('title_en')?.touched ||
+            suggestionFormGroup.get('title_en')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Sub texto (en)'"
+                labelPlacement="floating"
+                formControlName="title_en"
+                type="text"
+                inputmode="text">
+                  <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('title_en')?.value">
+                    <p class="fs-22">🇺🇸</p>
+                  </ion-text>
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('title_en')?.invalid &&
+              (suggestionFormGroup.get('title_en')?.touched || suggestionFormGroup.get('title_en')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('title_en')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('title_es')?.invalid &&
+            (suggestionFormGroup.get('title_es')?.touched ||
+            suggestionFormGroup.get('title_es')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Sub texto (es)'"
+                labelPlacement="floating"
+                formControlName="title_es"
+                type="text"
+                inputmode="text">
+                  <ion-text slot="start" aria-hidden="true" *ngIf="suggestionFormGroup.get('title_es')?.value">
+                    <p class="fs-22">🇪🇸</p>
+                  </ion-text>
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('title_es')?.invalid &&
+              (suggestionFormGroup.get('title_es')?.touched || suggestionFormGroup.get('title_es')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('title_es')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <hr class="rgs-divider">
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (suggestionFormGroup.get('hashtag')?.invalid &&
+            (suggestionFormGroup.get('hashtag')?.touched ||
+            suggestionFormGroup.get('hashtag')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                (ionChange)="hashtagChanged($event)"
+                formControlName="hashtag"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Hashtag'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let hashtag of MOCK_HASHTAGS"
+                  [value]="hashtag.value">
+                    {{ hashtag.text.pt }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            suggestionFormGroup.get('hashtag')?.invalid &&
+            (suggestionFormGroup.get('hashtag')?.touched || suggestionFormGroup.get('hashtag')?.dirty)">
+              <p
+              *ngIf="suggestionFormGroup.get('hashtag')?.hasError('required')"
+              class="fs-13 color-danger">
+                Campo obrigatório
+              </p>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('icon')?.invalid &&
+            (suggestionFormGroup.get('icon')?.touched ||
+            suggestionFormGroup.get('icon')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Ícone'"
+                labelPlacement="floating"
+                formControlName="icon"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('icon')?.invalid &&
+              (suggestionFormGroup.get('icon')?.touched || suggestionFormGroup.get('icon')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('icon')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('value')?.invalid &&
+            (suggestionFormGroup.get('value')?.touched ||
+            suggestionFormGroup.get('value')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                (keyup)="transformStringForValue()"
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Value'"
+                labelPlacement="floating"
+                formControlName="value"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('value')?.invalid &&
+              (suggestionFormGroup.get('value')?.touched || suggestionFormGroup.get('value')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('value')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{
+            'has-error' : (suggestionFormGroup.get('route')?.invalid &&
+            (suggestionFormGroup.get('route')?.touched ||
+            suggestionFormGroup.get('route')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                (keyup)="transformStringForRoute()"
+                enterkeyhint="next"
+                mode="ios"
+                [label]="'Rota dessa sugestão'"
+                labelPlacement="floating"
+                formControlName="route"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              suggestionFormGroup.get('route')?.invalid &&
+              (suggestionFormGroup.get('route')?.touched || suggestionFormGroup.get('route')?.dirty)">
+                <p
+                *ngIf="suggestionFormGroup.get('route')?.hasError('required')"
+                class="fs-13 color-danger">
+                  Campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (suggestionFormGroup.get('filter')?.invalid &&
+            (suggestionFormGroup.get('filter')?.touched ||
+            suggestionFormGroup.get('filter')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                (ionChange)="filtersChanged($event)"
+                formControlName="filter"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Filtros'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let filter of MOCK_SUGGESTION_FILTERS"
+                  [value]="filter">
+                    {{ filter }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            suggestionFormGroup.get('filter')?.invalid &&
+            (suggestionFormGroup.get('filter')?.touched || suggestionFormGroup.get('filter')?.dirty)">
+              <p
+              *ngIf="suggestionFormGroup.get('filter')?.hasError('required')"
+              class="fs-13 color-danger">
+                Campo obrigatório
+              </p>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <div
+            [ngClass]="{'has-error' : (suggestionFormGroup.get('indication')?.invalid &&
+            (suggestionFormGroup.get('indication')?.touched ||
+            suggestionFormGroup.get('indication')?.dirty))}"
+            class="rgs-select-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              class="overflow-hidden"
+              lines="none"
+              mode="ios">
+                <ion-select
+                [multiple]="true"
+                (ionChange)="indicationChanged($event)"
+                formControlName="indication"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                [label]="'Para quem é indicado'"
+                toggleIcon="chevron-down-outline"
+                label-placement="floating">
+                  <ion-select-option
+                  *ngFor="let profile of MOCK_PROFILES"
+                  [value]="profile.value">
+                    {{ profile.value }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </div>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            suggestionFormGroup.get('indication')?.invalid &&
+            (suggestionFormGroup.get('indication')?.touched || suggestionFormGroup.get('indication')?.dirty)">
+              <p
+              *ngIf="suggestionFormGroup.get('indication')?.hasError('required')"
+              class="fs-13 color-danger">
+                Campo obrigatório
+              </p>
+            </ion-text>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </section>
+</ion-content>
+
+<ion-footer
+mode="ios"
+class="ion-no-border bg-white">
+  <ion-toolbar
+  mode="ios"
+  class="ion-bg-white ">
+    <div class="footer-wrapper">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-button
+            *ngIf="!currentSuggestion?.name"
+            (click)="register('create')"
+            [disabled]="suggestionFormGroup.invalid || isRegistering"
+            title="Cadastrar sugestão"
+            class="rgs-main-solid"
+            mode="md"
+            shape="round">
+              <ng-container *ngIf="!isRegistering">Cadastrar sugestão</ng-container>
+
+              <ng-container *ngIf="isRegistering">
+                <ion-spinner name="dots"></ion-spinner>
+              </ng-container>
+            </ion-button>
+
+            <ion-button
+            *ngIf="currentSuggestion?.name"
+            [disabled]="suggestionFormGroup.invalid || isRegistering"
+            title="Atualizar sugestão"
+            class="rgs-main-solid"
+            mode="md"
+            shape="round">
+              <ng-container *ngIf="!isRegistering">Atualizar sugestão</ng-container>
+
+              <ng-container *ngIf="isRegistering">
+                <ion-spinner name="dots"></ion-spinner>
+              </ng-container>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-toolbar>
+</ion-footer>

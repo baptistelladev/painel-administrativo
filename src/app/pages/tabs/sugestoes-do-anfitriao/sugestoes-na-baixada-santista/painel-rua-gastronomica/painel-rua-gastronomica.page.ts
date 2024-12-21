@@ -1,6 +1,6 @@
 import { EstablishmentModalComponent } from '../../../../../components/modais/establishment-modal/establishment-modal.component';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AlertController, ModalController, ToastController } from '@ionic/angular';
+import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
 import { map, Observable, Subscription } from 'rxjs';
 import { IPlace } from 'src/app/shared/models/IPlace';
@@ -165,7 +165,8 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     private utilsService : UtilsService,
     private store : Store,
     private alertCtrl : AlertController,
-    private toastCtrl : ToastController
+    private toastCtrl : ToastController,
+    private navCtrl : NavController
   ) { }
 
   ngOnInit() {
@@ -174,6 +175,10 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
   ngAfterViewInit(): void {
     this.swiper = this.swiperRef?.nativeElement.swiper;
+  }
+
+  public back(): void {
+    this.navCtrl.back();
   }
 
   public getEstablimentsFromGastronomicStreet() {

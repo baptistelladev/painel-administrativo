@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FeaturesEnum } from 'src/app/shared/enums/Features';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
 
 @Component({
@@ -8,36 +9,47 @@ import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
 })
 export class TabsPage implements OnInit {
 
-  public textFromSelectedItem: string = 'RUA_GASTRONOMICA_DE_SANTOS';
+  public textFromSelectedItem: string = '';
 
-  public menu: any[] = [
+  public menu: {
+    title: string,
+    text: string,
+    router: string[],
+    icon: string,
+    value: string,
+    isDisabled: boolean
+  }[] = [
+    {
+      title: 'Admnistração',
+      text: 'Dashboard',
+      router: ['/logado/dashboard'],
+      icon: 'grid',
+      value: 'DASHBOARD',
+      isDisabled: false
+    },
     {
       title: 'Na cidade e na praia',
       text: 'Lugares',
       router: ['/logado/lugares'],
-      icon: 'search',
-      value: 'PLACES'
+      icon: 'storefront',
+      value: FeaturesEnum.LUGARES,
+      isDisabled: false
     },
     {
       title: 'Na cidade e na praia',
       text: 'Pessoas',
       router: ['/logado/pessoas'],
-      icon: 'search',
-      value: 'PEOPLE'
+      icon: 'man',
+      value: FeaturesEnum.PESSOAS,
+      isDisabled: true
     },
     {
-      title: 'Sugestão',
-      text: 'Rua Gastronômica de Santos',
-      router: ['/logado/painel-rua-gastronomica'],
+      title: 'Na Baixada Santista',
+      text: 'Dicas',
+      router: ['/logado/sugestoes-do-anfitriao'],
       icon: 'bulb',
-      value: SuggestionsEnum.RUA_GASTRONOMICA_DE_SANTOS
-    },
-    {
-      title: 'Sugestão',
-      text: 'Festival de comida japonesa',
-      router: ['/logado/festival-de-comida-japonesa'],
-      icon: 'bulb',
-      value: SuggestionsEnum.FESTIVAL_COMIDA_JAPONESA
+      value: FeaturesEnum.SUGESTOES,
+      isDisabled: false
     }
   ]
 
