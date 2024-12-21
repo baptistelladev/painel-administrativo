@@ -36,7 +36,7 @@ export class AddComponent  implements OnInit {
     // Cria o modal com as configurações apropriadas
     const modal = await this.modalCtrl.create({
       component,
-      mode: 'ios',
+      mode: 'md',
       cssClass: 'rgs-register',
       id: this.feature === FeaturesEnum.LUGARES ?
       'register-short-establishment' : this.feature === FeaturesEnum.SUGESTOES ?

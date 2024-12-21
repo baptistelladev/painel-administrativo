@@ -1,4 +1,4 @@
-<ion-content>
+<ion-content [forceOverscroll]="false">
   <section class="suggestion">
     <form [formGroup]="suggestionFormGroup">
       <ion-grid>
@@ -179,11 +179,6 @@
                 *ngIf="
                 suggestionFormGroup.get('zip_code')?.invalid &&
                 (suggestionFormGroup.get('zip_code')?.touched || suggestionFormGroup.get('zip_code')?.dirty)">
-                  <p
-                  *ngIf="suggestionFormGroup.get('zip_code')?.hasError('required')"
-                  class="fs-13 color-danger">
-                    Campo obrigatório
-                  </p>
                   <p
                   *ngIf="suggestionFormGroup.get('zip_code')?.hasError('minlength')"
                   class="fs-13 color-danger">
@@ -941,7 +936,8 @@ class="ion-no-border bg-white">
 
             <ion-button
             *ngIf="currentSuggestion?.name"
-            [disabled]="suggestionFormGroup.invalid || isRegistering"
+            (click)="register('update')"
+            [disabled]="currentSuggestionHasntChanges || suggestionFormGroup.invalid || isRegistering"
             title="Atualizar sugestão"
             class="rgs-main-solid"
             mode="md"

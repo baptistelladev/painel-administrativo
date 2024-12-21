@@ -44,6 +44,7 @@ ion-content {
       --inner-padding-end: 0;
       --detail-icon-color: var(--gray-text);
       --detail-icon-font-size: 22px;
+      --background-hover: var(--transparent);
 
       &::part(detail-icon) {
         margin: 0 0 0 16px;

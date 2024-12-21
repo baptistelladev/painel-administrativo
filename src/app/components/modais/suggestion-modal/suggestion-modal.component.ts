@@ -1,6 +1,6 @@
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
 import { MOCK_HASHTAGS } from './../../../shared/mocks/MockHashtags';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -13,13 +13,15 @@ import { ISuggestion } from 'src/app/shared/models/ISuggestion';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IHashtag } from 'src/app/shared/models/IHashtag';
 import { IProfileType } from 'src/app/shared/models/IProfileType';
+import { Store } from '@ngrx/store';
+import * as AppStore from './../../../shared/store/app.state';
 
 @Component({
   selector: 'app-suggestion-modal',
   templateUrl: './suggestion-modal.component.html',
   styleUrls: ['./suggestion-modal.component.scss'],
 })
-export class SuggestionModalComponent  implements OnInit {
+export class SuggestionModalComponent  implements OnInit, AfterViewInit {
 
   public suggestion: ISuggestion = {
     specific_place: null,
@@ -63,15 +65,83 @@ export class SuggestionModalComponent  implements OnInit {
   public currentSuggestion$: Observable<ISuggestion>;
   public currentSuggestionSubscription: Subscription;
 
+  public currentSuggestionHasntChanges: boolean = true;
+  public currentSuggestionFormListener$: Observable<boolean>;
+  public currentSuggestionFormListenerSubscription: Subscription;
+
   constructor(
     private modalCtrl : ModalController,
     private formBuilder : FormBuilder,
     private cepService : CepService,
-    private suggestionsService : SuggestionsService
+    private suggestionsService : SuggestionsService,
+    private store : Store
   ) { }
 
   ngOnInit() {
     this.initSuggestionForm();
+    this.getCurrentSuggestionFromNGRX();
+  }
+
+  public getCurrentSuggestionFromNGRX(): void {
+    this.currentSuggestion$ = this.store.select(AppStore.selectCurrentSuggestion);
+
+    this.currentSuggestionSubscription = this.currentSuggestion$
+    .subscribe({
+      next: async (suggestion: ISuggestion) => {
+        this.currentSuggestion = suggestion;
+
+        if (this.currentSuggestion.id) {
+          await this.fillFormAndVariablesWhenComesFromDetail(this.currentSuggestion);
+        }
+      }
+    })
+  }
+
+  ngAfterViewInit(): void {
+    this.initSuggestionFormListener();
+  }
+
+  public async fillFormAndVariablesWhenComesFromDetail(suggestion: ISuggestion) {
+
+    if (this.suggestionFormGroup.get('specific_place_pt')?.value) {
+      this.suggestionFormGroup.get('specificAddress')?.patchValue(true);
+    }
+
+    this.suggestionFormGroup.get('specific_place_pt')?.patchValue(suggestion.specific_place.pt);
+    this.suggestionFormGroup.get('specific_place_en')?.patchValue(suggestion.specific_place.en);
+    this.suggestionFormGroup.get('specific_place_es')?.patchValue(suggestion.specific_place.es);
+
+    this.suggestionFormGroup.get('zip_code')?.patchValue('');
+    this.suggestionFormGroup.get('type')?.patchValue(suggestion.address.type.pt);
+    this.suggestionFormGroup.get('street')?.patchValue(suggestion.address.street);
+    this.suggestionFormGroup.get('neighborhood')?.patchValue(suggestion.address.neighborhood);
+
+    this.suggestionFormGroup.get('text_pt')?.patchValue(suggestion.name.text.pt);
+    this.suggestionFormGroup.get('text_en')?.patchValue(suggestion.name.text.en);
+    this.suggestionFormGroup.get('text_es')?.patchValue(suggestion.name.text.es);
+
+    this.suggestionFormGroup.get('title_pt')?.patchValue(suggestion.name.title.pt);
+    this.suggestionFormGroup.get('title_en')?.patchValue(suggestion.name.title.en);
+    this.suggestionFormGroup.get('title_es')?.patchValue(suggestion.name.title.es);
+
+    this.suggestionFormGroup.get('lat')?.patchValue(suggestion.location?.lat);
+    this.suggestionFormGroup.get('lng')?.patchValue(suggestion.location?.lng);
+
+    this.suggestionFormGroup.get('value')?.patchValue(suggestion.value);
+
+    this.suggestionFormGroup.get('route')?.patchValue(suggestion.route);
+
+    this.suggestionFormGroup.get('icon')?.patchValue(suggestion.icon);
+
+    this.suggestionFormGroup.get('hashtag')?.patchValue(suggestion.hashtag.value);
+
+    this.suggestionFormGroup.get('filter')?.patchValue(suggestion.filter);
+
+    let indication: string[] = suggestion.indication.map((profile: IProfileType) => {
+      return profile.value
+    })
+
+    this.suggestionFormGroup.get('indication')?.patchValue(indication);
   }
 
   public closeModal(): void {
@@ -82,7 +152,7 @@ export class SuggestionModalComponent  implements OnInit {
   public initSuggestionForm(): void {
     this.suggestionFormGroup = this.formBuilder.group({
       specificAddress: true,
-      zip_code: '',
+      zip_code: ['', [ Validators.minLength(8) ]],
       type: '',
       street: '',
       neighborhood: '',
@@ -106,6 +176,17 @@ export class SuggestionModalComponent  implements OnInit {
     })
 
     this.checkSpecificAdress();
+
+  }
+
+  public initSuggestionFormListener(): void {
+    this.currentSuggestionFormListener$ = this.suggestionFormGroup.valueChanges;
+    this.currentSuggestionFormListenerSubscription = this.currentSuggestionFormListener$
+    .subscribe({
+      next: (res: any) => {
+        this.currentSuggestionHasntChanges = false;
+      }
+    })
   }
 
   public filtersChanged(e: any): void {
@@ -191,8 +272,6 @@ export class SuggestionModalComponent  implements OnInit {
   }
 
   public async register(type: 'create' | 'update') {
-    console.log(this.suggestionFormGroup.value);
-
     this.isRegistering = true;
 
     if (this.currentSuggestion?.id) {
@@ -294,12 +373,15 @@ export class SuggestionModalComponent  implements OnInit {
 
     } else {
       await this.suggestionsService
-      .setDoc(CollectionsEnum.PLACES, this.currentSuggestion.id, this.suggestion)
+      .setDoc(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, this.currentSuggestion.id, this.suggestion)
       .then(async () => {
         await this.modalCtrl.dismiss({ suggestion: this.suggestion }, '', 'register-suggestion');
 
         this.isRegistering = false;
         this.suggestionFormGroup.reset();
+
+        console.log('atualizou', this.suggestion);
+
 
       }).catch(() => {
         this.isRegistering = false;
@@ -310,18 +392,18 @@ export class SuggestionModalComponent  implements OnInit {
   public checkSpecificAdress(): void {
     if (this.suggestionFormGroup.get('specificAddress')?.value) {
       // Define os validadores para os campos necessários
-      this.suggestionFormGroup.get('zip_code')?.setValidators([Validators.required]);
+      //this.suggestionFormGroup.get('zip_code')?.setValidators([Validators.required]);
       this.suggestionFormGroup.get('type')?.setValidators([Validators.required]);
       this.suggestionFormGroup.get('street')?.setValidators([Validators.required]);
       this.suggestionFormGroup.get('neighborhood')?.setValidators([Validators.required]);
 
       // Remove validadores e redefine valores dos campos de locais específicos
       this.suggestionFormGroup.get('specific_place_pt')?.clearValidators();
-      this.suggestionFormGroup.get('specific_place_pt')?.setValue('');
+      //this.suggestionFormGroup.get('specific_place_pt')?.setValue('');
       this.suggestionFormGroup.get('specific_place_en')?.clearValidators();
-      this.suggestionFormGroup.get('specific_place_en')?.setValue('');
+      //this.suggestionFormGroup.get('specific_place_en')?.setValue('');
       this.suggestionFormGroup.get('specific_place_es')?.clearValidators();
-      this.suggestionFormGroup.get('specific_place_es')?.setValue('');
+      //this.suggestionFormGroup.get('specific_place_es')?.setValue('');
 
       // Atualiza o estado dos controles após modificar validadores
       this.suggestionFormGroup.get('zip_code')?.updateValueAndValidity();
@@ -331,8 +413,6 @@ export class SuggestionModalComponent  implements OnInit {
       this.suggestionFormGroup.get('specific_place_pt')?.updateValueAndValidity();
       this.suggestionFormGroup.get('specific_place_en')?.updateValueAndValidity();
       this.suggestionFormGroup.get('specific_place_es')?.updateValueAndValidity();
-
-      console.log(this.suggestionFormGroup);
     } else {
       // Remove validadores de todos os campos relacionados
       this.suggestionFormGroup.get('zip_code')?.clearValidators();
@@ -341,10 +421,10 @@ export class SuggestionModalComponent  implements OnInit {
       this.suggestionFormGroup.get('neighborhood')?.clearValidators();
 
       // Redefine os valores dos campos
-      this.suggestionFormGroup.get('zip_code')?.setValue('');
-      this.suggestionFormGroup.get('type')?.setValue('');
-      this.suggestionFormGroup.get('street')?.setValue('');
-      this.suggestionFormGroup.get('neighborhood')?.setValue('');
+      //this.suggestionFormGroup.get('zip_code')?.setValue('');
+      //this.suggestionFormGroup.get('type')?.setValue('');
+      //this.suggestionFormGroup.get('street')?.setValue('');
+      //this.suggestionFormGroup.get('neighborhood')?.setValue('');
 
       // Adiciona validação obrigatória aos campos de locais específicos
       this.suggestionFormGroup.get('specific_place_pt')?.setValidators([Validators.required]);
@@ -352,9 +432,9 @@ export class SuggestionModalComponent  implements OnInit {
       this.suggestionFormGroup.get('specific_place_es')?.setValidators([Validators.required]);
 
       // Atualiza o objeto suggestion
-      this.suggestion.address.type.pt = '';
-      this.suggestion.address.type.en = '';
-      this.suggestion.address.type.es = '';
+      //this.suggestion.address.type.pt = '';
+      //this.suggestion.address.type.en = '';
+      //this.suggestion.address.type.es = '';
 
       // Atualiza o estado dos controles após modificar validadores
       this.suggestionFormGroup.get('zip_code')?.updateValueAndValidity();
@@ -364,8 +444,6 @@ export class SuggestionModalComponent  implements OnInit {
       this.suggestionFormGroup.get('specific_place_pt')?.updateValueAndValidity();
       this.suggestionFormGroup.get('specific_place_en')?.updateValueAndValidity();
       this.suggestionFormGroup.get('specific_place_es')?.updateValueAndValidity();
-
-      console.log(this.suggestionFormGroup);
     }
   }
 }

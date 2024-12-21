@@ -1,6 +1,6 @@
 import { ProfileTypeEnum } from './../../../../shared/enums/ProfileType';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { AlertController, IonContent, NavController } from '@ionic/angular';
+import { AlertController, IonContent, ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { FeaturesEnum } from 'src/app/shared/enums/Features';
@@ -12,6 +12,7 @@ import { OverlayService } from 'src/app/shared/services/overlay.service';
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
+import { SuggestionModalComponent } from 'src/app/components/modais/suggestion-modal/suggestion-modal.component';
 
 @Component({
   selector: 'app-sugestoes',
@@ -49,7 +50,8 @@ export class SugestoesPage implements OnInit {
     private navCtrl : NavController,
     private overlayService : OverlayService,
     private suggestionsService : SuggestionsService,
-    private alertCtrl : AlertController
+    private alertCtrl : AlertController,
+    private modalCtrl : ModalController
   ) { }
 
   ngOnInit() {
@@ -163,6 +165,21 @@ export class SugestoesPage implements OnInit {
     await alert.present();
 
     return alert;
+  }
+
+  public async openModalToCreateOrUpdateSuggestion(suggestion: ISuggestion): Promise<HTMLIonModalElement> {
+    this.store.dispatch(AppStore.setCurrentSuggestion({ suggestion: suggestion }))
+
+    const modal = await this.modalCtrl.create({
+      component: SuggestionModalComponent,
+      mode: 'md',
+      cssClass: 'rgs-register',
+      id: 'register-suggestion'
+    });
+
+    await modal.present();
+
+    return modal;
   }
 
 }
