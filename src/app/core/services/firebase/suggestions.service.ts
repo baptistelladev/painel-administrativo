@@ -16,37 +16,35 @@ export class SuggestionsService {
     private firestore : Firestore
   ) { }
 
+  /**
+   * @description Responsável por recuperar as todas as sugestões.
+   * @param collectionName obrigatório do tipo string - nome da coleção no firebase.
+   * @param filters obrigatório do tipo IFirebaseFilter[] - representa uma lista com filtros do firebase.
+   * @returns um Observable que representa a lista do tipo ISuggestion.
+   */
   public getSuggestions(
     collectionName: string,
     filters: IFirebaseFilter[] = []
   ): Observable<ISuggestion[]> {
-    // Cria a referência da coleção
     const colRef = collection(this.firestore, collectionName) as CollectionReference;
 
-    // Constrói a lista de restrições da consulta
     const queryConstraints: QueryConstraint[] = filters.map(filter =>
       where(filter.field, filter.operator, filter.value)
     );
 
-    // Cria a consulta com todos os filtros
     const q = query(colRef, ...queryConstraints);
 
     return new Observable<ISuggestion[]>(observer => {
-      // Adiciona o listener de snapshot para a consulta
       const unsubscribe = onSnapshot(
         q,
         querySnapshot => {
-          // Mapeia os dados dos documentos
           const data = querySnapshot.docs.map(doc => ({
             id: doc.id,
             ...doc.data()
           })) as ISuggestion[];
-
-          // Emite os dados atualizados para o Observable
           observer.next(data);
         },
         error => {
-          // Emite erro, caso algo falhe
           observer.error(error);
         }
       );

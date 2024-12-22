@@ -150,3 +150,16 @@ ion-content {
     flex-wrap: wrap;
   }
 }
+
+ion-skeleton-text {
+  &.like-suggestion-card {
+    border-radius: 12px;
+    height: 270px;
+    margin: 0;
+    width: 100%;
+
+    &.min-width {
+      min-width: 350px;
+    }
+  }
+}

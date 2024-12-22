@@ -121,6 +121,14 @@ class="ion-content-w-linear-bg">
             </div>
           </swiper-slide>
         </ng-container>
+
+        <ng-container *ngIf="!suggestionsBaixadaSantista">
+          <swiper-slide
+          *ngFor="let suggestion of [1, 2, 3, 4]; let i = index"
+          class="unlock-shadow-from-swiper auto-width">
+            <ion-skeleton-text [animated]="true" class="like-suggestion-card min-width"></ion-skeleton-text>
+          </swiper-slide>
+        </ng-container>
       </swiper-container>
 
       <ion-grid [fixed]="true">
@@ -186,78 +194,86 @@ class="ion-content-w-linear-bg">
           </ion-text>
         </ion-col>
 
-        <ion-col size="12" size-md="6" size-lg="4" *ngFor="let suggestion of suggestionsSelectedCity">
-          <div class="anf-baixada-wrapper ion-margin">
-            <div class="anf-baixada-container">
-              <ion-item
-              [button]="true"
-              [detail]="false"
-              class="ion-bg-transparent tip-item"
-              lines="none"
-              mode="ios">
-                <ion-icon [name]="suggestion.icon + '-outline'" class="color-gray-mid" *ngIf="suggestion.icon"></ion-icon>
+        <ng-container *ngIf="suggestionsSelectedCity && suggestionsSelectedCity.length > 0">
+          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let suggestion of suggestionsSelectedCity">
+            <div class="anf-baixada-wrapper">
+              <div class="anf-baixada-container">
+                <ion-item
+                [button]="true"
+                [detail]="false"
+                class="ion-bg-transparent tip-item"
+                lines="none"
+                mode="ios">
+                  <ion-icon [name]="suggestion.icon + '-outline'" class="color-gray-mid" *ngIf="suggestion.icon"></ion-icon>
 
-                <ion-text mode="ios">
-                  <p class="color-gray-mid fs-14">{{ suggestion.name.title.pt }}</p>
-                  <p class="description fs-18 color-gray-text font-w-bold">{{ suggestion.name.text.pt }}</p>
-                </ion-text>
-              </ion-item>
+                  <ion-text mode="ios">
+                    <p class="color-gray-mid fs-14">{{ suggestion.name.title.pt }}</p>
+                    <p class="description fs-18 color-gray-text font-w-thin">{{ suggestion.name.text.pt }}</p>
+                  </ion-text>
+                </ion-item>
 
-              <div class="indication">
-                <div class="two-chips-side-by-side">
-                  <ion-chip
-                  *ngIf="suggestion.hashtag.value"
-                  mode="ios"
-                  class="txt-uppercase as-badge gray">
-                    {{ suggestion.hashtag.text.pt }}
-                  </ion-chip>
+                <div class="indication">
+                  <div class="two-chips-side-by-side">
+                    <ion-chip
+                    *ngIf="suggestion.hashtag.value"
+                    mode="ios"
+                    class="txt-uppercase as-badge gray">
+                      {{ suggestion.hashtag.text.pt }}
+                    </ion-chip>
 
-                  <ion-chip
-                  *ngFor="let indication of suggestion.indication"
-                  [ngClass]="indication?.value === ProfileType.MORADOR ? 'resident' : 'tourist'"
-                  mode="ios"
-                  class="txt-uppercase as-badge">
-                    {{ indication.pluralText?.pt }}
-                  </ion-chip>
+                    <ion-chip
+                    *ngFor="let indication of suggestion.indication"
+                    [ngClass]="indication?.value === ProfileType.MORADOR ? 'resident' : 'tourist'"
+                    mode="ios"
+                    class="txt-uppercase as-badge">
+                      {{ indication.pluralText?.pt }}
+                    </ion-chip>
+                  </div>
                 </div>
+
+                <ion-list mode="ios" lines="none">
+                  <ion-item
+                  (click)="openModalToCreateOrUpdateSuggestion(suggestion)"
+                  title="Ver detalhes"
+                  mode="ios"
+                  button="true"
+                  lines="none"
+                  detailIcon="open-outline"
+                  class="">
+                    Ver <span class="mg-left-5"><b>detalhes</b></span>
+                  </ion-item>
+
+                  <ion-item
+                  (click)="seeSuggestion(suggestion)"
+                  title="Ver painel"
+                  mode="ios"
+                  button="true"
+                  lines="none"
+                  class="">
+                    Ver <span class="mg-left-5"><b>painel</b></span>
+                  </ion-item>
+
+                  <ion-item
+                  title="Remover sugestão"
+                  (click)="showAlertToRemove(suggestion)"
+                  [detailIcon]="'trash-outline'"
+                  mode="ios"
+                  button="true"
+                  lines="none"
+                  class="remove">
+                    Remover <span class="mg-left-5"><b>sugestão</b></span>
+                  </ion-item>
+                </ion-list>
               </div>
-
-              <ion-list mode="ios" lines="none">
-                <ion-item
-                (click)="openModalToCreateOrUpdateSuggestion(suggestion)"
-                title="Ver detalhes"
-                mode="ios"
-                button="true"
-                lines="none"
-                detailIcon="open-outline"
-                class="">
-                  Ver <span class="mg-left-5"><b>detalhes</b></span>
-                </ion-item>
-
-                <ion-item
-                (click)="seeSuggestion(suggestion)"
-                title="Ver painel"
-                mode="ios"
-                button="true"
-                lines="none"
-                class="">
-                  Ver <span class="mg-left-5"><b>painel</b></span>
-                </ion-item>
-
-                <ion-item
-                title="Remover sugestão"
-                (click)="showAlertToRemove(suggestion)"
-                [detailIcon]="'trash-outline'"
-                mode="ios"
-                button="true"
-                lines="none"
-                class="remove">
-                  Remover <span class="mg-left-5"><b>sugestão</b></span>
-                </ion-item>
-              </ion-list>
             </div>
-          </div>
-        </ion-col>
+          </ion-col>
+        </ng-container>
+
+        <ng-container *ngIf="!suggestionsSelectedCity">
+          <ion-col size="12" size-md="6" size-lg="4" *ngFor="let suggestion of [1, 2, 3]">
+            <ion-skeleton-text [animated]="true" class="like-suggestion-card"></ion-skeleton-text>
+          </ion-col>
+        </ng-container>
       </ion-row>
     </ion-grid>
   </section>

@@ -78,10 +78,6 @@ export class SugestoesPage implements OnInit {
   }
 
   public async getBaixadaSantistaSuggestions() {
-    const loading = await this.overlayService.fireLoading();
-
-    await loading.present();
-
     this.suggestionsBaixadaSantista$ = this.suggestionsService
     .getSuggestions(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, [
       { field: "filter", operator: "array-contains", value: SuggestionsEnum.BAIXADA_SANTISTA },
@@ -92,13 +88,6 @@ export class SugestoesPage implements OnInit {
       next: async (suggestions: ISuggestion[]) => {
         this.suggestionsBaixadaSantista = suggestions;
         this.baixadaSantistaSwiper = this.baixadaSantistaSwiperRef?.nativeElement.swiper;
-
-        console.log(this.suggestionsBaixadaSantista);
-
-
-        if (this.suggestionsBaixadaSantista) {
-          await loading.dismiss()
-        }
       },
       error: () => {
 
