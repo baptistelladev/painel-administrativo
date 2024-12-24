@@ -12,6 +12,8 @@ class="ion-content-w-linear-bg">
                   <b>Onde</b> você procura?
                 </p>
               </ion-text>
+
+              <app-change-city-button [currentCity]="currentCity" (cityHasChanged)="locationChanged()"></app-change-city-button>
             </div>
           </ion-col>
         </ion-row>
@@ -40,17 +42,6 @@ class="ion-content-w-linear-bg">
       <div class="features-segment">
         <ion-grid [fixed]="true">
           <ion-row>
-            <ion-col size="12" class="no-pad-bottom txt-right">
-              <ion-text mode="ios">
-                <p class="fs-12 color-gray-mid">
-                  Cidade
-                </p>
-              </ion-text>
-            </ion-col>
-
-            <ion-col size="12" class="no-pad-top">
-              <app-change-city-button [currentCity]="currentCity" (cityHasChanged)="locationChanged()"></app-change-city-button>
-            </ion-col>
 
             <!-- MOSTRAR PESSOAS [SOON] [attr.size-lg]="selectedSegment === LocationEnum.PRAIA ? 6 : 12" -->
             <ion-col size="12" class="no-padding mg-bottom-16">
