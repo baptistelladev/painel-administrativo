@@ -107,7 +107,7 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
       this.title.setTitle('Festival de Comida Japonesa');
 
       this.suggestionsService
-      .getSuggestions(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, [
+      .getSuggestionsCollection(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, [
         { field: 'value', operator: '==', value: SuggestionsEnum.FESTIVAL_COMIDA_JAPONESA }
       ])
       .pipe((take(1)))
@@ -135,7 +135,7 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     this.places = null;
 
     this.places$ = this.placesService
-      .getCollection(
+      .getPlacesCollection(
         CollectionsEnum.PLACES,
         filters
       );

@@ -1,9 +1,7 @@
-import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { collectionData, deleteDoc, Firestore, setDoc} from '@angular/fire/firestore';
-import { addDoc, collection, CollectionReference, doc, getDocs, onSnapshot, query, QueryConstraint, where } from 'firebase/firestore';
-import { from, Observable } from 'rxjs';
-import { IPlace } from 'src/app/shared/models/IPlace';
+import { deleteDoc, Firestore, setDoc} from '@angular/fire/firestore';
+import { addDoc, collection, CollectionReference, doc, onSnapshot, query, QueryConstraint, where } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
 import { ISuggestion } from 'src/app/shared/models/ISuggestion';
 
@@ -22,7 +20,7 @@ export class SuggestionsService {
    * @param filters obrigatório do tipo IFirebaseFilter[] - representa uma lista com filtros do firebase.
    * @returns um Observable que representa a lista do tipo ISuggestion.
    */
-  public getSuggestions(
+  public getSuggestionsCollection(
     collectionName: string,
     filters: IFirebaseFilter[] = []
   ): Observable<ISuggestion[]> {
@@ -54,7 +52,6 @@ export class SuggestionsService {
     });
   }
 
-
   /**
    * @description Responsável por adicionar uma sugestão no banco.
    * @param collectionName obrigatório do tipo string - nome da coleção no firebase.
@@ -85,7 +82,7 @@ export class SuggestionsService {
    * @param suggestion obrigatório do tipo ISuggestion - representa um objeto com as informações da sugestão.
    * @returns uma promessa que pode ser qualquer coisa, um erro ou ou o documento.
    */
-  public async setDoc(
+  public async setSuggestionDoc(
     collectionName: string,
     docId: string,
     suggestion: ISuggestion
@@ -105,7 +102,7 @@ export class SuggestionsService {
    * @param docId obrigatório do tipo string - representa o ID da sugestão.
    * @returns uma promessa que pode ser qualquer coisa, um erro ou ou o documento.
    */
-  public async removeDoc(
+  public async removeSuggestionDoc(
     collectionName: string,
     docId: string
   ): Promise<any> {

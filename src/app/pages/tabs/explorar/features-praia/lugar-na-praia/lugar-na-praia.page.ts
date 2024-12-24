@@ -90,7 +90,7 @@ export class LugarNaPraiaPage implements OnInit {
   public getPlaces(filters: IFirebaseFilter[] = []) {
     if (this.currentCityAsParam && this.placeType && this.currentLocationAsParam) {
       this.places$ = this.placesService
-      .getCollection(
+      .getPlacesCollection(
         CollectionsEnum.PLACES,
         filters
       );
@@ -125,7 +125,7 @@ export class LugarNaPraiaPage implements OnInit {
           role: 'confirm',
           handler: async () => {
             await alert.dismiss();
-            await this.placesService.removeDoc(CollectionsEnum.PLACES, establishment.id);
+            await this.placesService.removePlaceDoc(CollectionsEnum.PLACES, establishment.id);
           }
         },
       ]

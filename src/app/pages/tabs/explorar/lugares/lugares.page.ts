@@ -214,7 +214,7 @@ export class LugaresPage implements OnInit, OnDestroy {
     this.lookingForPlaces = true;
 
     this.places$ = this.placesService
-    .getCollection(
+    .getPlacesCollection(
       CollectionsEnum.PLACES,
       [
         { field: 'origin.value', operator: '==', value: this.currentCity.value },
@@ -246,7 +246,7 @@ export class LugaresPage implements OnInit, OnDestroy {
     this.lookingForPlaces = true;
 
     this.places$ = this.placesService
-    .getCollection(
+    .getPlacesCollection(
       CollectionsEnum.PLACES,
       [
         { field: 'origin.value', operator: '==', value: this.currentCity.value },

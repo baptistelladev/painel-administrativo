@@ -183,7 +183,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
 
   public getEstablimentsFromGastronomicStreet() {
     this.establishments$ = this.placesService
-    .getCollection(
+    .getPlacesCollection(
       CollectionsEnum.PLACES,
       [
         { field: 'suggestions', operator: 'array-contains', value: SuggestionsEnum.RUA_GASTRONOMICA_DE_SANTOS }
@@ -250,7 +250,7 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
           role: 'confirm',
           handler: async () => {
             await alert.dismiss();
-            await this.placesService.removeDoc(CollectionsEnum.PLACES, establishment.id);
+            await this.placesService.removePlaceDoc(CollectionsEnum.PLACES, establishment.id);
           }
         },
       ]

@@ -93,19 +93,18 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
         if (this.currentSuggestion.id) {
           await this.fillFormAndVariablesWhenComesFromDetail(this.currentSuggestion);
         }
+
+        this.checkSpecificAdress();
+        this.initSuggestionFormListener();
       }
     })
   }
 
   ngAfterViewInit(): void {
-    this.initSuggestionFormListener();
+
   }
 
   public async fillFormAndVariablesWhenComesFromDetail(suggestion: ISuggestion) {
-
-    if (this.suggestionFormGroup.get('specific_place_pt')?.value) {
-      this.suggestionFormGroup.get('specificAddress')?.patchValue(true);
-    }
 
     this.suggestionFormGroup.get('specific_place_pt')?.patchValue(suggestion.specific_place.pt);
     this.suggestionFormGroup.get('specific_place_en')?.patchValue(suggestion.specific_place.en);
@@ -115,6 +114,8 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     this.suggestionFormGroup.get('type')?.patchValue(suggestion.address.type.pt);
     this.suggestionFormGroup.get('street')?.patchValue(suggestion.address.street);
     this.suggestionFormGroup.get('neighborhood')?.patchValue(suggestion.address.neighborhood);
+
+    this.suggestionFormGroup.get('specificAddress')?.patchValue(false);
 
     this.suggestionFormGroup.get('text_pt')?.patchValue(suggestion.name.text.pt);
     this.suggestionFormGroup.get('text_en')?.patchValue(suggestion.name.text.en);
@@ -142,6 +143,12 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     })
 
     this.suggestionFormGroup.get('indication')?.patchValue(indication);
+
+    if (suggestion.address.street) {
+      this.suggestionFormGroup.get('specificAddress')?.patchValue(true);
+    } else {
+      this.suggestionFormGroup.get('specificAddress')?.patchValue(false);
+    }
   }
 
   public closeModal(): void {
@@ -174,8 +181,6 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
       filter: ['', [ Validators.required ]],
       indication: ['', [ Validators.required ]]
     })
-
-    this.checkSpecificAdress();
 
   }
 
@@ -373,7 +378,7 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
 
     } else {
       await this.suggestionsService
-      .setDoc(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, this.currentSuggestion.id, this.suggestion)
+      .setSuggestionDoc(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, this.currentSuggestion.id, this.suggestion)
       .then(async () => {
         await this.modalCtrl.dismiss({ suggestion: this.suggestion }, '', 'register-suggestion');
 

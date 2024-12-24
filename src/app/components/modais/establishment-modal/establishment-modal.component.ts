@@ -308,7 +308,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   }
 
   public getSuggestions() {
-    this.suggestions$ = this.suggestionsService.getSuggestions(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA);
+    this.suggestions$ = this.suggestionsService.getSuggestionsCollection(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA);
 
     this.suggestionsSubscription = this.suggestions$
     .subscribe((suggestions: ISuggestion[]) => {
@@ -345,7 +345,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
       acceptMarketVale: false,
       marketTicketName: '',
       showMarketVale: false,
-      phones: this.formBuilder.array([], [Validators.required]),
+      phones: this.formBuilder.array([]),
       networks: this.formBuilder.array([], [Validators.required]),
       mondaysHour: this.formBuilder.array([]),
       tuesdaysHour: this.formBuilder.array([]),
@@ -663,7 +663,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     if (type === 'create') {
       this.establishment.created_at = moment().toISOString();
 
-      await this.placesService.addDoc(CollectionsEnum.PLACES, this.establishment)
+      await this.placesService.addPlaceDoc(CollectionsEnum.PLACES, this.establishment)
       .then(async () => {
         await this.modalCtrl.dismiss({ establishment: this.establishment }, '', 'register-short-establishment');
         this.isRegistering = false;
@@ -672,7 +672,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
         this.isRegistering = false;
       })
     } else {
-      await this.placesService.setDoc(CollectionsEnum.PLACES, this.currentEstablishment.id, this.establishment)
+      await this.placesService.setPlaceDoc(CollectionsEnum.PLACES, this.currentEstablishment.id, this.establishment)
       .then(async () => {
         await this.modalCtrl.dismiss({ establishment: this.establishment }, '', 'register-short-establishment');
         this.isRegistering = false;
