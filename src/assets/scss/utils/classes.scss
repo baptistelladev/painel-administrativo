@@ -155,8 +155,23 @@
   height: 27px;
   margin-bottom: 2px;
 
+  &::part(image) {
+    width: auto;
+  }
+
   &.cupcake { margin-bottom: 11px; }
   &.steak { margin-bottom: 8px; }
 }
 
-.h-28 { height: 28px; }
+.h-28 {
+  height: 28px;
+
+  &::part(image) {
+    width: auto;
+  }
+}
+
+.ion-icon-thiness {
+  --ionicon-stroke-width: 25px;
+}
+
