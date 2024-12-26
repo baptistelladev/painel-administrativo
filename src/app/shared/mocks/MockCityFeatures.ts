@@ -137,9 +137,9 @@ export const MOCK_CITY_FEATURES = {
       origin: LocationEnum.CIDADE
     },
     {
-      loadIconsFromAssets: false,
+      loadIconsFromAssets: true,
       value: PlaceTypeCityEnum.DOCERIA,
-      icon: 'pie-chart',
+      icon: 'cupcake',
       text: {
         pt: 'Docerias',
         en: 'Sweet Shops',
@@ -175,6 +175,28 @@ export const MOCK_CITY_FEATURES = {
         es: ''
       },
       route: 'sorveteria',
+      atLeastOneLength: false,
+      ageLimit: null,
+      userRespectAgeLimit: null,
+      origin: LocationEnum.CIDADE
+    },
+    {
+      loadIconsFromAssets: true,
+      value: PlaceTypeCityEnum.CHURRASCARIA,
+      icon: 'steak',
+      text: {
+        pt: 'Churrascaria',
+        en: 'Steakhouse',
+        es: 'Parrillada'
+      },
+      isDisabled: false,
+      show: true,
+      description: {
+        pt: '',
+        en: '',
+        es: ''
+      },
+      route: 'churrascaria',
       atLeastOneLength: false,
       ageLimit: null,
       userRespectAgeLimit: null,
