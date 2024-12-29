@@ -14,6 +14,14 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'pessoas',
+        loadChildren: () => import('./pessoas/pessoas.module').then( m => m.PessoasPageModule)
+      },
+      {
+        path: 'usuarios',
+        loadChildren: () => import('./usuarios/usuarios.module').then( m => m.UsuariosPageModule)
+      },
+      {
         path: 'lugares',
         children: [
           {

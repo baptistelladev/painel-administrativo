@@ -8,6 +8,7 @@ import { LogoComponent } from './logo/logo.component';
 import { ChangeCityButtonComponent } from './change-city-button/change-city-button.component';
 import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
 import { SuggestionModalComponent } from './modais/suggestion-modal/suggestion-modal.component';
+import { UsersModalComponent } from './modais/users-modal/users-modal.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { SuggestionModalComponent } from './modais/suggestion-modal/suggestion-m
     LogoComponent,
     ChangeCityButtonComponent,
     MadeWLoveComponent,
-    SuggestionModalComponent
+    SuggestionModalComponent,
+    UsersModalComponent
   ],
   imports: [
     SharedModule
@@ -27,7 +29,8 @@ import { SuggestionModalComponent } from './modais/suggestion-modal/suggestion-m
     LogoComponent,
     ChangeCityButtonComponent,
     MadeWLoveComponent,
-    SuggestionModalComponent
+    SuggestionModalComponent,
+    UsersModalComponent
   ]
 })
 export class ComponentsModule { }

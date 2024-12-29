@@ -119,11 +119,6 @@ ion-item.description {
   margin: 0;
 }
 
-.dashboard-places {
-  border-radius: 12px;
-  background: var(--gray-ed);
-}
-
 .location-wrapper {
   width: 100%;
   @include flexbox(flex-start, flex-start, column);

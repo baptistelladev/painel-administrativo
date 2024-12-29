@@ -607,6 +607,18 @@ ion-header {
           margin-top: -4px;
         }
       }
+
+      &.inverse {
+        p {
+          &.length-title {
+            margin-top: -4px;
+          }
+
+          &.length-desc {
+            margin: 0;
+          }
+        }
+      }
     }
   }
 }
@@ -808,5 +820,68 @@ app-change-city-button {
 
   ion-chip.as-badge:not(:last-child) {
     margin: 0 5px 0 0;
+  }
+}
+
+.anf-frame {
+  border-radius: 12px;
+  background: var(--gray-ed);
+}
+
+.password-wrapper {
+  margin: 0;
+
+  ul, li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li {
+    transition: all 200ms ease;
+    line-height: 20px;
+
+    ion-text {
+      p {
+        display: flex;
+        align-items: center;
+        color: var(--gray-6);
+
+        ion-icon {
+          margin-right: 3px;
+          color: var(--negative);
+        }
+      }
+    }
+
+    &.has-rule {
+      transition: all 200ms ease;
+
+      ion-text {
+        p {
+          ion-icon {
+            color: var(--green);
+          }
+        }
+      }
+    }
+  }
+}
+
+ion-checkbox {
+  --border-width: .5px;
+  --checkbox-background-checked: var(--green);
+  --checkmark-color: var(--white);
+
+  .flexed-wrapped {
+    @include flexbox(flex-start, flex-start, row);
+    flex-wrap: wrap;
+  }
+}
+
+ion-text {
+  &.terms {
+    h2 { margin: 0 0 18px 0};
+    p { margin: 0 0 12px 0; &:last-of-type { margin: 0 0 32px 0; } };
   }
 }

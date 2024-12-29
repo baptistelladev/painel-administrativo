@@ -28,6 +28,14 @@ export class TabsPage implements OnInit {
       isDisabled: false
     },
     {
+      title: 'No sistema',
+      text: 'Usuários',
+      router: ['/logado/usuarios'],
+      icon: 'people-circle',
+      value: FeaturesEnum.USUARIOS,
+      isDisabled: false
+    },
+    {
       title: 'Na cidade e na praia',
       text: 'Lugares',
       router: ['/logado/lugares'],

@@ -1,0 +1,51 @@
+<ion-content
+[forceOverscroll]="false"
+class="ion-content-w-linear-bg">
+  <section class="usuarios">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <ion-text mode="ios">
+            <p class="font-baloo fs-20 color-gray-text font-w-thin">
+              Resumo dos <b class="txt-lowercase">usuários</b>
+            </p>
+            <p class="fs-14 color-gray-text font-w-thin">
+              Todos os usuários do sistema.
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+
+      <ion-row>
+        <ion-col
+        size="12">
+          <div class="anf-frame">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12" size-sm="6" size-md="4" *ngFor="let option of usersResume">
+                  <div class="dashboard-item">
+                    <ion-item
+                    lines="none"
+                    mode="ios">
+                      <ion-text mode="ios" class="txt-left inverse">
+                        <p class="length-desc txt-uppercase">{{ option.sub_title }}</p>
+                        <p class="length-title"><b>{{ option.title }}</b></p>
+                      </ion-text>
+
+                      <ion-text mode="ios" class="txt-right">
+                        <p class="length font-baloo" *ngIf="option.length"><b>{{ option.length }}</b></p>
+                        <p class="length font-baloo" *ngIf="option.length === 0"><b>0</b></p>
+                      </ion-text>
+                    </ion-item>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
+  <app-add [feature]="FeaturesEnum.USUARIOS"></app-add>
+</ion-content>

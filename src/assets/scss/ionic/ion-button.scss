@@ -26,6 +26,10 @@ ion-button {
     --color: var(--danger);
   }
 
+  &.clear-gray-light {
+    --color: var(--gray-light);
+  }
+
   &.rgs-main-solid {
     --background: linear-gradient(.351turn,#769834 43.71%,#547D0E 58.8%);
     --color: var(--white);

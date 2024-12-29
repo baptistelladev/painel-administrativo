@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { EstablishmentModalComponent } from '../modais/establishment-modal/establishment-modal.component';
 import { FeaturesEnum } from 'src/app/shared/enums/Features';
 import { SuggestionModalComponent } from '../modais/suggestion-modal/suggestion-modal.component';
+import { UsersModalComponent } from '../modais/users-modal/users-modal.component';
 
 @Component({
   selector: 'app-add',
@@ -12,6 +13,8 @@ import { SuggestionModalComponent } from '../modais/suggestion-modal/suggestion-
 export class AddComponent  implements OnInit {
 
   @Input() feature : string;
+
+  public FeaturesEnum = FeaturesEnum;
 
   constructor(
     private modalCtrl : ModalController
@@ -31,19 +34,22 @@ export class AddComponent  implements OnInit {
       case FeaturesEnum.SUGESTOES:
         component = SuggestionModalComponent;
         break;
+
+      case FeaturesEnum.USUARIOS:
+        component = UsersModalComponent;
+        break;
     }
 
-    // Cria o modal com as configurações apropriadas
     const modal = await this.modalCtrl.create({
       component,
       mode: 'md',
       cssClass: 'rgs-register',
       id: this.feature === FeaturesEnum.LUGARES ?
       'register-short-establishment' : this.feature === FeaturesEnum.SUGESTOES ?
-      'register-suggestion' : ''
+      'register-suggestion' : this.feature === FeaturesEnum.USUARIOS ?
+      'register-users' : ''
     });
 
-    // Apresenta o modal na tela
     await modal.present();
 
     return modal;
