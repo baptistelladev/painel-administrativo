@@ -36,6 +36,7 @@
 @import './assets/scss/ionic/ion-fab.scss';
 @import './assets/scss/ionic/ion-modal.scss';
 @import './assets/scss/ionic/ion-segment.scss';
+@import './assets/scss/ionic/ion-toast.scss';
 
 
 /* GRID */
@@ -876,6 +877,12 @@ ion-checkbox {
   .flexed-wrapped {
     @include flexbox(flex-start, flex-start, row);
     flex-wrap: wrap;
+  }
+}
+
+ion-checkbox {
+  &::part(container) {
+    padding: 2px;
   }
 }
 

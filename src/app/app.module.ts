@@ -25,15 +25,36 @@ import { IonicStorageModule, Storage } from '@ionic/storage-angular';
 registerLocaleData(localePt, 'pt-BR');
 
 import { passiveSupport } from 'passive-events-support/src/utils'
+import { getAuth, provideAuth } from '@angular/fire/auth';
 passiveSupport({/*...*/})
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }), StoreModule.forRoot({app: appReducer }), IonicStorageModule.forRoot({
-    name: 'anfitrion-dashboard-storage',
-    storeName: 'anfitrion-dashboard-store',
-    dbKey: 'anfitrion-dashboard-key'
-  })],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot(
+      {
+        mode: 'md',
+        scrollAssist: false,
+        swipeBackEnabled: false,
+        innerHTMLTemplatesEnabled: true
+        // scrollPadding: false
+      }
+    ),
+    AppRoutingModule,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: !isDevMode()
+    }),
+    StoreModule.forRoot({
+      app: appReducer
+    }),
+    IonicStorageModule.forRoot({
+      name: 'anfitrion-dashboard-storage',
+      storeName: 'anfitrion-dashboard-store',
+      dbKey: 'anfitrion-dashboard-key'
+    })
+  ],
   providers: [
     Storage,
     {
@@ -43,7 +64,10 @@ passiveSupport({/*...*/})
   {
     provide:  DEFAULT_CURRENCY_CODE,
     useValue: 'BRL'
-  },provideHttpClient(),{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, provideFirebaseApp(() => initializeApp(environment.anfitrionFirebaseConfig)), provideFirestore(() => getFirestore())],
+  },
+  provideHttpClient(),{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  provideFirebaseApp(() => initializeApp(environment.anfitrionFirebaseConfig)),
+  provideFirestore(() => getFirestore()), provideAuth(() => getAuth())],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

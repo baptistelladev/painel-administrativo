@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { AuthService } from 'src/app/core/services/firebase/auth.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
+import { IUSer } from 'src/app/shared/models/IUser';
+import { OverlayService } from 'src/app/shared/services/overlay.service';
 
 @Component({
   selector: 'app-users-modal',
@@ -15,7 +18,7 @@ export class UsersModalComponent  implements OnInit {
 
   public showTermsAndConditionsModal: boolean = false;
 
-  public passwordMatch: {text: any} = {
+  public passwordMatch: { text: any } = {
     text: {
       pt: 'senhas coincidem'
     }
@@ -39,7 +42,9 @@ export class UsersModalComponent  implements OnInit {
   constructor(
     private modalCtrl : ModalController,
     private formBuilder : FormBuilder,
-    private utilsService : UtilsService
+    private utilsService : UtilsService,
+    private overlayService : OverlayService,
+    private authService : AuthService
   ) { }
 
   ngOnInit() {
@@ -54,10 +59,64 @@ export class UsersModalComponent  implements OnInit {
   public closeModal(): void {
     this.modalCtrl.dismiss();
     this.passwordRules.forEach((rule) => rule.valid = false);
+    this.passwordIsValid = false;
+    this.showCreatePassword = false;
+    this.showCreateConfirmPassword = false;
+    this.inputErrors.emailAlreadyInUse.show = false;
+    this.inputErrors.emailAlreadyInUse.text = null;
   }
 
-  public register(): void {
+  public async createAcc() {
     this.isCreating = true;
+
+    const toastError = await this.overlayService.fireToast({
+      position: 'top',
+      cssClass: 'anf-toast anf-toast-danger',
+      icon: 'warning-outline',
+      duration: 3000
+    })
+
+    const toastSuccess = await this.overlayService.fireToast({
+      position: 'top',
+      cssClass: 'anf-toast anf-toast-success',
+      icon: 'person-add-outline',
+      duration: 3000
+    })
+
+    let userInfo: IUSer = {
+      firstName: this.createUserFormGroup.value.name,
+      readAndAcceptedTerms: this.createUserFormGroup.value.terms,
+      premiumInfo: {
+        isPremium: false
+      }
+    }
+
+    await this.authService.createUserWithEmailAndPassword(this.createUserFormGroup.value.email, this.createUserFormGroup.value.password, userInfo)
+    .then(async () => {
+      this.isCreating = false;
+      this.createUserFormGroup.reset();
+      this.closeModal();
+      toastSuccess.message = `Parabéns, <b>conta criada com sucesso</b>`;
+      await toastSuccess.present();
+    }).catch( async (error) => {
+      toastError.message = error.text.pt;
+
+      switch (error.error.code) {
+        case 'auth/email-already-in-use':
+          this.inputErrors.emailAlreadyInUse.text = toastError.message;
+          this.inputErrors.emailAlreadyInUse.show = true;
+        break;
+      }
+
+      await toastError.present();
+
+      this.isCreating = false;
+
+      await toastError.onDidDismiss()
+      .then(() => {
+        toastError.message = '';
+      })
+    })
 
     setTimeout(() => {
       this.isCreating = false;
