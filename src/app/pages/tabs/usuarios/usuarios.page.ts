@@ -1,16 +1,25 @@
+import { ProfileTypeEnum } from './../../../shared/enums/ProfileType';
 import { FeaturesEnum } from 'src/app/shared/enums/Features';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { UsersService } from 'src/app/core/services/firebase/users.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IUSer } from 'src/app/shared/models/IUser';
+import Swiper from 'swiper';
 
 @Component({
   selector: 'app-usuarios',
   templateUrl: './usuarios.page.html',
   styleUrls: ['./usuarios.page.scss'],
 })
-export class UsuariosPage implements OnInit {
+export class UsuariosPage implements OnInit, AfterViewInit {
+
+  public hideRightControl: boolean = false;
+  public hideLeftControl: boolean = true;
+
+  @ViewChild('usersSwiper')
+  swiperRef: ElementRef | undefined;
+  swiper?: Swiper;
 
   public usersResume: any[] = [
     {
@@ -38,6 +47,7 @@ export class UsuariosPage implements OnInit {
   public usersSubscription: Subscription;
 
   public FeaturesEnum = FeaturesEnum;
+  public ProfileTypeEnum = ProfileTypeEnum;
 
   constructor(
     private usersService : UsersService
@@ -45,6 +55,10 @@ export class UsuariosPage implements OnInit {
 
   ngOnInit() {
     this.getUsers();
+  }
+
+  public ngAfterViewInit(): void {
+    this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
   public async getUsers() {
@@ -57,6 +71,15 @@ export class UsuariosPage implements OnInit {
 
       this.defineResume(users);
     })
+  }
+
+  public listenForSwiperForControl(ev: any): void {
+    this.hideLeftControl = ev.detail[0].isBeginning;
+    this.hideRightControl = ev.detail[0].isEnd;
+  }
+
+  public trackUserById(user: any) {
+    return user.id;
   }
 
   public defineResume(users: IUSer[]): void {
@@ -77,6 +100,14 @@ export class UsuariosPage implements OnInit {
         }).length
       }
     })
+  }
+
+  public slideToNext(): void {
+    this.swiper?.slideNext(800);
+  }
+
+  public slideToPrev(): void {
+    this.swiper?.slidePrev(800);
   }
 
 }
