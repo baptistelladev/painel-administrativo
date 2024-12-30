@@ -1,0 +1,392 @@
+
+
+<ion-content
+[forceOverscroll]="false"
+class="ion-bg-white">
+  <section class="seus-dados">
+    <form
+    (ngSubmit)="updateProfile()"
+    class="seus-dados-container"
+    [formGroup]="personalDataForm">
+      <ion-grid [fixed]="true">
+        <ion-row>
+          <ion-col size="12" class="txt-right">
+            <ion-button
+            (click)="closeModal()"
+            title="Fechar modal"
+            class="rgs-gray-solid fs-12"
+            mode="md"
+            shape="round">
+              Fechar modal
+            </ion-button>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <h1 class="fs-24 font-baloo color-gray-text">
+               <b>Informações</b> do usuário
+              </h1>
+            </ion-text>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid mg-bottom-8">
+                Primeiro nome
+              </p>
+            </ion-text>
+
+            <div
+            [ngClass]="{
+            'has-error' : (personalDataForm.get('name')?.invalid &&
+            (personalDataForm.get('name')?.touched ||
+            personalDataForm.get('name')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                class="without-transform"
+                (keyup)="clearFieldKeepJustName($event)"
+                (keydown)="preventWhitespace($event)"
+                [placeholder]="'Inserir primeiro nome'"
+                enterkeyhint="next"
+                mode="ios"
+                formControlName="name"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              personalDataForm.get('name')?.invalid &&
+              (personalDataForm.get('name')?.touched || personalDataForm.get('name')?.dirty)">
+                <p
+                *ngIf="personalDataForm.get('name')?.hasError('required')"
+                class="fs-12 color-danger">
+                  campo obrigatório
+                </p>
+
+                <p
+                *ngIf="personalDataForm.get('name')?.hasError('minlength')"
+                class="fs-12 color-danger">
+                  no mínimo 3 caracteres
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid mg-bottom-8">
+                Sobrenome
+              </p>
+            </ion-text>
+
+            <div
+            [ngClass]="{
+            'has-error' : (personalDataForm.get('secondName')?.invalid &&
+            (personalDataForm.get('secondName')?.touched ||
+            personalDataForm.get('secondName')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                class="without-transform"
+                (keyup)="clearFieldKeepJustName($event)"
+                (keydown)="preventWhitespace($event)"
+                [placeholder]="'Inserir sobrenome'"
+                enterkeyhint="next"
+                mode="ios"
+                formControlName="secondName"
+                type="text"
+                inputmode="text">
+                </ion-input>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              personalDataForm.get('secondName')?.invalid &&
+              (personalDataForm.get('secondName')?.touched || personalDataForm.get('secondName')?.dirty)">
+                <p
+                *ngIf="personalDataForm.get('secondName')?.hasError('required')"
+                class="fs-12 color-danger">
+                  campo obrigatório
+                </p>
+
+                <p
+                *ngIf="personalDataForm.get('secondName')?.hasError('minlength')"
+                class="fs-12 color-danger">
+                  no mínimo 3 caracteres
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid mg-bottom-8">
+                Data de nascimento
+              </p>
+            </ion-text>
+
+            <div
+            [ngClass]="{
+            'has-error' : (personalDataForm.get('birthDateAsText')?.invalid &&
+            (personalDataForm.get('birthDateAsText')?.touched ||
+            personalDataForm.get('birthDateAsText')?.dirty))}"
+            class="rgs-input-wrapper full-width white-background-item label-w-white item-has-button-at-end">
+              <ion-item
+              lines="none"
+              mode="ios">
+                <ion-input
+                class="without-transform"
+                (ionFocus)="toggleBirthDateModal(true)"
+                [placeholder]="'DD/MM/AAAA'"
+                enterkeyhint="next"
+                mode="ios"
+                formControlName="birthDateAsText"
+                type="text"
+                inputmode="text">
+                </ion-input>
+
+                <ion-button
+                (click)="toggleBirthDateModal(true)"
+                [title]="'Data de nascimento'"
+                type="button"
+                class="clear-gray-light"
+                mode="ios"
+                fill="clear">
+                  <ion-icon name="calendar-outline"></ion-icon>
+                </ion-button>
+
+                <ion-modal
+                [backdropDismiss]="false"
+                (willDismiss)="toggleBirthDateModal(false)"
+                [keepContentsMounted]="true"
+                class="anf-adapt-datetime"
+                mode="md"
+                [isOpen]="showBirthDateModal">
+                  <ng-template>
+                    <ion-datetime
+                    [locale]="'pt-BR'"
+                    [attr.displayFormat]="'DD/MM/YYYY'"
+                    [attr.pickerFormat]="'DD/MM/YYYY'"
+                    [max]="maxDateAsDatetime"
+                    #birthDateDatetime
+                    hourCycle="h24"
+                    (ionChange)="birthDateChanged($event)"
+                    class="anf-datetime"
+                    [showDefaultButtons]="true"
+                    presentation="date"
+                    mode="ios"
+                    cancelText="Cancelar"
+                    doneText="Definir"
+                    formControlName="birthDateAsDate">
+                      <ion-buttons slot="buttons">
+                        <ion-button class="cancel fs-16" title="Cancelar" (click)="toggleBirthDateModal(false)">Cancelar</ion-button>
+                        <ion-button class="confirm fs-16" title="Definir" (click)="defineBirthDate()">Definir</ion-button>
+                      </ion-buttons>
+                    </ion-datetime>
+                  </ng-template>
+                </ion-modal>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              personalDataForm.get('birthDateAsText')?.invalid &&
+              (personalDataForm.get('birthDateAsText')?.touched || personalDataForm.get('birthDateAsText')?.dirty)">
+                <p
+                *ngIf="personalDataForm.get('birthDateAsText')?.hasError('required')"
+                class="fs-12 color-danger">
+                  campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <!-- AGE LIMIT: 18 YEARS -->
+          <ion-col size="12" *ngIf="!respectAgeLimit">
+            <ion-item
+            lines="none"
+            mode="ios"
+            class="simulate-bootstrap-alert danger line-height-18">
+              <ion-text mode="ios" class="line-height-22">
+                <p class="mg-right-16 fs-24">🔞</p>
+              </ion-text>
+
+              <ion-text mode="ios" class="color-bootstrap-danger">
+                <p class="fs-14">Possui menos de 18 anos ou ainda não informou a idade.</p>
+              </ion-text>
+            </ion-item>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid mg-bottom-8">
+                Qual é a relação com a Baixada Santista
+              </p>
+            </ion-text>
+
+            <div
+            [ngClass]="{
+            'has-error' : (personalDataForm.get('type')?.invalid &&
+            (personalDataForm.get('type')?.touched ||
+            personalDataForm.get('type')?.dirty))}"
+            class="rgs-select-wrapper select-on-form full-width white-background-item label-w-white item-has-button-at-end mg-bottom-5">
+              <ion-item
+              class="has-select-on-form"
+              lines="none"
+              mode="ios">
+                <ion-select
+                (ionChange)="relationshipChanged()"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                formControlName="type"
+                class="select-on-form without-transform"
+                toggleIcon="''"
+                interface="alert"
+                [interfaceOptions]="interfaceOptions"
+                [placeholder]="'Selecione o tipo'" mode="ios">
+                  <ion-select-option
+                  *ngFor="let type of MOCK_USER_TYPES"
+                  [value]="type.value">{{ type.text.pt }}</ion-select-option>
+                </ion-select>
+
+                <ion-icon name="chevron-down-outline" class="color-gray-light"></ion-icon>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              personalDataForm.get('type')?.invalid &&
+              (personalDataForm.get('type')?.touched || personalDataForm.get('type')?.dirty)">
+                <p
+                *ngIf="personalDataForm.get('type')?.hasError('required')"
+                class="fs-12 color-danger">
+                  campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+
+            <div class="mg-top-8" *ngIf="personalDataForm.get('type')?.value === UserTypeEnum.MORADOR || personalDataForm.get('type')?.value === UserTypeEnum.TURISTA">
+              <ion-chip
+              [ngClass]="personalDataForm.get('type')?.value === UserTypeEnum.MORADOR ? 'resident' : 'tourist'"
+              mode="ios"
+              class="txt-uppercase as-badge">
+                {{personalDataForm.get('type')?.value === UserTypeEnum.MORADOR ? 'morador' :'turista' }}
+              </ion-chip>
+            </div>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid mg-bottom-8">
+                Sexo
+              </p>
+            </ion-text>
+
+            <div
+            [ngClass]="{
+            'has-error' : (personalDataForm.get('sex')?.invalid &&
+            (personalDataForm.get('sex')?.touched ||
+            personalDataForm.get('sex')?.dirty))}"
+            class="rgs-select-wrapper select-on-form full-width white-background-item label-w-white item-has-button-at-end ">
+              <ion-item
+              class="has-select-on-form"
+              lines="none"
+              mode="ios">
+                <ion-select
+                (ionChange)="sexChanged()"
+                [cancelText]="'Cancelar'"
+                [okText]="'Definir'"
+                formControlName="sex"
+                class="select-on-form without-transform"
+                toggleIcon="''"
+                interface="alert"
+                [interfaceOptions]="interfaceOptions"
+                [placeholder]="'Selecionar sexo'" mode="ios">
+                  <ion-select-option
+                  *ngFor="let sex of MOCK_USER_SEX"
+                  [value]="sex.value">{{ sex.text.pt }}</ion-select-option>
+                </ion-select>
+
+                <ion-icon name="chevron-down-outline" class="color-gray-light mg-left-16"></ion-icon>
+              </ion-item>
+
+              <ion-text
+              mode="ios"
+              class="mg-top-8 d-block"
+              *ngIf="
+              personalDataForm.get('sex')?.invalid &&
+              (personalDataForm.get('sex')?.touched || personalDataForm.get('sex')?.dirty)">
+                <p
+                *ngIf="personalDataForm.get('sex')?.hasError('required')"
+                class="fs-12 color-danger">
+                  campo obrigatório
+                </p>
+              </ion-text>
+            </div>
+          </ion-col>
+
+          <ion-col size="12"
+          *ngIf="!personalDataForm.get('sex')?.value || !personalDataForm.get('type')?.value || !personalDataForm.get('birthDateAsText')?.value || !personalDataForm.get('secondName')?.value">
+            <ion-item
+            lines="none"
+            mode="ios"
+            class="simulate-bootstrap-alert warning line-height-18">
+              <ion-icon name="warning-outline" slot="start" class="color-bootstrap-warning"></ion-icon>
+
+              <ion-text mode="ios" class="color-bootstrap-warning">
+                <p class="fs-12 mg-bottom-8">Perfil incompleto</p>
+                <p class="fs-14">Alguns dados não são obrigatórios mas no futuro indicaremos conteúdos com base na sua idade.</p>
+              </ion-text>
+            </ion-item>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </form>
+  </section>
+</ion-content>
+
+<ion-footer
+mode="ios"
+class="ion-no-border bg-white">
+  <ion-toolbar
+  mode="ios"
+  class="ion-bg-white">
+    <div class="footer-wrapper">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="12">
+            <ion-button
+            type="submit"
+            [disabled]="personalDataForm.invalid || isUpdatingProfile || !formHasChanges"
+            mode="md"
+            shape="round"
+            class="rgs-main-solid fs-14 txt-lowercase full-width close-modal-btn height-44"
+            [title]="'Atualizar perfil'"
+            fill="solid">
+              <ng-container *ngIf="!isUpdatingProfile">
+                <ion-icon name="refresh-outline" class="mg-right-5"></ion-icon>Atualizar <span class="font-w-bold mg-left-5">perfil</span>
+              </ng-container>
+
+              <ng-container *ngIf="isUpdatingProfile">
+                <ion-spinner name="dots"></ion-spinner>
+              </ng-container>
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </ion-toolbar>
+</ion-footer>

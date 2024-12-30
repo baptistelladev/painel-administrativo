@@ -28,6 +28,10 @@ import { passiveSupport } from 'passive-events-support/src/utils'
 import { getAuth, provideAuth } from '@angular/fire/auth';
 passiveSupport({/*...*/})
 
+// LOTTIE
+import { provideLottieOptions } from 'ngx-lottie';
+import player from 'lottie-web';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -58,16 +62,24 @@ passiveSupport({/*...*/})
   providers: [
     Storage,
     {
-    provide: LOCALE_ID,
-    useValue: "pt-BR"
-  },
-  {
-    provide:  DEFAULT_CURRENCY_CODE,
-    useValue: 'BRL'
-  },
-  provideHttpClient(),{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  provideFirebaseApp(() => initializeApp(environment.anfitrionFirebaseConfig)),
-  provideFirestore(() => getFirestore()), provideAuth(() => getAuth())],
+      provide: LOCALE_ID,
+      useValue: "pt-BR"
+    },
+    {
+      provide:  DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL'
+    },
+    provideHttpClient(),
+    {
+      provide: RouteReuseStrategy,
+      useClass: IonicRouteStrategy
+    },
+    provideFirebaseApp(() => initializeApp(environment.anfitrionFirebaseConfig)),
+    provideFirestore(() => getFirestore()), provideAuth(() => getAuth()),
+    provideLottieOptions({
+      player: () => player
+    })
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

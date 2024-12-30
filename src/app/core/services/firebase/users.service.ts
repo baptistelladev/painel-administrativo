@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Firestore } from '@angular/fire/firestore';
-import { collection, CollectionReference, onSnapshot, orderBy, query, QueryConstraint, where } from 'firebase/firestore';
+import { collection, CollectionReference, doc, getDoc, onSnapshot, orderBy, query, QueryConstraint, updateDoc, where } from 'firebase/firestore';
 import { Observable } from 'rxjs';
+import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
 import { IUSer } from 'src/app/shared/models/IUser';
 
@@ -57,5 +58,22 @@ export class UsersService {
 
       return () => unsubscribe();
     });
+  }
+
+  /**
+   * @description Responsável por atualizar os dados do usuário.
+   * @param docId obrigatório do tipo string - id da conta do usuário.
+   * @param userInfo obrigatório do tipo any - dados do usuário.
+   * @returns uma promessa do tipo void.
+   */
+  public async updateUserInfo(docId: string, userInfo: any): Promise<any> {
+    try {
+      const docRef = doc(this.firestore, CollectionsEnum.USERS, docId);
+      await updateDoc(docRef, userInfo);
+      const docSnap = await getDoc(docRef);
+      return docSnap.data()
+    } catch (error) {
+      throw error;
+    }
   }
 }

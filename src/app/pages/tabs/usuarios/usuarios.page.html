@@ -36,10 +36,9 @@ class="ion-content-w-linear-bg">
         <ng-container *ngIf="users && users.length > 0">
           <swiper-slide
           *ngFor="let user of users; let i = index; trackBy: trackUserById"
-          class="unlock-shadow-from-swiper auto-width">
+          class="unlock-shadow-from-swiper bigger auto-width">
             <div class="user-circle-wrapper">
               <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified" *ngIf="user.premiumInfo.isPremium"></ion-icon>
-
 
               <div class="circle-frame mg-bottom-16">
                 <ion-icon name="person-outline" class="color-gray-mid"></ion-icon>
@@ -57,7 +56,24 @@ class="ion-content-w-linear-bg">
               class="txt-uppercase as-badge">
                 {{ user.userType?.text?.pt }}
               </ion-chip>
+
+              <ion-item
+              (click)="seeUser(user)"
+              [ngClass]="{ 'is-premium': user.premiumInfo.isPremium }"
+              lines="none"
+              [button]="true"
+              mode="ios">
+                <ion-text mode="ios" class="fs-13 font-w-thin">
+                  <p>ver <b>perfil</b></p>
+                </ion-text>
+              </ion-item>
             </div>
+          </swiper-slide>
+        </ng-container>
+
+        <ng-container *ngIf="!users">
+          <swiper-slide *ngFor="let item of [1,2,3,4,5,6]" class="unlock-shadow-from-swiper bigger auto-width">
+            <ion-skeleton-text [animated]="true" class="like-profile-type-card"></ion-skeleton-text>
           </swiper-slide>
         </ng-container>
       </swiper-container>
@@ -131,7 +147,103 @@ class="ion-content-w-linear-bg">
         </ion-col>
       </ion-row>
     </ion-grid>
+
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12" size-md="4" class="txt-center mg-bottom-32">
+          <div
+          class="profile-type-card tourists is-selected">
+            <div class="residents-animation">
+              <ng-lottie [options]="touristOptions" (animationCreated)="touristAnimationCreated($event)"/>
+            </div>
+
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12" class="txt-center">
+                  <ion-chip
+                  mode="ios"
+                  class="txt-uppercase as-badge tourist">
+                    Turistas
+                  </ion-chip>
+
+                  <ion-text mode="ios" class="font-w-thin line-height-22">
+                    <p class="color-bootstrap-tourist font-baloo fs-20 font-w-normal mg-top-16"><b>{{ touristsLength }}</b></p>
+                    <p class="fs-14 mg-top-5">até o momento.</p>
+                  </ion-text>
+
+                  <div class="simulate-space"></div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-col>
+
+        <ion-col size="12" size-md="4" class="txt-center mg-bottom-32">
+          <div
+          class="profile-type-card residents is-selected">
+            <div class="residents-animation">
+              <ng-lottie [options]="residentOptions" (animationCreated)="residentsAnimationCreated($event)" />
+            </div>
+
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-chip
+                  mode="ios"
+                  class="txt-uppercase as-badge resident">
+                    Moradores
+                  </ion-chip>
+
+                  <ion-text mode="ios" class="font-w-thin line-height-22">
+                    <p class="color-bootstrap-resident font-baloo fs-20 font-w-normal mg-top-16"><b>{{ residentsLength }}</b></p>
+                    <p class="fs-14 mg-top-5">até o momento.</p>
+                  </ion-text>
+
+                  <div class="simulate-space"></div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-col>
+
+        <ion-col size="12" size-md="4" class="txt-center mg-bottom-32">
+          <div
+          class="profile-type-card none-of">
+            <ion-grid>
+              <ion-row>
+                <ion-col size="12">
+                  <ion-chip
+                  mode="ios"
+                  class="txt-uppercase as-badge gray">
+                    Indefinido
+                  </ion-chip>
+
+                  <ion-text mode="ios" class="font-w-thin line-height-22">
+                    <p class="color-gray-text font-baloo fs-20 font-w-normal mg-top-16"><b>{{ profileTypeNotDefinedLength }}</b></p>
+                    <p class="fs-14 mg-top-5">não informaram.</p>
+                  </ion-text>
+
+                  <div class="simulate-space"></div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
   </section>
 
   <app-add [feature]="FeaturesEnum.USUARIOS"></app-add>
 </ion-content>
+
+<ion-footer mode="ios" class="general-footer bg-gray-ed">
+  <ion-toolbar mode="ios" class="ion-bg-gray-ed">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <app-made-w-love></app-made-w-love>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

@@ -39,10 +39,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'pessoas',
-        loadChildren: () => import('./explorar/pessoas/pessoas.module').then( m => m.PessoasPageModule)
-      },
-      {
         path: 'cidades',
         loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
       },

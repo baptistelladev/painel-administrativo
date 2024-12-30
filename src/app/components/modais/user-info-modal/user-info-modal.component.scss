@@ -1,0 +1,23 @@
+section {
+  &.seus-dados {
+    width: 100%;
+    max-width: 445px;
+    margin: 0 auto;
+    padding: 16px;
+
+    .seus-dados-container {
+      width: 100%;
+      height: auto;
+    }
+  }
+}
+
+.footer-wrapper {
+  max-width: 445px;
+  margin: 0 auto;
+
+  ion-button {
+    width: 100%;
+    height: 48px;
+  }
+}

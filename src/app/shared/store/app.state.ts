@@ -7,6 +7,7 @@ import { ITicket } from "../models/ITicket";
 import { ISocialNetwork } from "../models/INetwork";
 import { IContact } from "../models/IContact";
 import { ICity } from '../models/ICity';
+import { IUSer } from '../models/IUser';
 
 export interface IAppState {
   currentCity: ICity,
@@ -14,7 +15,9 @@ export interface IAppState {
   appInfoNetworks: ISocialNetwork[],
   appInfoContact: IContact,
   currentSuggestion: ISuggestion,
-  hasConnection: boolean
+  hasConnection: boolean,
+  currentUser: IUSer,
+  currentUserCanAccessEighteenContent: boolean
 }
 
 export const appInitialState: IAppState = {
@@ -227,7 +230,22 @@ export const appInitialState: IAppState = {
       neighborhood: ''
     }
   },
-  hasConnection: true
+  hasConnection: true,
+  currentUser: {
+    firstName: '',
+    uid: '',
+    email: '',
+    createdAt: '',
+    lastName: '',
+    birthDate: '',
+    userType: '',
+    sex: '',
+    readAndAcceptedTerms: false,
+    premiumInfo: {
+      isPremium: false
+    }
+  },
+  currentUserCanAccessEighteenContent: true
 }
 
 // ACTIONS
@@ -270,6 +288,16 @@ export const setHasConnection = createAction(
   props<{ hasConnection: boolean }>()
 )
 
+export const setCurrentUser = createAction(
+  '[APP] Definir usuário selecionado',
+  props<{ currentUser: IUSer }>()
+)
+
+export const setEighteenAccessFromCurrentUser = createAction(
+  '[APP] Mostrar que usuário tem acesso á conteúdo +18',
+  props<{ canAccessEighteenContent: boolean }>()
+)
+
 export const appReducer = createReducer(
   appInitialState,
   on(
@@ -299,6 +327,14 @@ export const appReducer = createReducer(
   on(
     clearCurrentEstablishment,
     (state): IAppState => ({ ...state, currentPlace: appInitialState.currentPlace })
+  ),
+  on(
+    setCurrentUser,
+    (state, { currentUser }): IAppState => ({ ...state, currentUser: currentUser })
+  ),
+  on(
+    setEighteenAccessFromCurrentUser,
+    (state, { canAccessEighteenContent }): IAppState => ({ ...state, currentUserCanAccessEighteenContent: canAccessEighteenContent })
   )
 )
 
@@ -333,4 +369,14 @@ export const selectCurrentSuggestion = createSelector(
 export const selectHasConnection = createSelector(
   selectAppState,
   (state: IAppState) => state.hasConnection
+);
+
+export const selectCurrentUser = createSelector(
+  selectAppState,
+  (state: IAppState) => state.currentUser
+);
+
+export const selectAccessEighteenContent = createSelector(
+  selectAppState,
+  (state: IAppState) => state.currentUserCanAccessEighteenContent
 );

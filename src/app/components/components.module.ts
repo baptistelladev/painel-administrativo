@@ -9,6 +9,7 @@ import { ChangeCityButtonComponent } from './change-city-button/change-city-butt
 import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
 import { SuggestionModalComponent } from './modais/suggestion-modal/suggestion-modal.component';
 import { UsersModalComponent } from './modais/users-modal/users-modal.component';
+import { UserInfoModalComponent } from './modais/user-info-modal/user-info-modal.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { UsersModalComponent } from './modais/users-modal/users-modal.component'
     ChangeCityButtonComponent,
     MadeWLoveComponent,
     SuggestionModalComponent,
-    UsersModalComponent
+    UsersModalComponent,
+    UserInfoModalComponent
   ],
   imports: [
     SharedModule
@@ -30,7 +32,8 @@ import { UsersModalComponent } from './modais/users-modal/users-modal.component'
     ChangeCityButtonComponent,
     MadeWLoveComponent,
     SuggestionModalComponent,
-    UsersModalComponent
+    UsersModalComponent,
+    UserInfoModalComponent
   ]
 })
 export class ComponentsModule { }
