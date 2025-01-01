@@ -95,7 +95,8 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
       birthDateAsText: [ '', [ Validators.required ] ],
       secondName: [ '', [ Validators.required ] ],
       type: [ '', [ Validators.required ] ],
-      sex: [ '', [ Validators.required ] ]
+      sex: [ '', [ Validators.required ] ],
+      isPremium: [ '', [ Validators.required ] ]
     })
   }
 
@@ -154,8 +155,10 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
       name: user.firstName,
       secondName: user.lastName,
       type: user.userType?.value,
-      sex: user?.sex
+      sex: user?.sex,
+      isPremium: user.premiumInfo?.isPremium
     })
+
 
     if (user.birthDate) {
       this.personalDataForm.patchValue({
@@ -210,7 +213,7 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
           role: 'confirm',
           handler: async () => {
             await alertSuccess.dismiss();
-            this.navCtrl.back();
+            this.modalCtrl.dismiss();
             this.isUpdatingProfile = false;
           }
         }
@@ -225,7 +228,10 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
         lastName: this.personalDataForm.value.secondName,
         birthDate: moment(this.personalDataForm.value.birthDateAsDate).format('YYYY-MM-DD'),
         userType: this.MOCK_USER_TYPES.find(( userType: IUserType ) => { return userType.value === this.personalDataForm.value.type }),
-        sex: this.personalDataForm.value.sex
+        sex: this.personalDataForm.value.sex,
+        premiumInfo: {
+          isPremium: this.personalDataForm.value.isPremium
+        }
       }
 
       await this.usersService.updateUserInfo(this.user.uid, userInfo)

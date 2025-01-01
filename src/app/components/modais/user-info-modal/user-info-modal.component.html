@@ -23,10 +23,23 @@ class="ion-bg-white">
 
           <ion-col size="12">
             <ion-text mode="ios">
-              <h1 class="fs-24 font-baloo color-gray-text">
-               <b>Informações</b> do usuário
+              <h1 class="fs-24 font-baloo color-gray-text side-by-side">
+                Sobre <b class="mg-left-5" [ngClass]="{ 'color-linear': personalDataForm.get('isPremium')?.value }">{{ user.firstName }}</b>  <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified mg-left-5" *ngIf="personalDataForm.get('isPremium')?.value"></ion-icon>
               </h1>
             </ion-text>
+
+            <ion-chip
+            mode="ios"
+            class="txt-uppercase as-badge">
+              <ng-container *ngIf="!personalDataForm.get('isPremium')?.value">Conta gratuíta</ng-container>
+              <ng-container *ngIf="personalDataForm.get('isPremium')?.value">Conta premium</ng-container>
+            </ion-chip>
+          </ion-col>
+
+          <ion-col size="12">
+            <ion-item mode="ios" lines="none" class="rgs-item-toggle">
+              <ion-toggle justify="space-between" mode="ios" formControlName="isPremium">Conta <b>premium</b>?</ion-toggle>
+            </ion-item>
           </ion-col>
 
           <ion-col size="12">
@@ -369,6 +382,7 @@ class="ion-no-border bg-white">
         <ion-row>
           <ion-col size="12">
             <ion-button
+            (click)="updateProfile()"
             type="submit"
             [disabled]="personalDataForm.invalid || isUpdatingProfile || !formHasChanges"
             mode="md"
