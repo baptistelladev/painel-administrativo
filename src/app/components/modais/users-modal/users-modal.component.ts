@@ -1,9 +1,12 @@
+import { MOCK_USER_TYPES } from './../../../shared/mocks/MockUserTypes';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/core/services/firebase/auth.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
+import { UserTypeEnum } from 'src/app/shared/enums/UserType';
 import { IUSer } from 'src/app/shared/models/IUser';
+import { IUserType } from 'src/app/shared/models/IUSerType';
 import { OverlayService } from 'src/app/shared/services/overlay.service';
 
 @Component({
@@ -12,6 +15,23 @@ import { OverlayService } from 'src/app/shared/services/overlay.service';
   styleUrls: ['./users-modal.component.scss'],
 })
 export class UsersModalComponent  implements OnInit {
+
+  public MOCK_USER_TYPES: IUserType[] = MOCK_USER_TYPES;
+  public UserTypeEnum = UserTypeEnum;
+
+  public interfaceOptions: any = {
+    showBackdrop: true,
+    backdropDismiss: true,
+    cssClass: 'select-alert',
+    mode: 'ios',
+    keyboardClose: true,
+    id: 'select-user-type',
+    size: 'auto',
+    dismissOnSelect: true,
+    side: 'bottom',
+    alignment: '',
+    arrow: true,
+  }
 
   public showCreatePassword: boolean = false;
   public showCreateConfirmPassword: boolean = false;
@@ -66,6 +86,10 @@ export class UsersModalComponent  implements OnInit {
     this.inputErrors.emailAlreadyInUse.text = null;
   }
 
+  public relationshipChanged(): void {
+    console.log(this.createUserFormGroup.value.type);
+  }
+
   public async createAcc() {
     this.isCreating = true;
 
@@ -88,7 +112,10 @@ export class UsersModalComponent  implements OnInit {
       readAndAcceptedTerms: this.createUserFormGroup.value.terms,
       premiumInfo: {
         isPremium: false
-      }
+      },
+      userType: this.MOCK_USER_TYPES.find((userType: IUserType) => {
+        return userType.value === this.createUserFormGroup.value.type
+      })
     }
 
     await this.authService.createUserWithEmailAndPassword(this.createUserFormGroup.value.email, this.createUserFormGroup.value.password, userInfo)
@@ -125,6 +152,7 @@ export class UsersModalComponent  implements OnInit {
 
   public initCreateUserForm(): void {
     this.createUserFormGroup = this.formBuilder.group({
+      type: [null, [ Validators.required ]],
       name: [ '', [ Validators.required, Validators.minLength(3) ] ],
       email: [ '', [ Validators.required, Validators.email ] ],
       password: [ '', [ Validators.required, Validators.minLength(8) ] ],

@@ -120,11 +120,31 @@ hr.rgs-divider {
   &.white-background-item {
     ion-item {
       --background: var(--white);
-      --border-color: var(--gray-da);
+      --border-color: var(--gray-c);
     }
   }
 
   ion-select {
+
+    &.select-on-form {
+      --placeholder-color: var(--gray-c);
+      --placeholder-opacity: 1;
+      --color-checked: var(--gray-text);
+      font-weight: normal;
+
+      &::part(label) {
+        color: var(--gray-mid);
+       font-size: 12px;
+      }
+
+      &::part(container) {
+        width: 100%;
+      }
+
+      &::part(icon) {
+        display: none;
+      }
+    }
 
     &.without-transform {
       &::part(label) {
@@ -249,6 +269,15 @@ hr.rgs-divider {
     --padding-end: 16px;
     --inner-padding-end: 0;
     border-radius: 12px;
+
+    &.has-select-on-form {
+      --padding-end: 16px;
+      --inner-padding-end: 0;
+
+      ion-icon {
+        font-size: 22px;
+      }
+    }
 
     ion-button {
       margin: 0;
