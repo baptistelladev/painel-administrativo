@@ -19,14 +19,14 @@ export class TabsPage implements OnInit {
     value: string,
     isDisabled: boolean
   }[] = [
-    {
+    /**{
       title: 'Admnistração',
       text: 'Dashboard',
       router: ['/logado/dashboard'],
       icon: 'grid',
       value: 'DASHBOARD',
       isDisabled: false
-    },
+    },**/
     {
       title: 'No sistema',
       text: 'Usuários',
@@ -43,14 +43,14 @@ export class TabsPage implements OnInit {
       value: FeaturesEnum.LUGARES,
       isDisabled: false
     },
-    {
+     /**{
       title: 'Na cidade e na praia',
       text: 'Pessoas',
       router: ['/logado/pessoas'],
       icon: 'man',
       value: FeaturesEnum.PESSOAS,
       isDisabled: true
-    },
+    },**/
     {
       title: 'Na Baixada Santista',
       text: 'Dicas',

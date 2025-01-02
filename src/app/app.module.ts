@@ -31,6 +31,7 @@ passiveSupport({/*...*/})
 // LOTTIE
 import { provideLottieOptions } from 'ngx-lottie';
 import player from 'lottie-web';
+import { getApp } from 'firebase/app';
 
 @NgModule({
   declarations: [AppComponent],
@@ -74,8 +75,17 @@ import player from 'lottie-web';
       provide: RouteReuseStrategy,
       useClass: IonicRouteStrategy
     },
+
+    // Inicialização do app principal
     provideFirebaseApp(() => initializeApp(environment.anfitrionFirebaseConfig)),
-    provideFirestore(() => getFirestore()), provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore()), // Firestore para o app principal
+    provideAuth(() => getAuth()), // Auth para o app principal
+
+    // Inicialização do segundo app (para 'anfitrion-management')
+    provideFirebaseApp(() => initializeApp(environment.firebaseConfig, 'anfitrion-management')),
+    // provideFirestore(() => getFirestore(getApp('anfitrion-management'))), // Firestore para o segundo app
+     //provideAuth(() => getAuth(getApp('anfitrion-management'))), // Auth para o segundo app
+
     provideLottieOptions({
       player: () => player
     })

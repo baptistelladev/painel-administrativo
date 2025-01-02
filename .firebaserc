@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "anfitrion-management"
-  }
+    "default": "anfitrion-management",
+    "anfitrion-management": "anfitrion-management"
+  },
+  "targets": {},
+  "etags": {}
 }
