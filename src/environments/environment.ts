@@ -5,13 +5,12 @@
 export const environment = {
   production: false,
   firebaseConfig: {
-    apiKey: "AIzaSyCpJvwtqKsGRHL2x-NWzT79kSBtXTy5TIA",
-    authDomain: "ruagastronomicadesantos-314.firebaseapp.com",
-    projectId: "ruagastronomicadesantos-314",
-    storageBucket: "ruagastronomicadesantos-314.appspot.com",
-    messagingSenderId: "630646945223",
-    appId: "1:630646945223:web:d6f8ceb333ffa41de355e2",
-    measurementId: "G-FNZFE8BMZY"
+    apiKey: "AIzaSyDy5h2TiGgar1O-ehcDazbKwmFzkmHXDd0",
+    authDomain: "anfitrion-management.firebaseapp.com",
+    projectId: "anfitrion-management",
+    storageBucket: "anfitrion-management.firebasestorage.app",
+    messagingSenderId: "192147770872",
+    appId: "1:192147770872:web:091913ce30d9e4906a5a0d"
   },
   anfitrionFirebaseConfig: {
     apiKey: "AIzaSyBnV3xGDkNsdwcdgElEpQ7HG5J04U5KGWo",
