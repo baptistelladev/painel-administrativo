@@ -26,18 +26,12 @@ import { EstablishmentModalComponent } from 'src/app/shared/components/modais/es
   styleUrls: ['./festival-de-comida-japonesa.page.scss'],
 })
 export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
-
-  public lastPathFromUrl: string // O PARAM SERÁ SUBSTITUIDO POR ISSO, POIS ESSA TELA TEM ROTA DEDICADA.
-
   public BenefitConsumerEnum = BenefitConsumerEnum;
   public BenefitOperatorsEnum = BenefitOperatorsEnum;
 
   @ViewChild('japaneseSwiper')
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
-
-  public hideRightControl: boolean = false;
-  public hideLeftControl: boolean = false;
 
   public places: any[] | null;
   public places$: Observable<IPlace[]>;
@@ -50,6 +44,11 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
   public currentCity: ICity;
   public currentCity$: Observable<ICity>;
   public currentCitySubscription: Subscription;
+
+  public hideRightControl: boolean = false;
+  public hideLeftControl: boolean = false;
+
+  public lastPathFromUrl: string // O PARAM SERÁ SUBSTITUIDO POR ISSO, POIS ESSA TELA TEM ROTA DEDICADA.
 
   constructor(
     private navCtrl : NavController,
@@ -70,6 +69,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
+  /**
+   * @description Obtém cidade previamente selecionada e guardada no NGRX.
+   */
   public getCurrentCityFromNGRX(): void {
     this.currentCity$ = this.store.select(AppStore.selectAppCurrentCity);
 
@@ -79,6 +81,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     })
   }
 
+  /**
+   * @description Obtém a sugestão selecionada em alguma tela anterior OU se acessou a tela diretamente obtém os parâmetros da url.
+   */
   public async getCurrentSuggestionFromNGRX() {
     this.currentSuggestion$ = this.store.select(AppStore.selectCurrentSuggestion);
 
@@ -97,7 +102,7 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
   /**
    * @description Tomar cuidado com esta função pois ela é usada em outras telas de sugestões.
    * Neste tela em específico nós não mandamos parâmetro da tela anterior, o Festival de Comida Japonesa possui rota dedicada no projeto.
-   * Então "desmembramo" a url e pegamos o último "pedaço".
+   * Então "desmembramos" a url e pegamos o último "pedaço".
    */
   public getSuggestionFromUrl() {
     let urlSplited: string[] = this.router.url.split('/');
@@ -124,6 +129,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Obtém lista de lugares da sugestão e cidade selecionada.
+   */
   public getPlacesFromCurrentCity(): void {
     this.getPlaces([
       { field: 'suggestions', operator: 'array-contains', value: this.currentSuggestion?.value },
@@ -131,6 +139,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     ]);
   }
 
+  /**
+   * @description Obtém lista de lugares onde tem .
+   */
   public getPlaces(filters: IFirebaseFilter[] = []) {
     this.places = null;
 
@@ -160,6 +171,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
       })
   }
 
+  /**
+   * @description Ir para o próximo slide.
+   */
   public slideToNext(): void {
     this.swiper?.slideNext(800);
 
@@ -168,6 +182,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Ir para slide anterior.
+   */
   public slideToPrev(): void {
     this.swiper?.slidePrev(800);
 
@@ -176,6 +193,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Guarda a sugestão no NGRX e abre o modal.
+   */
   public seePlace(place: IPlace, e: any): void {
     if (place.isBuilding) {
       e.preventDefault();
@@ -185,6 +205,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Abre o modal com formulário para criação ou atualização de uma sugestão.
+   */
   public async openModalToSeeStablishment(): Promise<HTMLIonModalElement> {
     const modal = await this.modalCtrl.create({
       component: EstablishmentModalComponent,
@@ -198,6 +221,9 @@ export class FestivalDeComidaJaponesaPage implements OnInit, AfterViewInit {
     return modal;
   }
 
+  /**
+   * @description Detecta mudanças no swiper para esconder o botão de próximo e anterior conforme o slide estiver no começo ou fim.
+   */
   public listenForSwiperForControl(ev: any): void {
     this.hideLeftControl = ev.detail[0].isBeginning;
     this.hideRightControl = ev.detail[0].isEnd;
