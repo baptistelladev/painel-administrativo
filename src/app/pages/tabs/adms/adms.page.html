@@ -1,15 +1,19 @@
 <ion-content
 [forceOverscroll]="false"
 class="ion-content-w-linear-bg">
-  <app-add [feature]="FeaturesEnum.ADMINS"></app-add>
+  <app-add [feature]="FeaturesEnum.ADMINS" />
 </ion-content>
 
-<ion-footer mode="ios" class="general-footer bg-gray-ed">
-  <ion-toolbar mode="ios" class="ion-bg-gray-ed">
+<ion-footer
+mode="ios"
+class="general-footer bg-gray-ed">
+  <ion-toolbar
+  mode="ios"
+  class="ion-bg-gray-ed">
     <ion-grid [fixed]="true">
       <ion-row>
         <ion-col size="12">
-          <app-made-w-love></app-made-w-love>
+          <app-made-w-love/>
         </ion-col>
       </ion-row>
     </ion-grid>
