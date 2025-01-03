@@ -14,7 +14,7 @@ import { IUserSex } from 'src/app/shared/models/IUserSex';
 import { UserTypeEnum } from 'src/app/shared/enums/UserType';
 import { IUserType } from 'src/app/shared/models/IUSerType';
 import { OverlayService } from 'src/app/shared/services/overlay.service';
-import * as AppStore from './../../../shared/store/app.state';
+import * as AppStore from 'src/app/shared/store/app.state';
 @Component({
   selector: 'app-user-info-modal',
   templateUrl: './user-info-modal.component.html',

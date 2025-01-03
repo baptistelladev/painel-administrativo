@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { CidadesPage } from 'src/app/pages/tabs/cidades/cidades.page';
 import { ICity } from 'src/app/shared/models/ICity';
+import { CidadesModalComponent } from '../modais/cidades-modal/cidades-modal.component';
 
 @Component({
   selector: 'app-change-city-button',
@@ -22,7 +22,7 @@ export class ChangeCityButtonComponent  implements OnInit {
 
   public async openCityModal() {
     const modal = await this.modalCtrl.create({
-      component: CidadesPage,
+      component: CidadesModalComponent,
       componentProps: {
         currentCity: this.currentCity
       },

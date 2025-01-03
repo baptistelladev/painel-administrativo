@@ -1,4 +1,4 @@
-import { SharedModule } from './../shared/shared.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AddComponent } from './add/add.component';
@@ -10,6 +10,9 @@ import { MadeWLoveComponent } from './made-w-love/made-w-love.component';
 import { SuggestionModalComponent } from './modais/suggestion-modal/suggestion-modal.component';
 import { UsersModalComponent } from './modais/users-modal/users-modal.component';
 import { UserInfoModalComponent } from './modais/user-info-modal/user-info-modal.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { CidadesModalComponent } from './modais/cidades-modal/cidades-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,10 +23,15 @@ import { UserInfoModalComponent } from './modais/user-info-modal/user-info-modal
     MadeWLoveComponent,
     SuggestionModalComponent,
     UsersModalComponent,
-    UserInfoModalComponent
+    UserInfoModalComponent,
+    CidadesModalComponent
   ],
   imports: [
-    SharedModule
+    CommonModule,
+    IonicModule,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     AddComponent,
@@ -33,7 +41,8 @@ import { UserInfoModalComponent } from './modais/user-info-modal/user-info-modal
     MadeWLoveComponent,
     SuggestionModalComponent,
     UsersModalComponent,
-    UserInfoModalComponent
+    UserInfoModalComponent,
+    CidadesModalComponent
   ]
 })
 export class ComponentsModule { }

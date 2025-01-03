@@ -1,8 +1,8 @@
-import { IFestivalFood } from './../../../shared/models/IFestivalFood';
-import { BenefitTypeEnum } from './../../../shared/enums/BenefitType';
-import { MOCK_FESTIVAL_FOOD_TYPE } from './../../../shared/mocks/MockFestivalFoodType';
+import { IFestivalFood } from 'src/app/shared/models/IFestivalFood';
+import { BenefitTypeEnum } from 'src/app/shared/enums/BenefitType';
+import { MOCK_FESTIVAL_FOOD_TYPE } from 'src/app/shared/mocks/MockFestivalFoodType';
 
-import { MOCK_SANTOS_BEACHES, MOCK_SAO_VICENTE_BEACHES } from '../../../shared/mocks/MockBeaches';
+import { MOCK_SANTOS_BEACHES, MOCK_SAO_VICENTE_BEACHES } from 'src/app/shared/mocks/MockBeaches';
 
 
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -26,7 +26,7 @@ import { ISocialNetwork } from 'src/app/shared/models/INetwork';
 import { IPhone } from 'src/app/shared/models/IPhone';
 import { ITicket } from 'src/app/shared/models/ITicket';
 import { ITime } from 'src/app/shared/models/ITime';
-import * as AppStore from './../../../shared/store/app.state';
+import * as AppStore from 'src/app/shared/store/app.state';
 import { Store } from '@ngrx/store';
 import { IHour } from 'src/app/shared/models/IHour';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';

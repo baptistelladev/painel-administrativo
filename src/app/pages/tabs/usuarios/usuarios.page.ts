@@ -7,11 +7,11 @@ import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IUSer } from 'src/app/shared/models/IUser';
 import Swiper from 'swiper';
 import { ModalController, NavController } from '@ionic/angular';
-import { UserInfoModalComponent } from 'src/app/components/modais/user-info-modal/user-info-modal.component';
 import { Store } from '@ngrx/store';
 import * as AppStore from './../../../shared/store/app.state';
 import { AnimationOptions } from 'ngx-lottie';
 import { AnimationItem } from 'lottie-web';
+import { UserInfoModalComponent } from 'src/app/shared/components/modais/user-info-modal/user-info-modal.component';
 
 
 @Component({

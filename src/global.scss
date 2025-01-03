@@ -117,6 +117,18 @@ hr.rgs-divider {
 /* INPUT WRAPPER */
 .rgs-input-wrapper, .rgs-select-wrapper {
 
+  &.dark {
+    ion-item {
+      --border-color: var(--gray-3);
+      --background: var(--gray-2);
+
+      ion-input {
+        --placeholder-color: var(--gray-mid);
+        --color: var(--white);
+      }
+    }
+  }
+
   &.white-background-item {
     ion-item {
       --background: var(--white);

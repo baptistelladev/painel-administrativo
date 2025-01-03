@@ -13,18 +13,28 @@
       font-size: 18px;
       position: relative;
 
+      .dash {
+        position: absolute;
+      }
+
       &.big {
         font-size: 22px;
+
+        .dash {
+          font-size: 9px;
+          transform: translateY(-3px);
+          right: -10px;
+        }
       }
 
       &.extra-big {
         font-size: 36px;
-      }
 
-      .dash {
-        position: absolute;
-        transform: translateY(-3px);
-        right: -10px;
+        .dash {
+          font-size: 12px;
+          transform: translateY(0px);
+          right: -13px;
+        }
       }
     }
   }

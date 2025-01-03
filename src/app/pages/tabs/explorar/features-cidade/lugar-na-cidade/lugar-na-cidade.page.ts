@@ -12,7 +12,7 @@ import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
 import { IPlace } from 'src/app/shared/models/IPlace';
 import * as AppStore from '../../../../../shared/store/app.state';
 import { Store } from '@ngrx/store';
-import { EstablishmentModalComponent } from 'src/app/components/modais/establishment-modal/establishment-modal.component';
+import { EstablishmentModalComponent } from 'src/app/shared/components/modais/establishment-modal/establishment-modal.component';
 
 @Component({
   selector: 'app-lugar-na-cidade',

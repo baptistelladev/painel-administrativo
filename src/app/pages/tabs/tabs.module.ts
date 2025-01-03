@@ -1,22 +1,20 @@
-import { SharedModule } from './../../shared/shared.module';
-import { NgModule } from '@angular/core';
+import { SharedModule } from 'src/app/shared/shared.module';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { TabsPageRoutingModule } from './tabs-routing.module';
 
 import { TabsPage } from './tabs.page';
-import { ComponentsModule } from 'src/app/components/components.module';
 import { IonicModule } from '@ionic/angular';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule, // Importando o IonicModule para usar ion-router-outlet
+    SharedModule,
     TabsPageRoutingModule,
-    ReactiveFormsModule,
     ComponentsModule
   ],
-  declarations: [TabsPage]
+  declarations: [TabsPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class TabsPageModule {}

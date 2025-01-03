@@ -1,4 +1,3 @@
-import { EstablishmentModalComponent } from '../../../../../components/modais/establishment-modal/establishment-modal.component';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { AlertController, ModalController, NavController, ToastController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -11,6 +10,7 @@ import * as AppStore from '../../../../../shared/store/app.state';
 import Swiper from 'swiper';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
+import { EstablishmentModalComponent } from 'src/app/shared/components/modais/establishment-modal/establishment-modal.component';
 
 @Component({
   selector: 'app-painel-rua-gastronomica',

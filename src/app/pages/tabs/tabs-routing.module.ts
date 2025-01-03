@@ -39,10 +39,6 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'cidades',
-        loadChildren: () => import('./cidades/cidades.module').then( m => m.CidadesPageModule)
-      },
-      {
         path: 'dashboard',
         loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
       },

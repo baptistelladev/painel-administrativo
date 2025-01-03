@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { map, Observable, Subscription, take } from 'rxjs';
-import { EstablishmentModalComponent } from 'src/app/components/modais/establishment-modal/establishment-modal.component';
 import { PlacesService } from 'src/app/core/services/firebase/places.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { MOCK_CITIES } from 'src/app/shared/mocks/MockCities';
@@ -13,6 +12,7 @@ import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
 import { IPlace } from 'src/app/shared/models/IPlace';
 import * as AppStore from '../../../../../shared/store/app.state';
 import { MOCK_BEACH_FEATURES } from 'src/app/shared/mocks/MockBeachFeatures';
+import { EstablishmentModalComponent } from 'src/app/shared/components/modais/establishment-modal/establishment-modal.component';
 @Component({
   selector: 'app-lugar-na-praia',
   templateUrl: './lugar-na-praia.page.html',

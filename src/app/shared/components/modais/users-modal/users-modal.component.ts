@@ -1,4 +1,4 @@
-import { MOCK_USER_TYPES } from './../../../shared/mocks/MockUserTypes';
+import { MOCK_USER_TYPES } from 'src/app/shared/mocks/MockUserTypes';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';

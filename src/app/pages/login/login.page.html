@@ -1,0 +1,145 @@
+<ion-content [fullscreen]="true" class="ion-bg-gray-2">
+  <form class="login" (ngSubmit)="login()" [formGroup]="formLoginGroup">
+    <ng-lottie [options]="options" (animationCreated)="animationCreated($event)" />
+
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12" class="no-pad-bottom">
+          <app-logo size="extra-big"></app-logo>
+        </ion-col>
+
+        <ion-col size="12" class="no-pad-top">
+          <ion-text mode="ios">
+            <p class="color-white font-w-thin fs-14 mg-bottom-16">Gestão do anfitrião digital da Baixada Santista.</p>
+          </ion-text>
+        </ion-col>
+
+        <ion-col size="12" size-md="8" size-lg="6" size-xl="5">
+          <div
+          [ngClass]="{
+          'has-error' : (formLoginGroup.get('email')?.invalid &&
+          (formLoginGroup.get('email')?.touched ||
+          formLoginGroup.get('email')?.dirty))}"
+          class="rgs-input-wrapper full-width label-w-white dark mg-bottom-16">
+            <ion-item
+            lines="none"
+            mode="ios">
+              <ion-input
+              #emailInput
+              class="without-transform"
+              formControlName="email"
+              enterkeyhint="next"
+              [placeholder]="'E-mail'"
+              mode="ios"
+              type="email"
+              inputmode="email">
+              </ion-input>
+            </ion-item>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            formLoginGroup.get('email')?.invalid &&
+            (formLoginGroup.get('email')?.touched || formLoginGroup.get('email')?.dirty)">
+              <p
+              *ngIf="formLoginGroup.get('email')?.hasError('required')"
+              class="fs-12 color-danger">
+                campo obrigatório
+              </p>
+
+              <p
+              *ngIf="formLoginGroup.get('email')?.hasError('email')"
+              class="fs-12 color-danger">
+                e-mail inválido
+              </p>
+            </ion-text>
+          </div>
+
+          <div
+          [ngClass]="{
+          'has-error' : (formLoginGroup.get('password')?.invalid &&
+          (formLoginGroup.get('password')?.touched ||
+          formLoginGroup.get('password')?.dirty))}"
+          class="rgs-input-wrapper full-width  label-w-white item-has-button-at-end dark">
+            <ion-item
+            lines="none"
+            mode="ios">
+              <ion-input
+              #passwordInput
+              class="without-transform"
+              [placeholder]="'Senha'"
+              [type]="showLoginPassword ? 'text' : 'password'"
+              formControlName="password"
+              enterkeyhint="send"
+              mode="ios"
+              inputmode="text">
+              </ion-input>
+
+              <ion-button
+              [title]="showLoginPassword ? 'Esconder senha' : 'Mostrar senha'"
+              (click)="toggleLoginPassword()"
+              type="button"
+              class="clear-gray-mid"
+              mode="ios"
+              fill="clear">
+                <ion-icon name="eye-off-outline" *ngIf="showLoginPassword"></ion-icon>
+                <ion-icon name="eye-outline" *ngIf="!showLoginPassword"></ion-icon>
+              </ion-button>
+            </ion-item>
+
+            <ion-text
+            mode="ios"
+            class="mg-top-8 d-block"
+            *ngIf="
+            formLoginGroup.get('password')?.invalid &&
+            (formLoginGroup.get('password')?.touched || formLoginGroup.get('password')?.dirty)">
+              <p
+              *ngIf="formLoginGroup.get('password')?.hasError('required')"
+              class="fs-12 color-danger">
+                campo obrigatório
+              </p>
+
+              <p
+              *ngIf="formLoginGroup.get('password')?.hasError('minlength')"
+              class="fs-12 color-danger">
+                mínimo 6 caracteres
+              </p>
+            </ion-text>
+          </div>
+        </ion-col>
+
+        <ion-col size="12">
+          <ion-button
+          type="submit"
+          [disabled]="isDoingLogin"
+          mode="md"
+          shape="round"
+          class="rgs-main-solid fs-14 txt-lowercase close-modal-btn height-44 mg-top-16 login-button"
+          [title]="'Fazer login'"
+          fill="solid">
+            <ng-container *ngIf="!isDoingLogin">
+              <ion-icon name="log-in-outline" class="mg-right-8 fs-22"></ion-icon>Acessar <span class="font-w-bold mg-left-5">painel</span>
+            </ng-container>
+
+            <ng-container *ngIf="isDoingLogin">
+              <ion-spinner name="dots"></ion-spinner>
+            </ng-container>
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-content>
+
+<ion-footer mode="ios" class="bg-gray-2 ion-no-border">
+  <ion-toolbar mode="ios" class="ion-bg-gray-2">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <app-made-w-love [color]="'white'" [weightThin]="true" class="mg-top-16 d-block" [alwaysCentered]="true"></app-made-w-love>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

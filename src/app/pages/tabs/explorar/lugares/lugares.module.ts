@@ -7,13 +7,12 @@ import { IonicModule } from '@ionic/angular';
 import { LugaresPageRoutingModule } from './lugares-routing.module';
 
 import { LugaresPage } from './lugares.page';
-import { ComponentsModule } from 'src/app/components/components.module';
+import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
+    SharedModule,
     LugaresPageRoutingModule,
     ComponentsModule
   ],

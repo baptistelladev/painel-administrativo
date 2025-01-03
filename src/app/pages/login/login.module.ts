@@ -4,19 +4,21 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { SugestoesPageRoutingModule } from './sugestoes-routing.module';
+import { LoginPageRoutingModule } from './login-routing.module';
 
-import { SugestoesPage } from './sugestoes.page';
+import { LoginPage } from './login.page';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ComponentsModule } from 'src/app/shared/components/components.module';
+import { LottieComponent } from 'ngx-lottie';
 
 @NgModule({
   imports: [
     SharedModule,
-    SugestoesPageRoutingModule,
-    ComponentsModule
+    LoginPageRoutingModule,
+    ComponentsModule,
+    LottieComponent
   ],
-  declarations: [SugestoesPage],
+  declarations: [LoginPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class SugestoesPageModule {}
+export class LoginPageModule {}

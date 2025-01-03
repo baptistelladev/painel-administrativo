@@ -2,18 +2,18 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
+import { StorageService } from 'src/app/core/services/storage.service';
+import { CURRENT_CITY } from 'src/app/shared/consts/keys';
 import { MOCK_CITIES } from 'src/app/shared/mocks/MockCities';
 import { ICity } from 'src/app/shared/models/ICity';
-import * as AppStore from '../../../shared/store/app.state';
-import { CURRENT_CITY } from 'src/app/shared/consts/keys';
-import { StorageService } from 'src/app/core/services/storage.service';
+import * as AppStore from 'src/app/shared/store/app.state';
 
 @Component({
-  selector: 'app-cidades',
-  templateUrl: './cidades.page.html',
-  styleUrls: ['./cidades.page.scss'],
+  selector: 'app-cidades-modal',
+  templateUrl: './cidades-modal.component.html',
+  styleUrls: ['./cidades-modal.component.scss'],
 })
-export class CidadesPage implements OnInit {
+export class CidadesModalComponent  implements OnInit {
 
   @Input() currentCity: ICity;
 
@@ -46,6 +46,5 @@ export class CidadesPage implements OnInit {
   public async closeModalAndFireChange() {
     await this.modalCtrl.dismiss(this.currentCity, 'change', 'cities-modal');
   }
-
 
 }

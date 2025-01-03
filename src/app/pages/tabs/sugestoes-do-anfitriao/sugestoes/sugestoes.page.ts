@@ -12,7 +12,7 @@ import { OverlayService } from 'src/app/shared/services/overlay.service';
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
-import { SuggestionModalComponent } from 'src/app/components/modais/suggestion-modal/suggestion-modal.component';
+import { SuggestionModalComponent } from 'src/app/shared/components/modais/suggestion-modal/suggestion-modal.component';
 
 @Component({
   selector: 'app-sugestoes',

@@ -1,5 +1,7 @@
 ion-button {
 
+  &.height-44 { height: 44px; }
+
   &.to-turn {
     transform: rotate(90deg);
   }
@@ -28,6 +30,10 @@ ion-button {
 
   &.clear-gray-light {
     --color: var(--gray-light);
+  }
+
+  &.clear-gray-mid {
+    --color: var(--gray-6);
   }
 
   &.rgs-main-solid {

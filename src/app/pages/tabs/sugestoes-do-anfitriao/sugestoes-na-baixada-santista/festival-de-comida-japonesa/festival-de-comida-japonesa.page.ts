@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
 import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
-import { EstablishmentModalComponent } from 'src/app/components/modais/establishment-modal/establishment-modal.component';
+import { EstablishmentModalComponent } from 'src/app/shared/components/modais/establishment-modal/establishment-modal.component';
 
 @Component({
   selector: 'app-festival-de-comida-japonesa',

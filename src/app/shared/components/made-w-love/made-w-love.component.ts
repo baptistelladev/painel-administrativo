@@ -11,6 +11,7 @@ export class MadeWLoveComponent  implements OnInit {
 
   @Input() centered: boolean;
   @Input() alwaysCentered: boolean;
+  @Input() weightThin: boolean;
 
   constructor() { }
 

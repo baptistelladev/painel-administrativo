@@ -1,5 +1,5 @@
 import { SuggestionsService } from 'src/app/core/services/firebase/suggestions.service';
-import { MOCK_HASHTAGS } from './../../../shared/mocks/MockHashtags';
+import { MOCK_HASHTAGS } from 'src/app/shared/mocks/MockHashtags';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
@@ -14,7 +14,7 @@ import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IHashtag } from 'src/app/shared/models/IHashtag';
 import { IProfileType } from 'src/app/shared/models/IProfileType';
 import { Store } from '@ngrx/store';
-import * as AppStore from './../../../shared/store/app.state';
+import * as AppStore from 'src/app/shared/store/app.state';
 
 @Component({
   selector: 'app-suggestion-modal',
