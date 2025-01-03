@@ -35,16 +35,17 @@ export class LugarNaCidadePage implements OnInit {
   public MOCK_CITY_FEATURES: any = MOCK_CITY_FEATURES;
 
   constructor(
-    private route : ActivatedRoute,
-    private placesService : PlacesService,
-    private navCtrl : NavController,
-    private alertCtrl : AlertController,
     private store : Store,
-    private modalCtrl : ModalController
+    private route : ActivatedRoute,
+    private navCtrl : NavController,
+    private modalCtrl : ModalController,
+    private alertCtrl : AlertController,
+    private placesService : PlacesService
   ) { }
 
-  ngOnInit() {
-    this.getRouter();
+  async ngOnInit() {
+    await this.getRouter();
+
     this.getPlaces([
       { field: 'origin.value', operator: '==', value: this.currentCityAsParam?.value },
       { field: 'mainType.value', operator: '==', value: this.placeType },
@@ -52,7 +53,10 @@ export class LugarNaCidadePage implements OnInit {
     ]);
   }
 
-  public getRouter(): void {
+  /**
+   * @description Obtém a rota atual, verifica se tem algum parâmetro, guarda em varíaveis e buscar lugares filtrados com base nessas informações.
+   */
+  public async getRouter(): Promise<boolean> {
     this.route.queryParams
     .pipe(
       take(1),
@@ -60,12 +64,12 @@ export class LugarNaCidadePage implements OnInit {
       return params
     }))
     .subscribe((res: any) => {
-      this.currentCityAsParam = this.MOCK_CITIES.find((city: ICity) => {
+      this.currentCityAsParam = this.MOCK_CITIES
+      .find((city: ICity) => {
         return city.value === res.cidade;
       })
 
       this.currentLocationAsParam = res.localidade;
-
     })
 
     this.route.paramMap
@@ -81,13 +85,18 @@ export class LugarNaCidadePage implements OnInit {
     .subscribe((res: any) => {
       this.placeType = res.place_type;
 
-      this.placeTypeOBJ = this.MOCK_CITY_FEATURES.places.find((placeType: any) => {
+      this.placeTypeOBJ = this.MOCK_CITY_FEATURES.places
+      .find((placeType: any) => {
         return placeType.value === this.placeType
       })
-
     })
+
+    return true
   }
 
+  /**
+   * @description Obtém a lista de lugares.
+   */
   public getPlaces(filters: IFirebaseFilter[] = []) {
     if (this.currentCityAsParam && this.placeType && this.currentLocationAsParam) {
       this.places$ = this.placesService
@@ -103,10 +112,16 @@ export class LugarNaCidadePage implements OnInit {
     }
   }
 
+  /**
+   * @description Volta para página anterior.
+   */
   public back(): void {
     this.navCtrl.back();
   }
 
+  /**
+   * @description Mostra um alerta para confirmar a remoção de um lugar.
+   */
   public async showAlertToRemove(establishment: IPlace): Promise<HTMLIonAlertElement> {
     const alert = await this.alertCtrl.create({
       mode: 'ios',
@@ -117,9 +132,7 @@ export class LugarNaCidadePage implements OnInit {
         {
           text: 'Cancelar',
           role: 'cancel',
-          handler: () => {
-
-          }
+          handler: () => { }
         },
         {
           text: 'Remover',
@@ -137,6 +150,9 @@ export class LugarNaCidadePage implements OnInit {
     return alert;
   }
 
+  /**
+   * @description Abre o modal com o formulário.
+   */
   public async openModalToSeeStablishment(): Promise<HTMLIonModalElement> {
     const modal = await this.modalCtrl.create({
       component: EstablishmentModalComponent,
@@ -150,10 +166,11 @@ export class LugarNaCidadePage implements OnInit {
     return modal;
   }
 
+  /**
+   * @description Guarda o lugar no NGRX e abre o modal com formulário.
+   */
   public seeEstablishment(establishment: IPlace): void {
     this.store.dispatch(AppStore.setCurrentEstablishment({ establishment: establishment } ))
     this.openModalToSeeStablishment();
   }
-
-
 }

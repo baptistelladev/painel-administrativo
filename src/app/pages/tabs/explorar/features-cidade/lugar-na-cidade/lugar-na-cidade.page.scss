@@ -1,3 +1,7 @@
-section.lugar-na-cidade {
-  padding: 0 0 32px 0;
+ion-content {
+  section {
+    &.lugar-na-cidade {
+      padding: 0 0 32px 0;
+    }
+  }
 }
