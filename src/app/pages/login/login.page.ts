@@ -16,29 +16,31 @@ export class LoginPage implements OnInit {
   @ViewChild('passwordInput') passwordInput : IonInput;
   @ViewChild('emailInput') emailInput : IonInput;
 
-  public isDoingLogin: boolean = false;
-
-  public showLoginPassword: boolean = false;
-
-  public formLoginGroup: FormGroup;
-
-  public options: AnimationOptions = {
+  public animationCfg: AnimationOptions = {
     path: './../../../assets/movie/anfitrion-around-the-world.json',
     autoplay: true,
     loop: true
   };
 
+  public formLoginGroup: FormGroup;
+
+  public isDoingLogin: boolean = false;
+  public showLoginPassword: boolean = false;
+
   constructor(
-    public formBuilder : FormBuilder,
-    public overlayService : OverlayService,
-    public navCtrl : NavController,
-    private authService : AuthService
+    private navCtrl : NavController,
+    private authService : AuthService,
+    private formBuilder : FormBuilder,
+    private overlayService : OverlayService
   ) { }
 
   ngOnInit() {
     this.initLoginForm();
   }
 
+  /**
+   * @description Inicia o formulário de login.
+   */
   public initLoginForm(): void {
     this.formLoginGroup = this.formBuilder.group({
       email: [ '', [ Validators.required, Validators.email ] ],
@@ -46,11 +48,19 @@ export class LoginPage implements OnInit {
     })
   }
 
-  public animationCreated(animationItem: AnimationItem): void {
+  /**
+   * @description Define a velocidade da animação ao ser criada.
+   */
+  public animationHasBeenCreated(animationItem: AnimationItem): void {
     animationItem.setSpeed(0.8)
   }
 
+  /**
+   * @description Prepara os toasts para aviso e tenta fazer o login.
+   */
   public async login() {
+
+    this.isDoingLogin = true;
 
     const toastError = await this.overlayService.fireToast({
       position: 'top',
@@ -66,8 +76,6 @@ export class LoginPage implements OnInit {
       duration: 3000
     });
 
-    this.isDoingLogin = true;
-
     await this.authService.signInWithEmailAndPassword(this.formLoginGroup.value.email, this.formLoginGroup.value.password)
     .then( async (user: any) => {
 
@@ -77,7 +85,7 @@ export class LoginPage implements OnInit {
       const emailInput = this.emailInput.getInputElement();
       emailInput.then((input) => input.blur());
 
-      if (user.emailVerified) {
+      if (user) {
         toastSuccess.message = `Aguarde o redirecionamento`;
         await toastSuccess.present();
 
@@ -87,9 +95,6 @@ export class LoginPage implements OnInit {
           this.isDoingLogin = false;
           this.navCtrl.navigateForward(['/logado']);
         })
-      } else {
-        await toastError.present();
-        this.isDoingLogin = false;
       }
     })
     .catch(async (error: any) => {
@@ -99,6 +104,9 @@ export class LoginPage implements OnInit {
     })
   }
 
+  /**
+   * @description Mostra ou esconde a senha inserida.
+   */
   public toggleLoginPassword(): void {
     this.showLoginPassword = !this.showLoginPassword;
   }

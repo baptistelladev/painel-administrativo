@@ -8,7 +8,6 @@ import { Observable } from 'rxjs';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IAdmin } from 'src/app/shared/models/IAdmin';
 import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
-import { IUSer } from 'src/app/shared/models/IUser';
 import * as UserStore from 'src/app/shared/store/user.state';
 
 @Injectable({

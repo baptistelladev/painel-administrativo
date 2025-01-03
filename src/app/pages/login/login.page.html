@@ -1,6 +1,8 @@
 <ion-content [fullscreen]="true" class="ion-bg-gray-2">
   <form class="login" (ngSubmit)="login()" [formGroup]="formLoginGroup">
-    <ng-lottie [options]="options" (animationCreated)="animationCreated($event)" />
+    <ng-lottie
+    [options]="animationCfg"
+    (animationCreated)="animationHasBeenCreated($event)" />
 
     <ion-grid [fixed]="true">
       <ion-row>

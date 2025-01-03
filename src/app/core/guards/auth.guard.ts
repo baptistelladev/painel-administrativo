@@ -23,6 +23,8 @@ export class AuthGuard implements CanActivate {
       take(1),
       switchMap(user => {
         if (user) {
+          console.log(user);
+
           return from(this.adminService.getUserByUID(CollectionsEnum.ADMINS, user)).pipe(
             map((resp) => {
               if (resp) {
