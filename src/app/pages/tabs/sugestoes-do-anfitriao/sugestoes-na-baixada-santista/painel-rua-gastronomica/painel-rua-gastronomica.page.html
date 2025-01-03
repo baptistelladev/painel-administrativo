@@ -4,7 +4,9 @@ class="ion-content-w-linear-bg"
   <section class="painel-rua-gastronomica">
     <ion-grid [fixed]="true">
       <ion-row>
-        <ion-col size="12" class="no-pad-bottom">
+        <ion-col
+        size="12"
+        class="no-pad-bottom">
           <ion-button
           (click)="back()"
           shape="round"
@@ -18,8 +20,12 @@ class="ion-content-w-linear-bg"
         <ion-col size="12">
           <ion-grid class="no-padding">
             <ion-row class="no-padding">
-              <ion-col size="12" class="no-pad-sides">
-                <ion-text mode="ios" class="d-block line-height-20 color-gray-text">
+              <ion-col
+              size="12"
+              class="no-pad-sides">
+                <ion-text
+                mode="ios"
+                class="d-block line-height-20 color-gray-text">
                   <h2 class="fs-20 font-baloo">Visão <b>geral</b></h2>
                   <p class="fs-14">Rua Gastronômica de Santos</p>
                 </ion-text>
@@ -39,7 +45,11 @@ class="ion-content-w-linear-bg"
                 lines="none"
                 class="dashboard-item">
                   <ion-text mode="ios">
-                    <p class="font-baloo length" [ngClass]="[ info.list.length ? 'color-green' : 'color-gray-text']">{{ info.list.length }}</p>
+                    <p
+                    class="font-baloo length"
+                    [ngClass]="[ info.list.length ? 'color-green' : 'color-gray-text']">
+                      {{ info.list.length }}
+                    </p>
                     <p class="color-gray-text type fs-10 txt-uppercase" *ngIf="info.list.length < 2">
                       {{ info.text.pt }}
                     </p>
@@ -53,16 +63,22 @@ class="ion-content-w-linear-bg"
           </ion-grid>
         </ion-col>
 
-        <ion-col size="12" *ngIf="establishments && establishments.length === 0">
+        <ion-col
+        size="12"
+        *ngIf="establishments && establishments.length === 0">
           <ion-text mode="ios">
-            <p class="fs-12 color-gray-mid">Como não encontramos pelo menos um estabelecimento, ainda não foi possível definir a quantidade.</p>
+            <p class="fs-12 color-gray-mid">
+              Como não encontramos pelo menos um estabelecimento, ainda não foi possível definir a quantidade.
+            </p>
           </ion-text>
         </ion-col>
       </ion-row>
     </ion-grid>
   </section>
 
-  <div class="swiper-inset-wrapper" [ngClass]="{ 'no-padding': establishments && establishments.length === 0 }">
+  <div
+  class="swiper-inset-wrapper"
+  [ngClass]="{ 'no-padding': establishments && establishments.length === 0 }">
     <swiper-container
     (swiperreachbeginning)="swiperReachedBeginning()"
     (swiperreachend)="swiperReachedEnd()"
@@ -119,19 +135,20 @@ class="ion-content-w-linear-bg"
           mode="ios"
           class="establishment-card-vertical"
           lines="none">
-            <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified" *ngIf="establishment.isPremium"></ion-icon>
+            <ion-icon src="./../../../../assets/icon/verified-check.svg" class="verified" *ngIf="establishment.isPremium" />
 
             <ion-card-content class="txt-center" mode="ios">
               <div class="logo-wrapper mg-bottom-12">
                 <div class="logo-container"
                 [ngClass]="{'logo-needs-gray-2' : establishment.value === 'galeteria-santista'}">
                   <ion-img
-                  [src]="'./../../../../assets/images/establishments/' + establishment.value + (establishment.value === 'bistro-14' || establishment.value === 'galeteria-santista' ? '.png' : '.jpg')">
-                  </ion-img>
+                  [src]="'./../../../../assets/images/establishments/' + establishment.value + (establishment.value === 'bistro-14' || establishment.value === 'galeteria-santista' ? '.png' : '.jpg')"/>
                 </div>
               </div>
 
-              <ion-text mode="ios" class="txt-center">
+              <ion-text
+              mode="ios"
+              class="txt-center">
                 <p class="color-gray-text txt-uppercase type font-w-thin type">
                   {{ establishment.mainType.text.pt }}
                 </p>
@@ -141,7 +158,9 @@ class="ion-content-w-linear-bg"
             </ion-card-content>
 
             <div class="button-list">
-              <ion-list mode="ios" lines="none">
+              <ion-list
+              mode="ios"
+              lines="none">
                 <ion-item
                 (click)="seeEstablishment(establishment)"
                 mode="ios"
@@ -170,16 +189,22 @@ class="ion-content-w-linear-bg"
         <swiper-slide
         *ngFor="let establishment of [1,2,3,4,5]; let i = index"
         class="unlock-shadow-from-swiper auto-width">
-          <ion-skeleton-text [animated]="true" class="like-establishment"></ion-skeleton-text>
+          <ion-skeleton-text
+          [animated]="true"
+          class="like-establishment" />
         </swiper-slide>
       </ng-container>
     </swiper-container>
 
     <ion-grid [fixed]="true">
       <ion-row>
-        <ion-col size="12" *ngIf="establishments && establishments.length === 0">
+        <ion-col
+        size="12"
+        *ngIf="establishments && establishments.length === 0">
           <ion-text mode="ios">
-            <p class="fs-14 color-gray-text">Não existem estabelecimento cadastrados.</p>
+            <p class="fs-14 color-gray-text">
+              Não existem estabelecimento cadastrados.
+            </p>
           </ion-text>
         </ion-col>
 
@@ -193,7 +218,7 @@ class="ion-content-w-linear-bg"
               class="rgs-main-solid fs-14 mg-right-8"
               shape="round"
               title="">
-                <ion-icon name="arrow-back-outline"></ion-icon>
+                <ion-icon name="arrow-back-outline" />
               </ion-button>
 
               <ion-button
@@ -203,7 +228,7 @@ class="ion-content-w-linear-bg"
               class="rgs-main-solid fs-14"
               shape="round"
               title="">
-                <ion-icon name="arrow-forward-outline"></ion-icon>
+                <ion-icon name="arrow-forward-outline" />
               </ion-button>
             </div>
           </ion-col>
@@ -220,5 +245,5 @@ class="ion-content-w-linear-bg"
     </ion-grid>
   </div>
 
-  <app-add [feature]="'PLACE'"></app-add>
+  <app-add [feature]="'PLACE'" />
 </ion-content>

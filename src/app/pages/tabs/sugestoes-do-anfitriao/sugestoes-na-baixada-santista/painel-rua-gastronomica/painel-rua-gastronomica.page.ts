@@ -23,9 +23,6 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
   swiperRef: ElementRef | undefined;
   swiper?: Swiper;
 
-  public hideRightControl: boolean = false;
-  public hideLeftControl: boolean = false;
-
   public lenghts_to_save_time: {
     list: IPlace[],
     establishment_type: string,
@@ -159,14 +156,17 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
   public establishments$: Observable<IPlace[]>;
   public establishmentsSubscription: Subscription;
 
+  public hideRightControl: boolean = false;
+  public hideLeftControl: boolean = false;
+
   constructor(
-    private placesService : PlacesService,
+    private store : Store,
+    private navCtrl : NavController,
     private modalCtrl : ModalController,
     private utilsService : UtilsService,
-    private store : Store,
     private alertCtrl : AlertController,
     private toastCtrl : ToastController,
-    private navCtrl : NavController
+    private placesService : PlacesService
   ) { }
 
   ngOnInit() {
@@ -177,10 +177,16 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
+  /**
+   * @description Voltar para página anterior.
+   */
   public back(): void {
     this.navCtrl.back();
   }
 
+  /**
+   * @description Obtém os estabelecimentos filtrados da rua gastronômica de Santos.
+   */
   public getEstablimentsFromGastronomicStreet() {
     this.establishments$ = this.placesService
     .getPlacesCollection(
@@ -213,11 +219,17 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     })
   }
 
+  /**
+   * @description Guarda o lugar selecionado no NGRX e abre o modal com formulário.
+   */
   public seeEstablishment(establishment: IPlace): void {
     this.store.dispatch(AppStore.setCurrentEstablishment({ establishment: establishment } ))
     this.openModalToSeeStablishment();
   }
 
+  /**
+   * @description Abre o modal com formulário para criar ou atualizar lugares.
+   */
   public async openModalToSeeStablishment(): Promise<HTMLIonModalElement> {
     const modal = await this.modalCtrl.create({
       component: EstablishmentModalComponent,
@@ -231,6 +243,9 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     return modal;
   }
 
+  /**
+   * @description Mostrar um alerta para confirmar remoção de lugar.
+   */
   public async showAlertToRemove(establishment: IPlace): Promise<HTMLIonAlertElement> {
     const alert = await this.alertCtrl.create({
       mode: 'ios',
@@ -261,6 +276,9 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     return alert;
   }
 
+  /**
+   * @description Mostrar um alerta para confirmar remoção de lugar.
+   */
   public slideToNext(): void {
     this.swiper?.slideNext(800);
 
