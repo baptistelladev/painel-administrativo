@@ -4,7 +4,6 @@ import { Observable, Subscription } from 'rxjs';
 import { ICity } from 'src/app/shared/models/ICity';
 import { Store } from '@ngrx/store';
 import * as AppStore from 'src/app/shared/store/app.state';
-import { CityEnum } from 'src/app/shared/enums/City';
 import { MOCK_LOCATION } from 'src/app/shared/mocks/MockLocation';
 import { ILocation } from 'src/app/shared/models/ILocation';
 import { LocationEnum } from 'src/app/shared/enums/Location';
@@ -21,8 +20,6 @@ import { FeaturesEnum } from 'src/app/shared/enums/Features';
   styleUrls: ['./lugares.page.scss'],
 })
 export class LugaresPage implements OnInit, OnDestroy {
-
-  public FeaturesEnum = FeaturesEnum;
 
   public cityResume: any[] = [
     {
@@ -66,8 +63,6 @@ export class LugaresPage implements OnInit, OnDestroy {
     }
   ]
 
-  public resume: any[] | null;
-
   public currentCity: ICity;
   public currentCity$: Observable<ICity>;
   public currentCitySubscription: Subscription;
@@ -80,16 +75,17 @@ export class LugaresPage implements OnInit, OnDestroy {
   public MOCK_BEACH_FEATURES: any = MOCK_BEACH_FEATURES;
   public MOCK_CITY_FEATURES: any = MOCK_CITY_FEATURES;
 
+  public LocationEnum = LocationEnum;
+  public FeaturesEnum = FeaturesEnum;
+
   public lookingForPlaces: boolean = false;
   public lookingForPeople: boolean = false;
 
-  public LocationEnum = LocationEnum;
-
   public selectedSegment: string = '';
   public FEATURES: any;
+  public resume: any[] | null;
 
   constructor(
-    private modalCtrl : ModalController,
     private store : Store,
     private navCtrl : NavController,
     private placesService : PlacesService
@@ -101,6 +97,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     this.selectInitialSegment(LocationEnum.CIDADE);
   }
 
+  /**
+   * @description Obtém a cidade atual guardada no NGRX.
+   */
   public getCurrentCityFromNGRX(): void {
     this.currentCity$ = this.store.select(AppStore.selectAppCurrentCity);
 
@@ -110,6 +109,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Selecionada o segment inicial (cidade).
+   */
   public selectInitialSegment(segmentValue: string) {
     this.selectedSegment = segmentValue;
     this.FEATURES = this.MOCK_CITY_FEATURES;
@@ -117,6 +119,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     // MOSTRAR PESSOAS [SOON] this.getPeopleFromCity();
   }
 
+  /**
+   * @description Muda as features conforme o segment selecionado.
+   */
   public locationChanged(): void {
     this.FEATURES = null;
     this.places = null;
@@ -134,6 +139,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Define o resumo das features, ou seja, quantos lugares tem em cada feature.
+   */
   public defineResume(origin: string, places: IPlace[]): void {
     this.resume = null;
     this.cityResume.forEach((resume: any) => { resume.length = null });
@@ -182,6 +190,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Procura lugares de acordo com o segment selecionado.
+   */
   public async searchPlace(place: any) {
     if (place.origin === LocationEnum.CIDADE) {
       await this.searchPlaceInTheCity(place);
@@ -190,6 +201,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Direciona para lugares na cidade conforme a categoria selecionada.
+   */
   public async searchPlaceInTheCity(place: any) {
     this.navCtrl.navigateForward([`/logado/lugares/na-cidade/${place.route}`], {
       queryParams: {
@@ -199,6 +213,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Direciona para lugares na praia conforme a categoria selecionada.
+   */
   public async searchPlaceAtTheBeach(place: any) {
     this.navCtrl.navigateForward([`/logado/lugares/na-praia/${place.route}`], {
       queryParams: {
@@ -208,6 +225,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Obtém lista de lugares cadastrados na cidade selecionada e no segmento escolhido (cidade).
+   */
   public async getPlacesFromCity() {
 
     this.lookingForPlaces = true;
@@ -241,6 +261,9 @@ export class LugaresPage implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Obtém lista de lugares cadastrados na cidade selecionada e no segmento escolhido (praia).
+   */
   public async getPlacesFromBeach() {
     this.lookingForPlaces = true;
 
@@ -276,7 +299,7 @@ export class LugaresPage implements OnInit, OnDestroy {
     })
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.currentCitySubscription.unsubscribe();
   }
 

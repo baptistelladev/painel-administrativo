@@ -21,17 +21,11 @@ import { SuggestionModalComponent } from 'src/app/shared/components/modais/sugge
 })
 export class SugestoesPage implements OnInit {
 
-  public hideRightControl: boolean = false;
-  public hideLeftControl: boolean = true;
-
   @ViewChild('sugestoesContent') sugestoesContent: IonContent;
 
   @ViewChild('baixadaSantistaSwiper')
   baixadaSantistaSwiperRef: ElementRef | undefined;
   baixadaSantistaSwiper?: Swiper;
-
-  public FeaturesEnum = FeaturesEnum;
-  public ProfileType = ProfileTypeEnum;
 
   public suggestionsBaixadaSantista: ISuggestion[];
   public suggestionsBaixadaSantista$: Observable<ISuggestion[]>
@@ -44,6 +38,12 @@ export class SugestoesPage implements OnInit {
   public currentCity: ICity;
   public currentCity$: Observable<ICity>;
   public currentCitySubscription: Subscription;
+
+  public FeaturesEnum = FeaturesEnum;
+  public ProfileType = ProfileTypeEnum;
+
+  public hideRightControl: boolean = false;
+  public hideLeftControl: boolean = true;
 
   constructor(
     private store : Store,
@@ -59,24 +59,39 @@ export class SugestoesPage implements OnInit {
     this.getCurrentCityFromNGRX();
   }
 
+  /**
+   * @description Ir para o próximo slide.
+   */
   public slideToNext(): void {
     this.baixadaSantistaSwiper?.slideNext(800);
   }
 
+  /**
+   * @description Ir para slide anterior.
+   */
   public slideToPrev(): void {
     this.baixadaSantistaSwiper?.slidePrev(800);
   }
 
+  /**
+   * @description Guarda a sugestão no NGRX e vai para página correspondente.
+   */
   public seeSuggestion(suggestion: ISuggestion) {
     this.store.dispatch(AppStore.setCurrentSuggestion({ suggestion: suggestion }))
     this.navCtrl.navigateForward([`/logado/sugestoes-do-anfitriao/${suggestion.route}`]);
   }
 
+  /**
+   * @description Detecta mudanças no swiper para esconder o botão de próximo e anterior conforme o slide estiver no começo ou fim.
+   */
   public listenForSwiperForControl(ev: any): void {
     this.hideLeftControl = ev.detail[0].isBeginning;
     this.hideRightControl = ev.detail[0].isEnd;
   }
 
+  /**
+   * @description Obtém lista de sugestões cujo tem a opção BAIXADA SANTISTA no filtro.
+   */
   public async getBaixadaSantistaSuggestions() {
     this.suggestionsBaixadaSantista$ = this.suggestionsService
     .getSuggestionsCollection(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, [
@@ -95,6 +110,9 @@ export class SugestoesPage implements OnInit {
     })
   }
 
+  /**
+   * @description Obtém a cidade selecionada previamente e guardada no NGRX.
+   */
   public getCurrentCityFromNGRX(): void {
     this.currentCity$ = this.store.select(AppStore.selectAppCurrentCity);
 
@@ -105,6 +123,9 @@ export class SugestoesPage implements OnInit {
     })
   }
 
+  /**
+   * @description Obtém sugestões específicas da cidade selecionada.
+   */
   public async getSelectedCitySuggestions(cityValue: string) {
     this.suggestionsSelectedCity$ = this.suggestionsService
     .getSuggestionsCollection(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA, [
@@ -125,7 +146,9 @@ export class SugestoesPage implements OnInit {
     })
   }
 
-
+  /**
+   * @description Mostra um alerta para confirmar a remoção da sugestão selecionada.
+   */
   public async showAlertToRemove(suggestion: ISuggestion): Promise<HTMLIonAlertElement> {
     const alert = await this.alertCtrl.create({
       mode: 'ios',
@@ -156,6 +179,9 @@ export class SugestoesPage implements OnInit {
     return alert;
   }
 
+  /**
+   * @description Abre o modal com formulário para criação ou atualização de uma sugestão.
+   */
   public async openModalToCreateOrUpdateSuggestion(suggestion: ISuggestion): Promise<HTMLIonModalElement> {
     this.store.dispatch(AppStore.setCurrentSuggestion({ suggestion: suggestion }))
 
