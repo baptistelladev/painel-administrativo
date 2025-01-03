@@ -9,21 +9,11 @@ horizontal="end">
 
   <ion-fab-list side="top">
     <ion-fab-button
-    *ngIf="feature === FeaturesEnum.LUGARES"
     (click)="openModalToCreateStablishment()">
-      <ion-icon name="storefront-outline"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-button
-    *ngIf="feature === FeaturesEnum.SUGESTOES"
-    (click)="openModalToCreateStablishment()">
-      <ion-icon name="bulb-outline"></ion-icon>
-    </ion-fab-button>
-
-    <ion-fab-button
-    *ngIf="feature === FeaturesEnum.USUARIOS"
-    (click)="openModalToCreateStablishment()">
-      <ion-icon name="person-add-outline"></ion-icon>
+      <ng-container *ngIf="feature === FeaturesEnum.LUGARES"><ion-icon name="storefront-outline"></ion-icon></ng-container>
+      <ng-container *ngIf="feature === FeaturesEnum.SUGESTOES"><ion-icon name="bulb-outline"></ion-icon></ng-container>
+      <ng-container *ngIf="feature === FeaturesEnum.USUARIOS"><ion-icon name="person-add-outline"></ion-icon></ng-container>
+      <ng-container *ngIf="feature === FeaturesEnum.ADMINS"><ion-icon name="key-outline"></ion-icon></ng-container>
     </ion-fab-button>
   </ion-fab-list>
 </ion-fab>

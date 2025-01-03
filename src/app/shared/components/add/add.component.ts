@@ -4,6 +4,7 @@ import { EstablishmentModalComponent } from '../modais/establishment-modal/estab
 import { FeaturesEnum } from 'src/app/shared/enums/Features';
 import { SuggestionModalComponent } from '../modais/suggestion-modal/suggestion-modal.component';
 import { UsersModalComponent } from '../modais/users-modal/users-modal.component';
+import { AdminsModalComponent } from '../modais/admins-modal/admins-modal.component';
 
 @Component({
   selector: 'app-add',
@@ -38,6 +39,10 @@ export class AddComponent  implements OnInit {
       case FeaturesEnum.USUARIOS:
         component = UsersModalComponent;
         break;
+
+      case FeaturesEnum.ADMINS:
+        component = AdminsModalComponent;
+        break;
     }
 
     const modal = await this.modalCtrl.create({
@@ -47,7 +52,9 @@ export class AddComponent  implements OnInit {
       id: this.feature === FeaturesEnum.LUGARES ?
       'register-short-establishment' : this.feature === FeaturesEnum.SUGESTOES ?
       'register-suggestion' : this.feature === FeaturesEnum.USUARIOS ?
-      'register-users' : ''
+      'register-users' : this.feature === FeaturesEnum.USUARIO ?
+      'update-user' : this.feature === FeaturesEnum.ADMINS ?
+      'register-admin' : ''
     });
 
     await modal.present();

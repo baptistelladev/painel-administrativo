@@ -13,6 +13,7 @@ import { UserInfoModalComponent } from './modais/user-info-modal/user-info-modal
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CidadesModalComponent } from './modais/cidades-modal/cidades-modal.component';
+import { AdminsModalComponent } from './modais/admins-modal/admins-modal.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { CidadesModalComponent } from './modais/cidades-modal/cidades-modal.comp
     SuggestionModalComponent,
     UsersModalComponent,
     UserInfoModalComponent,
-    CidadesModalComponent
+    CidadesModalComponent,
+    AdminsModalComponent
   ],
   imports: [
     CommonModule,
@@ -42,7 +44,8 @@ import { CidadesModalComponent } from './modais/cidades-modal/cidades-modal.comp
     SuggestionModalComponent,
     UsersModalComponent,
     UserInfoModalComponent,
-    CidadesModalComponent
+    CidadesModalComponent,
+    AdminsModalComponent
   ]
 })
 export class ComponentsModule { }

@@ -58,7 +58,15 @@ export class TabsPage implements OnInit {
       icon: 'bulb',
       value: FeaturesEnum.SUGESTOES,
       isDisabled: false
-    }
+    },
+    {
+      title: 'Gestão do sistema',
+      text: 'Administradores ',
+      router: ['/logado/adms'],
+      icon: 'key',
+      value: FeaturesEnum.ADMINS,
+      isDisabled: false
+    },
   ]
 
   constructor() { }

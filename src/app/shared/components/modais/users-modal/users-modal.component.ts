@@ -6,8 +6,8 @@ import { AuthService } from 'src/app/core/services/firebase/auth.service';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { UserTypeEnum } from 'src/app/shared/enums/UserType';
 import { IUSer } from 'src/app/shared/models/IUser';
-import { IUserType } from 'src/app/shared/models/IUSerType';
 import { OverlayService } from 'src/app/shared/services/overlay.service';
+import { IUserType } from 'src/app/shared/models/IUserType';
 
 @Component({
   selector: 'app-users-modal',

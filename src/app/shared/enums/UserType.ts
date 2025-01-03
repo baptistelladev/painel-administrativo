@@ -1,5 +1,6 @@
 
 export enum UserTypeEnum {
   MORADOR = 'MORADOR',
-  TURISTA = 'TURISTA'
+  TURISTA = 'TURISTA',
+  ADMINISTRADOR = 'ADMINISTRADOR'
 }

@@ -58,6 +58,10 @@ const routes: Routes = [
             loadChildren: () => import('./sugestoes-do-anfitriao/sugestoes-na-baixada-santista/painel-rua-gastronomica/painel-rua-gastronomica.module').then( m => m.PainelRuaGastronomicaPageModule)
           }
         ]
+      },
+      {
+        path: 'adms',
+        loadChildren: () => import('./adms/adms.module').then( m => m.AdmsPageModule)
       }
     ]
   }

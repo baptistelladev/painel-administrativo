@@ -94,7 +94,7 @@ export class LoginPage implements OnInit {
     })
     .catch(async (error: any) => {
       this.isDoingLogin = false;
-      toastError.message = error.text;
+      toastError.message = error.text.pt;
       await toastError.present();
     })
   }
