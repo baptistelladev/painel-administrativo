@@ -1,22 +1,37 @@
-<ion-content [fullscreen]="true" class="ion-bg-gray-2">
-  <form class="login" (ngSubmit)="login()" [formGroup]="formLoginGroup">
+<ion-content
+[fullscreen]="true"
+class="ion-bg-gray-2">
+  <form
+  class="login"
+  (ngSubmit)="login()"
+  [formGroup]="formLoginGroup">
     <ng-lottie
     [options]="animationCfg"
     (animationCreated)="animationHasBeenCreated($event)" />
 
     <ion-grid [fixed]="true">
       <ion-row>
-        <ion-col size="12" class="no-pad-bottom">
+        <ion-col
+        size="12"
+        class="no-pad-bottom">
           <app-logo size="extra-big"></app-logo>
         </ion-col>
 
-        <ion-col size="12" class="no-pad-top">
+        <ion-col
+        size="12"
+        class="no-pad-top">
           <ion-text mode="ios">
-            <p class="color-white font-w-thin fs-14 mg-bottom-16">Gestão do anfitrião digital da Baixada Santista.</p>
+            <p class="color-white font-w-thin fs-14 mg-bottom-16">
+              Gestão do anfitrião digital da Baixada Santista.
+            </p>
           </ion-text>
         </ion-col>
 
-        <ion-col size="12" size-md="8" size-lg="6" size-xl="5">
+        <ion-col
+        size="12"
+        size-md="8"
+        size-lg="6"
+        size-xl="5">
           <div
           [ngClass]="{
           'has-error' : (formLoginGroup.get('email')?.invalid &&
@@ -118,7 +133,7 @@
           mode="md"
           shape="round"
           class="rgs-main-solid fs-14 txt-lowercase close-modal-btn height-44 mg-top-16 login-button"
-          [title]="'Fazer login'"
+          [title]="'Acessar painel'"
           fill="solid">
             <ng-container *ngIf="!isDoingLogin">
               <ion-icon name="log-in-outline" class="mg-right-8 fs-22"></ion-icon>Acessar <span class="font-w-bold mg-left-5">painel</span>
@@ -134,12 +149,21 @@
   </form>
 </ion-content>
 
-<ion-footer mode="ios" class="bg-gray-2 ion-no-border">
-  <ion-toolbar mode="ios" class="ion-bg-gray-2">
+<ion-footer
+mode="ios"
+class="bg-gray-2 ion-no-border">
+  <ion-toolbar
+  mode="ios"
+  class="ion-bg-gray-2">
     <ion-grid [fixed]="true">
       <ion-row>
         <ion-col size="12">
-          <app-made-w-love [color]="'white'" [weightThin]="true" class="mg-top-16 d-block" [alwaysCentered]="true"></app-made-w-love>
+          <app-made-w-love
+          [color]="'white'"
+          [weightThin]="true"
+          class="mg-top-16 d-block"
+          [alwaysCentered]="true">
+          </app-made-w-love>
         </ion-col>
       </ion-row>
     </ion-grid>
