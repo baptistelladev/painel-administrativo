@@ -65,13 +65,13 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
   public isUpdatingProfile: boolean = false;
 
   constructor(
-    private navCtrl : NavController,
     private store : Store,
-    private formBuilder : FormBuilder,
     private title : Title,
+    private navCtrl : NavController,
+    private formBuilder : FormBuilder,
+    private modalCtrl : ModalController,
     private usersService : UsersService,
-    private overlayService : OverlayService,
-    private modalCtrl : ModalController
+    private overlayService : OverlayService
   ) { }
 
   ngOnInit() {
@@ -84,10 +84,16 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     this.title.setTitle('Seus dados');
   }
 
+  /**
+   * @description Voltar para página anterior.
+   */
   public back(): void {
     this.navCtrl.back()
   }
 
+  /**
+   * @description Inicializa o formulário.
+   */
   public initPersonalDataForm(): void {
     this.personalDataForm = this.formBuilder.group({
       name: [ '', [ Validators.required, Validators.minLength(3) ] ],
@@ -100,6 +106,9 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Obtém o usuário previamente selecionado e guardado no NGRX.
+   */
   public getUserFromNGRX(): void {
     this.user$ = this.store.select(AppStore.selectCurrentUser);
 
@@ -113,22 +122,34 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Limpa o campo deixando somente o primeiro nome.
+   */
   public clearFieldKeepJustName(event: any): void {
     let name: string = this.personalDataForm.value.name.replace(/[^a-zA-ZÀ-ÿ]/g, '');
     name = name.charAt(0).toUpperCase() + name.slice(1).toLocaleLowerCase();
     this.personalDataForm.patchValue({ name: name });
   }
 
+  /**
+   * @description Previne o espaço de ser digitado.
+   */
   public preventWhitespace(event: KeyboardEvent) {
     if (event.key === ' ') {
       event.preventDefault();
     }
   }
 
+  /**
+   * @description Mostra e esconde o calendário de data de nascimento.
+   */
   public toggleBirthDateModal(show: boolean): void {
     this.showBirthDateModal = show;
   }
 
+  /**
+   * @description Detecta mudanças na data de nascimento.
+   */
   public birthDateChanged(e: any): void {
     this.personalDataForm.patchValue({
       birthDateAsText: moment(e.detail.value).format('DD/MM/YYYY')
@@ -142,6 +163,9 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
 
   }
 
+  /**
+   * @description Define o formato da data de nascimento pois vem na versão americana.
+   */
   public initialBirthDateFormat(): void {
     if (this.personalDataForm.value.birthDateAsText) {
       this.personalDataForm.patchValue({
@@ -150,6 +174,9 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Preenche o forulário.
+   */
   public fillFormAndVariable(user: IUSer): void {
     this.personalDataForm.patchValue({
       name: user.firstName,
@@ -179,18 +206,30 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Define a data de nascimento.
+   */
   public defineBirthDate(): void {
     this.birthDateDatetime.confirm(true);
   }
 
+  /**
+   * @description Detecta mudanças na relação com a Baixada Santista.
+   */
   public relationshipChanged(): void {
     console.log(this.personalDataForm.value.type);
   }
 
+  /**
+   * @description Detecta mudanças no sexo.
+   */
   public sexChanged(): void {
     console.log(this.personalDataForm.value.sex);
   }
 
+  /**
+   * @description Escuta por mudanças no formulário.
+   */
   public listenFormChanges(): void {
     this.formHasChanges$ = this.personalDataForm.valueChanges;
 
@@ -200,6 +239,9 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Atualiza o perfil do usuário.
+   */
   public async updateProfile() {
     const alertSuccess = await this.overlayService.fireAlert({
       backdropDismiss: false,
@@ -250,6 +292,9 @@ export class UserInfoModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Fechar modal.
+   */
   public async closeModal() {
     await this.modalCtrl.dismiss().then(() => {
       this.personalDataForm.reset();

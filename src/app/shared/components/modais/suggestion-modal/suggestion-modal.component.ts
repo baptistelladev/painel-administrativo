@@ -53,8 +53,6 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     indication: []
   }
 
-  public isRegistering: boolean = false;
-
   public suggestionFormGroup: FormGroup;
 
   public MOCK_HASHTAGS = MOCK_HASHTAGS;
@@ -69,12 +67,15 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
   public currentSuggestionFormListener$: Observable<boolean>;
   public currentSuggestionFormListenerSubscription: Subscription;
 
+  public isRegistering: boolean = false;
+
   constructor(
-    private modalCtrl : ModalController,
-    private formBuilder : FormBuilder,
+    private store : Store,
     private cepService : CepService,
-    private suggestionsService : SuggestionsService,
-    private store : Store
+    private formBuilder : FormBuilder,
+    private modalCtrl : ModalController,
+    private suggestionsService : SuggestionsService
+
   ) { }
 
   ngOnInit() {
@@ -82,6 +83,13 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     this.getCurrentSuggestionFromNGRX();
   }
 
+  ngAfterViewInit(): void {
+
+  }
+
+  /**
+   * @description Obtém sugestão guardada no NGRX e se existir preenche formulário.
+   */
   public getCurrentSuggestionFromNGRX(): void {
     this.currentSuggestion$ = this.store.select(AppStore.selectCurrentSuggestion);
 
@@ -100,10 +108,9 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     })
   }
 
-  ngAfterViewInit(): void {
-
-  }
-
+  /**
+   * @description Preencher o formulário.
+   */
   public async fillFormAndVariablesWhenComesFromDetail(suggestion: ISuggestion) {
 
     this.suggestionFormGroup.get('specific_place_pt')?.patchValue(suggestion.specific_place.pt);
@@ -151,11 +158,17 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Fechar modal.
+   */
   public closeModal(): void {
     this.modalCtrl.dismiss();
     this.suggestionFormGroup.reset();
   }
 
+  /**
+   * @description Inicializar formulário de sugestão.
+   */
   public initSuggestionForm(): void {
     this.suggestionFormGroup = this.formBuilder.group({
       specificAddress: true,
@@ -184,6 +197,9 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
 
   }
 
+  /**
+   * @description Escuta por mudanaçs no formulário.
+   */
   public initSuggestionFormListener(): void {
     this.currentSuggestionFormListener$ = this.suggestionFormGroup.valueChanges;
     this.currentSuggestionFormListenerSubscription = this.currentSuggestionFormListener$
@@ -194,14 +210,23 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     })
   }
 
+  /**
+   * @description Detecta mudanças no filtro.
+   */
   public filtersChanged(e: any): void {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças no indication.
+   */
   public indicationChanged(e: any): void {
     console.log(e);
   }
 
+  /**
+   * @description Define a string para ser usada como valor.
+   */
   public transformStringForValue(): void {
     const control = this.suggestionFormGroup.get('value');
 
@@ -218,6 +243,9 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Define como o usuário ira ver na url.
+   */
   public transformStringForRoute(): void {
     const control = this.suggestionFormGroup.get('route');
 
@@ -234,11 +262,16 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Detecta mudanças no hashtag.
+   */
   public hashtagChanged(e: any): void {
     console.log(e);
-
   }
 
+  /**
+   * @description Obtém endereço através de um cep.
+   */
   public async getCep() {
     let cep = this.suggestionFormGroup.get('zip_code')?.value;
 
@@ -276,6 +309,9 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
 
   }
 
+  /**
+   * @description Registra uma sugestão.
+   */
   public async register(type: 'create' | 'update') {
     this.isRegistering = true;
 
@@ -394,6 +430,9 @@ export class SuggestionModalComponent  implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * @description Define se é um lugar específico ou se é um endereço fixo.
+   */
   public checkSpecificAdress(): void {
     if (this.suggestionFormGroup.get('specificAddress')?.value) {
       // Define os validadores para os campos necessários
