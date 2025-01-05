@@ -1,0 +1,128 @@
+@import 'src/assets/scss/utils/mixins.scss';
+
+.admins-swiper-wrapper {
+  width: 100%;
+}
+
+.admin-circle-wrapper {
+  @include flexbox(center, center, column);
+  width: auto;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  overflow: hidden;
+  transition: all 200ms ease;
+  cursor: pointer;
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+    }
+  }
+
+  .circle-frame {
+    width: 50px;
+    height: 50px;
+    padding: 4px;
+    border-radius: 100%;
+    background: var(--white);
+    border: 1px solid var(--gray-da);
+    transition: all 200ms ease;
+    @include flexbox(center, center, row);
+    overflow: hidden;
+    margin: 16px 42px;
+
+    ion-icon {
+      font-size: 24px;
+      opacity: .4;
+    }
+  }
+
+  ion-item {
+    border-top: 0.5px solid var(--gray-da);
+    width: 100%;
+    margin-top: 16px;
+    --background: var(--gray-fa);
+    --color: var(--gray-text);
+    --color-hover: var(--green);
+    --background-hover: rgba(var(--green-rgb), 1);
+    --min-height: 44px;
+
+    &.is-admin {
+      --color: var(--green);
+      --background: rgba(var(--green-rgb), 0.05);
+    }
+  }
+}
+
+.profile-type-card {
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  position: relative;
+  background: linear-gradient(to bottom, var(--transparent), var(--gray-ec) 100%);
+
+  &.is-not-selected {
+    filter: grayscale(1) contrast(1);
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  ng-lottie {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  &.tourists {
+    margin-bottom: 28px;
+
+    ng-lottie {
+      display: block;
+      width: 250px;
+      bottom: -80px;
+    }
+
+    &.is-selected {
+      background: linear-gradient(to bottom, var(--transparent), var(--bootstrap-tourist-light-bg) 100%);
+    }
+  }
+
+  &.residents {
+    ng-lottie {
+      display: block;
+      width: 225px;
+      bottom: -75px;
+    }
+
+    &.is-selected {
+      background: linear-gradient(to bottom, var(--transparent), var(--bootstrap-resident-light-bg) 100%);
+    }
+  }
+
+  &.none-of {
+    ng-lottie {
+      display: block;
+      width: 225px;
+      bottom: -75px;
+    }
+  }
+
+  &.is-selected {
+    ng-lottie {
+      filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, .1));
+    }
+  }
+
+  .simulate-space {
+    margin-bottom: 66px
+  }
+}
+
+ion-skeleton-text {
+  &.like-profile-type-card {
+    width: 134px;
+    height: 167px;
+    border-radius: 16px;
+  }
+}

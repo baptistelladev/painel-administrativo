@@ -1,6 +1,159 @@
 <ion-content
 [forceOverscroll]="false"
 class="ion-content-w-linear-bg">
+  <section class="usuarios">
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ion-col size="12">
+          <ion-text mode="ios">
+            <p class="font-baloo fs-20 color-gray-text font-w-thin">
+              Resumo dos <b class="txt-lowercase">admins</b>
+            </p>
+            <p class="fs-14 color-gray-text font-w-thin mg-bottom-8">
+              Todos os admins do sistema.
+            </p>
+          </ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+    <div class="admins-swiper-wrapper">
+      <swiper-container
+      [attr.centered-slides]="false"
+      speed="5000"
+      [init]="true"
+      (swiperslidechange)="listenForSwiperForControl($event)"
+      class="full-width swiper-w-relative-pagination"
+      #adminSwiper
+      free-mode="true"
+      [autoHeight]="false"
+      slides-offset-before="16"
+      slides-offset-after="16"
+      initial-slide="0"
+      slides-per-view="auto"
+      [attr.space-between]="16">
+        <ng-container *ngIf="admins && admins.length > 0">
+          <swiper-slide
+          *ngFor="let admin of admins; let i = index; trackBy: trackAdminById"
+          class="unlock-shadow-from-swiper bigger auto-width">
+            <div class="admin-circle-wrapper">
+
+              <div class="circle-frame mg-bottom-16">
+                <ion-icon name="person-outline" class="color-gray-mid" />
+              </div>
+
+              <ion-text mode="ios" class="txt-center line-height-16">
+                <p class="mg-top-8 font-baloo fs-14 color-gray-text font-w-bold mg-bottom-5">{{ admin.firstName }}</p>
+              </ion-text>
+
+              <ion-chip
+              mode="ios"
+              class="txt-uppercase as-badge admin">
+                {{ admin.role?.text.pt }}
+              </ion-chip>
+
+              <ion-item
+              (click)="seeAdmin(admin)"
+              [ngClass]="{ 'is-admin': admin.isAdmin}"
+              lines="none"
+              [button]="true"
+              mode="ios">
+                <ion-text mode="ios" class="fs-13 font-w-thin">
+                  <p>ver <b>perfil</b></p>
+                </ion-text>
+              </ion-item>
+            </div>
+          </swiper-slide>
+        </ng-container>
+
+        <ng-container *ngIf="!admins">
+          <swiper-slide
+          *ngFor="let item of [1,2,3,4,5,6]"
+          class="unlock-shadow-from-swiper bigger auto-width">
+            <ion-skeleton-text
+            [animated]="true"
+            class="like-profile-type-card" />
+          </swiper-slide>
+        </ng-container>
+      </swiper-container>
+    </div>
+
+    <ion-grid [fixed]="true">
+      <ion-row>
+        <ng-container *ngIf="admins && admins.length > 0">
+          <ion-col size="6">
+            <div class="controls-wrapper">
+              <ion-button
+              (click)="slideToPrev()"
+              [disabled]="hideLeftControl || (admins && admins.length < 2)"
+              mode="md"
+              class="rgs-main-solid fs-14 mg-right-8"
+              shape="round"
+              title="">
+                <ion-icon name="arrow-back-outline" />
+              </ion-button>
+
+              <ion-button
+              (click)="slideToNext()"
+              [disabled]="hideRightControl || (admins && admins.length < 2)"
+              mode="md"
+              class="rgs-main-solid fs-14"
+              shape="round"
+              title="">
+                <ion-icon name="arrow-forward-outline" />
+              </ion-button>
+            </div>
+          </ion-col>
+
+          <ion-col
+          size="6"
+          class="txt-right">
+            <ion-text mode="ios">
+              <p class="fs-12 color-gray-mid">
+                <b class="fs-14">{{ admins.length }}</b> <span class="txt-lowercase mg-left-5"><ng-container *ngIf="admins.length === 1">admin</ng-container><ng-container *ngIf="admins.length > 1">admins</ng-container>.</span>
+              </p>
+            </ion-text>
+          </ion-col>
+        </ng-container>
+
+        <ion-col size="12">
+          <hr class="rgs-divider">
+        </ion-col>
+
+        <ion-col
+        size="12">
+          <div class="anf-frame">
+            <ion-grid>
+              <ion-row>
+                <ion-col
+                size="12"
+                size-sm="6"
+                size-md="4"
+                *ngFor="let option of adminsResume">
+                  <div class="dashboard-item">
+                    <ion-item
+                    lines="none"
+                    mode="ios">
+                      <ion-text mode="ios" class="txt-left inverse">
+                        <p class="length-desc txt-uppercase">{{ option.sub_title }}</p>
+                        <p class="length-title"><b>{{ option.title }}</b></p>
+                      </ion-text>
+
+                      <ion-text mode="ios" class="txt-right">
+                        <p class="length font-baloo" *ngIf="option.length"><b>{{ option.length }}</b></p>
+                        <p class="length font-baloo" *ngIf="option.length === 0"><b>0</b></p>
+                      </ion-text>
+                    </ion-item>
+                  </div>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </section>
+
   <app-add [feature]="FeaturesEnum.ADMINS" />
 </ion-content>
 
@@ -13,7 +166,7 @@ class="general-footer bg-gray-ed">
     <ion-grid [fixed]="true">
       <ion-row>
         <ion-col size="12">
-          <app-made-w-love/>
+          <app-made-w-love />
         </ion-col>
       </ion-row>
     </ion-grid>

@@ -1,13 +1,11 @@
 import { ISuggestion } from 'src/app/shared/models/ISuggestion';
-import { IParking } from 'src/app/shared/models/IParking';
 import { createAction, createReducer, createSelector, on, props, createFeatureSelector } from "@ngrx/store";
-import { ILang } from "../models/ILang";
 import { IPlace } from "../models/IPlace";
-import { ITicket } from "../models/ITicket";
 import { ISocialNetwork } from "../models/INetwork";
 import { IContact } from "../models/IContact";
 import { ICity } from '../models/ICity';
 import { IUSer } from '../models/IUser';
+import { IAdmin } from '../models/IAdmin';
 
 export interface IAppState {
   currentCity: ICity,
@@ -17,7 +15,8 @@ export interface IAppState {
   currentSuggestion: ISuggestion,
   hasConnection: boolean,
   currentUser: IUSer,
-  currentUserCanAccessEighteenContent: boolean
+  currentUserCanAccessEighteenContent: boolean,
+  currentAdmin: IAdmin
 }
 
 export const appInitialState: IAppState = {
@@ -245,7 +244,21 @@ export const appInitialState: IAppState = {
       isPremium: false
     }
   },
-  currentUserCanAccessEighteenContent: true
+  currentUserCanAccessEighteenContent: true,
+  currentAdmin: {
+    uid: '',
+    firstName: '',
+    role: {
+      text: {
+        pt: '',
+        en: '',
+        es: ''
+      },
+      value: ''
+    },
+    email: '',
+    isAdmin: true
+  }
 }
 
 // ACTIONS
@@ -273,11 +286,6 @@ export const setAppInfoContact = createAction(
   props<{ contact: IContact }>()
 )
 
-export const setParkings = createAction(
-  '[APP] Definir estacionamentos',
-  props<{ parkings: IParking[] }>()
-)
-
 export const setCurrentSuggestion = createAction(
   '[APP] Definir sugestão selecionada',
   props<{ suggestion: ISuggestion }>()
@@ -296,6 +304,11 @@ export const setCurrentUser = createAction(
 export const setEighteenAccessFromCurrentUser = createAction(
   '[APP] Mostrar que usuário tem acesso á conteúdo +18',
   props<{ canAccessEighteenContent: boolean }>()
+)
+
+export const setCurrentAdmin = createAction(
+  '[APP] Definir admin selecionado',
+  props<{ currentAdmin: IAdmin }>()
 )
 
 export const appReducer = createReducer(
@@ -335,6 +348,10 @@ export const appReducer = createReducer(
   on(
     setEighteenAccessFromCurrentUser,
     (state, { canAccessEighteenContent }): IAppState => ({ ...state, currentUserCanAccessEighteenContent: canAccessEighteenContent })
+  ),
+  on(
+    setCurrentAdmin,
+    (state, { currentAdmin }): IAppState => ({ ...state, currentAdmin: currentAdmin })
   )
 )
 
@@ -374,6 +391,11 @@ export const selectHasConnection = createSelector(
 export const selectCurrentUser = createSelector(
   selectAppState,
   (state: IAppState) => state.currentUser
+);
+
+export const selectCurrentAdmin = createSelector(
+  selectAppState,
+  (state: IAppState) => state.currentAdmin
 );
 
 export const selectAccessEighteenContent = createSelector(
