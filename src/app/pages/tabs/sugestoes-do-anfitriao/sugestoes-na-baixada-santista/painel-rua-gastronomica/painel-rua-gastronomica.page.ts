@@ -299,16 +299,12 @@ export class PainelRuaGastronomicaPage implements OnInit, OnDestroy, AfterViewIn
     }
   }
 
-  public swiperReachedEnd() {
-    this.hideRightControl = true;
-  }
-
-  public swiperReachedBeginning() {
-    this.hideLeftControl = true;
-  }
-
-  public slideSwiperToStart(): void {
-    this.swiper?.slideTo(0, 800);
+  /**
+   * @description Detecta mudanças no swiper para esconder o botão de próximo e anterior conforme o slide estiver no começo ou fim.
+   */
+  public listenForSwiperForControl(ev: any): void {
+    this.hideLeftControl = ev.detail[0].isBeginning;
+    this.hideRightControl = ev.detail[0].isEnd;
   }
 
   ngOnDestroy(): void {

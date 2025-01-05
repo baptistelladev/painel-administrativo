@@ -1,12 +1,8 @@
 import { IFestivalFood } from 'src/app/shared/models/IFestivalFood';
-import { BenefitTypeEnum } from 'src/app/shared/enums/BenefitType';
 import { MOCK_FESTIVAL_FOOD_TYPE } from 'src/app/shared/mocks/MockFestivalFoodType';
-
 import { MOCK_SANTOS_BEACHES, MOCK_SAO_VICENTE_BEACHES } from 'src/app/shared/mocks/MockBeaches';
-
-
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormArray, FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IonDatetime, ModalController } from '@ionic/angular';
 import { map, Observable,  Subscription } from 'rxjs';
 import { CepService } from 'src/app/core/services/cep.service';
@@ -41,12 +37,10 @@ import { ILocation } from 'src/app/shared/models/ILocation';
 import { MOCK_LOCATION } from 'src/app/shared/mocks/MockLocation';
 import { IBeach } from 'src/app/shared/models/IBeach';
 import { LocationEnum } from 'src/app/shared/enums/Location';
-import { CurrencyPipe } from '@angular/common';
 import { IFestivalFoodType } from 'src/app/shared/models/IFestivalFoodType';
 import { MOCK_FESTIVAL_CONSUMER_TYPE } from 'src/app/shared/mocks/MockConsumerFestivalType';
 import { MOCK_FESTIVAL_OPERATOR } from 'src/app/shared/mocks/MockFestivalOperator';
 import { MOCK_FESTIVAL_BENEFIT_TYPE } from 'src/app/shared/mocks/MockFestivalBenefitType';
-import { BenefitConsumerEnum } from 'src/app/shared/enums/BenefitConsumer';
 import { IFestivalConsumerType } from 'src/app/shared/models/IFestivalConsumerType';
 import { IFestivalBenefitType } from 'src/app/shared/models/IFestivalBenefiType';
 import { IFestivalOperator } from 'src/app/shared/models/IFestivalOperator';
@@ -60,25 +54,7 @@ import { ICourtesy } from 'src/app/shared/models/ICourtesy';
 })
 export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDestroy {
 
-  public LocationEnum = LocationEnum;
-
-  public showSundays: boolean = false;
-  public showTuesdays: boolean = false;
-  public showWednesdays: boolean = false;
-  public showThursdays: boolean = false;
-  public showFridays: boolean = false;
-  public showSaturdays: boolean = false;
-  public showMondays: boolean = false;
-
-  public isRegistering: boolean = false;
-
-  public selectedTime: any;
-
-  // USADO PARA MANIPULARO DATETIME.
   @ViewChild('datetime') datetime: IonDatetime;
-  public timerDatetime: boolean = false;
-
-  public formShortEstablishment: FormGroup;
 
   public establishment: IPlace = {
     last_update: '',
@@ -279,6 +255,7 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public MOCK_COURTESIES = MOCK_COURTESIES;
 
   public PlaceTypeCityEnum = PlaceTypeCityEnum;
+  public LocationEnum = LocationEnum;
 
   public currentEstablishment: IPlace;
   public establishment$: Observable<IPlace>;
@@ -288,12 +265,26 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
   public suggestions$: Observable<ISuggestion[]>;
   public suggestionsSubscription: Subscription;
 
+  public formShortEstablishment: FormGroup;
+
+  public selectedTime: any;
+
+  public showSundays: boolean = false;
+  public showTuesdays: boolean = false;
+  public showWednesdays: boolean = false;
+  public showThursdays: boolean = false;
+  public showFridays: boolean = false;
+  public showSaturdays: boolean = false;
+  public showMondays: boolean = false;
+  public isRegistering: boolean = false;
+  public timerDatetime: boolean = false;
+
   constructor(
+    private store : Store,
+    private cepService : CepService,
     private formBuilder : FormBuilder,
     private modalCtrl : ModalController,
     private placesService : PlacesService,
-    private cepService : CepService,
-    private store : Store,
     private suggestionsService : SuggestionsService
   ) { }
 
@@ -307,6 +298,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   }
 
+  /**
+   * @description Obtém as sugestões.
+   */
   public getSuggestions() {
     this.suggestions$ = this.suggestionsService.getSuggestionsCollection(CollectionsEnum.SUGGESTIONS_BAIXADA_SANTISTA);
 
@@ -316,6 +310,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     })
   }
 
+  /**
+   * @description Inicia o formulário responsável por criar ou atualizar um lugar.
+   */
   public initFormShortEstablishment(): void {
     this.formShortEstablishment = this.formBuilder.group({
       sub_name: [''],
@@ -370,10 +367,16 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     })
   }
 
+  /**
+   * @description Detecta mudanças na seleção da praia.
+   */
   public beachChanged(e: any): void {
     console.log(e.detail.value);
   }
 
+  /**
+   * @description Registra um lugar.
+   */
   public async registerEstablishment(type: 'create' | 'update') {
     this.isRegistering = true;
 
@@ -683,6 +686,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
   }
 
+  /**
+   * @description Detecta mudanças no tipo de estabelecimento.
+   */
   public async mainTypeChanged(e: any) {
     if (e.detail.value === PlaceTypeCityEnum.EMPORIO) {
       this.formShortEstablishment.get(['acceptMarketVale', 'marketTicketName', 'showMarketVale'])?.addValidators([Validators.required]);
@@ -691,10 +697,16 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
   }
 
+  /**
+   * @description Detecta mudanças na cidade e define a praia.
+   */
   public cityChanged(e: any) {
     this.defineBeachSelector(e.detail.value);
   }
 
+  /**
+   * @description Obtém o cep.
+   */
   public async getCep() {
     let cep = this.formShortEstablishment.get('zip_code')?.value;
 
@@ -780,30 +792,51 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
 
   }
 
+  /**
+   * @description Detecta mudanças nas sugestões.
+   */
   public async suggestionChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças nas especialidades.
+   */
   public async specialtyChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças no vale refeição.
+   */
   public async ticketChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças no tipo de festival.
+   */
   public async foodTypeFromFestivalChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças no tipo de perfil do cliente.
+   */
   public async consumerFestivalTypeChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças no tipo de benefício do cliente.
+   */
   public async consumerBenefitTypeChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Define se o estabelecimento funciona na cidade, na praia ou nos dois.
+   */
   public async workAtChanged(e: any) {
     let values: string[] = e.detail.value
 
@@ -823,10 +856,16 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
   }
 
+  /**
+   * @description Detecta mudanças no vale alimentação.
+   */
   public async marketTicketChanged(e: any) {
     console.log(e);
   }
 
+  /**
+   * @description Detecta mudanças na rede social.
+   */
   public async networkChanged(e: any) {
     console.log(e);
   }
@@ -1111,12 +1150,18 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     this.selectedTime = horarioFormatado;
   }
 
+  /**
+   * @description Define horários do dia.
+   */
   public defineTimeFromSundaysHour(indexInsideFormArray: number, formControl: string): void {
     const sundaysHour = this.formShortEstablishment.get('sundaysHour') as FormArray;
     sundaysHour.at(indexInsideFormArray).get(formControl)?.patchValue(this.selectedTime);
     this.modalCtrl.dismiss({}, '', `modal-${formControl}-${indexInsideFormArray}-sundays-hour`);
   }
 
+  /**
+   * @description Limpa o horário de funcionamento caso não abra.
+   */
   public clearWorkingTimeWhenSwithIsFalse(e: any, formControlName: string) {
     const formArray = this.formShortEstablishment.get(formControlName) as FormArray;
 
@@ -1156,6 +1201,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
   }
 
+  /**
+   * @description Limpa caracteristicas de uma string.
+   */
   public removeEverythingFromString(): void {
     let nameToUrl = this.formShortEstablishment.get('name')?.value;
     nameToUrl = nameToUrl
@@ -1169,6 +1217,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     this.formShortEstablishment.patchValue({ url: nameToUrl })
   }
 
+  /**
+   * @description Fecha o modal e limpa variáveis.
+   */
   public closeModal(): void {
     this.modalCtrl.dismiss();
     this.formShortEstablishment.reset();
@@ -1181,15 +1232,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
   }
 
-  checkFormErrors() {
-    Object.keys(this.formShortEstablishment.controls).forEach(key => {
-      const controlErrors = this.formShortEstablishment.get(key)?.errors;
-      if (controlErrors) {
-        console.log(`Erro no campo ${key}:`, controlErrors);
-      }
-    });
-  }
-
+  /**
+   * @description Obtém o lugar guardado no NGRX para preencher o formulário.
+   */
   public getCurrentEstablishmentFromNGRX(): void {
     this.establishment$ = this.store.select(AppStore.selectCurrentEstablishment);
 
@@ -1205,6 +1250,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     })
   }
 
+  /**
+   * @description Preenche o formulário.
+   */
   public async fillFormAndVariablesWhenComesFromDetail(establishment: IPlace) {
 
     console.log(establishment);
@@ -1395,6 +1443,9 @@ export class EstablishmentModalComponent  implements OnInit, AfterViewInit, OnDe
     }
   }
 
+  /**
+   * @description Define as praias da cidade selecionada.
+   */
   public defineBeachSelector(cityValue: string) {
     switch (cityValue) {
       case CityEnum.SANTOS:

@@ -21,6 +21,10 @@ import { UserInfoModalComponent } from 'src/app/shared/components/modais/user-in
 })
 export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
 
+  @ViewChild('usersSwiper')
+  swiperRef: ElementRef | undefined;
+  swiper?: Swiper;
+
   public touristOptions: AnimationOptions = {
     path: './../../../../assets/movie/anfitrion-tourists.json',
     autoplay: true,
@@ -33,12 +37,12 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     loop: true
   };
 
-  public hideRightControl: boolean = false;
-  public hideLeftControl: boolean = true;
+  public users: IUSer[];
+  public users$: Observable<IUSer[]>;
+  public usersSubscription: Subscription;
 
-  @ViewChild('usersSwiper')
-  swiperRef: ElementRef | undefined;
-  swiper?: Swiper;
+  public FeaturesEnum = FeaturesEnum;
+  public ProfileTypeEnum = ProfileTypeEnum;
 
   public usersResume: any[] = [
     {
@@ -61,16 +65,12 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     }
   ]
 
+  public hideRightControl: boolean = false;
+  public hideLeftControl: boolean = true;
+
   public touristsLength: null | number;
   public residentsLength: null | number;
   public profileTypeNotDefinedLength: null | number;
-
-  public users: IUSer[];
-  public users$: Observable<IUSer[]>;
-  public usersSubscription: Subscription;
-
-  public FeaturesEnum = FeaturesEnum;
-  public ProfileTypeEnum = ProfileTypeEnum;
 
   constructor(
     private usersService : UsersService,
@@ -87,6 +87,9 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     this.swiper = this.swiperRef?.nativeElement.swiper;
   }
 
+  /**
+   * @description Obtém usuários e define o length das opções.
+   */
   public async getUsers() {
     this.users$ = this.usersService
     .getUsersCollection(CollectionsEnum.USERS);
@@ -100,15 +103,24 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Detecta mudanças no swiper para esconder o botão de próximo e anterior conforme o slide estiver no começo ou fim.
+   */
   public listenForSwiperForControl(ev: any): void {
     this.hideLeftControl = ev.detail[0].isBeginning;
     this.hideRightControl = ev.detail[0].isEnd;
   }
 
+  /**
+   * @description Usado no NGFOR.
+   */
   public trackUserById(user: any) {
     return user.id;
   }
 
+  /**
+   * @description Define o length das opções.
+   */
   public defineTouristsAndResidentsLength(users: IUSer[]): void {
     if (users) {
       this.profileTypeNotDefinedLength = users.filter((user: IUSer) => {
@@ -125,6 +137,9 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  /**
+   * @description Define o length das opções.
+   */
   public defineResume(users: IUSer[]): void {
     this.usersResume.forEach((resume: any) => {
       if (resume.value === 'USUARIOS_CADASTRADOS') {
@@ -145,19 +160,31 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  /**
+   * @description Passa para o próximo slide.
+   */
   public slideToNext(): void {
     this.swiper?.slideNext(800);
   }
 
+  /**
+   * @description Passa para o slide anterior.
+   */
   public slideToPrev(): void {
     this.swiper?.slidePrev(800);
   }
 
+  /**
+   * @description Guarda o usuário selecionado no NGRX e abre o modal com o formulário.
+   */
   public async seeUser(user: IUSer) {
     this.store.dispatch(AppStore.setCurrentUser({ currentUser: user } ))
     this.openModalUserDetails();
   }
 
+  /**
+   * @description Abre modal com os detalhes do usuário.
+   */
   public async openModalUserDetails(): Promise<HTMLIonModalElement> {
     const modal = await this.modalCtrl.create({
       component: UserInfoModalComponent,
@@ -171,10 +198,16 @@ export class UsuariosPage implements OnInit, AfterViewInit, OnDestroy {
     return modal;
   }
 
+  /**
+   * @description Seta a velocidade da animação específica.
+   */
   public touristAnimationCreated(animationItem: AnimationItem): void {
     animationItem.setSpeed(0.8);
   }
 
+  /**
+   * @description Seta a velocidade da animação específica.
+   */
   public residentsAnimationCreated(animationItem: AnimationItem): void {
     animationItem.setSpeed(0.8)
   }

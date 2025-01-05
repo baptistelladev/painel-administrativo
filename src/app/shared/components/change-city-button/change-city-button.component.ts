@@ -20,6 +20,9 @@ export class ChangeCityButtonComponent  implements OnInit {
 
   ngOnInit() {}
 
+  /**
+   * @description Abre um modal para selecionar alguma cidade da Baixada Santista.
+   */
   public async openCityModal() {
     const modal = await this.modalCtrl.create({
       component: CidadesModalComponent,

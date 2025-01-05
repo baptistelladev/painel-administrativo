@@ -16,25 +16,6 @@ import { OverlayService } from 'src/app/shared/services/overlay.service';
 })
 export class AdminsModalComponent  implements OnInit {
 
-  public isCreating: boolean = false;
-
-  public passwordsMatch: boolean = false;
-  public passwordIsValid: boolean = false;
-  public passwordRules: any[];
-
-  public passwordMatch: {text: any} = {
-    text: {
-      pt: 'senhas coincidem',
-      en: 'passwords match',
-      es: 'las contraseñas coinciden'
-    }
-  }
-
-  public showCreatePassword: boolean = false;
-  public showCreateConfirmPassword: boolean = false;
-
-  public MOCK_USER_TYPES: IUserType[] = MOCK_USER_TYPES;
-
   public interfaceOptions: any = {
     showBackdrop: true,
     backdropDismiss: true,
@@ -49,10 +30,6 @@ export class AdminsModalComponent  implements OnInit {
     arrow: true,
   }
 
-  public adminsFormGroup: FormGroup;
-
-  public user: any;
-
   public inputErrors: any = {
     emailAlreadyInUse: {
       show: false,
@@ -60,7 +37,28 @@ export class AdminsModalComponent  implements OnInit {
     }
   }
 
+  public passwordMatch: {text: any} = {
+    text: {
+      pt: 'senhas coincidem',
+      en: 'passwords match',
+      es: 'las contraseñas coinciden'
+    }
+  }
+
+  public MOCK_USER_TYPES: IUserType[] = MOCK_USER_TYPES;
+
+  public adminsFormGroup: FormGroup;
+
   public UserTypeEnum = UserTypeEnum;
+
+  public isCreating: boolean = false;
+  public passwordsMatch: boolean = false;
+  public passwordIsValid: boolean = false;
+  public showCreatePassword: boolean = false;
+  public showCreateConfirmPassword: boolean = false;
+
+  public passwordRules: any[];
+  public user: any;
 
   constructor(
     private formBuilder : FormBuilder,
@@ -75,10 +73,16 @@ export class AdminsModalComponent  implements OnInit {
     this.getPasswordRules();
   }
 
+  /**
+   * @description Obtém as regras de senha.
+   */
   public getPasswordRules(): void {
     this.passwordRules = this.utilsService.getPasswordRules();
   }
 
+  /**
+   * @description Inicializar o formulário responsável pelo cadastro ou atualização do administrador.
+   */
   private initAdminForm(): void {
     this.adminsFormGroup = this.formBuilder.group({
       name: [ null, [ Validators.required, Validators.minLength(3) ]],
@@ -90,22 +94,34 @@ export class AdminsModalComponent  implements OnInit {
     })
   }
 
+  /**
+   * @description Fechar modal.
+   */
   public closeModal(): void {
     this.modalCtrl.dismiss(null, '', 'register-admin');
   }
 
+  /**
+   * @description Limpa o nome do usuário, deixando somente o primeiro nome.
+   */
   public clearFieldKeepJustName(event: any): void {
     let name: string = this.adminsFormGroup.value.name.replace(/[^a-zA-ZÀ-ÿ]/g, '');
     name = name.charAt(0).toUpperCase() + name.slice(1).toLocaleLowerCase();
     this.adminsFormGroup.patchValue({ name: name });
   }
 
-  preventWhitespace(event: KeyboardEvent) {
+  /**
+   * @description Prevenir que o usuário digite espaço.
+   */
+  public preventWhitespace(event: KeyboardEvent) {
     if (event.key === ' ') {
       event.preventDefault();
     }
   }
 
+   /**
+   * @description Limpar erro de input caso exista.
+   */
   public clearErrorsIfExists(error: string): void {
     if (error === 'email-already-in-use' && this.inputErrors.emailAlreadyInUse.show) {
       this.inputErrors.emailAlreadyInUse.show = false;
@@ -113,6 +129,9 @@ export class AdminsModalComponent  implements OnInit {
     }
   }
 
+   /**
+   * @description Torna o input com letras minúsculas.
+   */
   public justLowercase(form: FormGroup, field: string): void {
     let value: string = form.value[field];
 
@@ -122,10 +141,16 @@ export class AdminsModalComponent  implements OnInit {
     }
   }
 
+  /**
+   * @description Checa se a senha e a confirmação da senha coincidem.
+   */
   public relationshipChanged(): void {
     console.log(this.adminsFormGroup.value.type);
   }
 
+  /**
+   * @description Checa se a senha e a confirmação da senha coincidem.
+   */
   public checkPasswordsMatch(): boolean {
     this.passwordsMatch = this.adminsFormGroup.value.password === this.adminsFormGroup.value.confirmPassword
 
@@ -136,14 +161,23 @@ export class AdminsModalComponent  implements OnInit {
     return this.passwordsMatch
   }
 
+  /**
+   * @description Mostra e esconde a senha.
+   */
   public toggleCreatePassword(): void {
     this.showCreatePassword = !this.showCreatePassword;
   }
 
+  /**
+   * @description Mostra e esconde a confirmação da senha.
+   */
   public toggleCreateConfirmPassword(): void {
     this.showCreateConfirmPassword = !this.showCreateConfirmPassword;
   }
 
+  /**
+   * @description Checa se as regras das senha estão corretas.
+   */
   public checkPasswordRules(): void {
     let senha: string = this.adminsFormGroup.get('password')?.value;
 
@@ -155,6 +189,9 @@ export class AdminsModalComponent  implements OnInit {
     }
   }
 
+  /**
+   * @description Registra um admnistrador.
+   */
   public async registerAdmin() {
     this.isCreating = true;
 

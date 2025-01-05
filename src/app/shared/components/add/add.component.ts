@@ -23,7 +23,12 @@ export class AddComponent  implements OnInit {
 
   ngOnInit() {}
 
-  public async openModalToCreateStablishment(): Promise<HTMLIonModalElement> {
+  /**
+   *
+   * @description Abre o modal de acordo com a feature selecionada.
+   * Para criar ou atualizar, lugares, sugestões, usuários, admins, etc...
+   */
+  public async openModal(): Promise<HTMLIonModalElement> {
 
     let component: any;
 

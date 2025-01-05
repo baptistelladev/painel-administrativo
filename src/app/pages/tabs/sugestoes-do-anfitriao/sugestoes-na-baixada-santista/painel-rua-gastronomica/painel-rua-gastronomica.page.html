@@ -80,8 +80,8 @@ class="ion-content-w-linear-bg"
   class="swiper-inset-wrapper"
   [ngClass]="{ 'no-padding': establishments && establishments.length === 0 }">
     <swiper-container
-    (swiperreachbeginning)="swiperReachedBeginning()"
-    (swiperreachend)="swiperReachedEnd()"
+    speed="5000"
+    (swiperslidechange)="listenForSwiperForControl($event)"
     class="full-width swiper-w-relative-pagination"
     #establishmentsSwiper
     [freeMode]="true"

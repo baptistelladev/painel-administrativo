@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FeaturesEnum } from 'src/app/shared/enums/Features';
-import { SuggestionsEnum } from 'src/app/shared/enums/Suggestions';
 
 @Component({
   selector: 'app-tabs',

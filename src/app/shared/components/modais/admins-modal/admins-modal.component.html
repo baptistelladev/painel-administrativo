@@ -1,9 +1,12 @@
-<ion-content [forceOverscroll]="false">
+<ion-content
+[forceOverscroll]="false">
   <section class="admins-modal">
     <form [formGroup]="adminsFormGroup">
       <ion-grid>
         <ion-row>
-          <ion-col size="12" class="txt-right">
+          <ion-col
+          size="12"
+          class="txt-right">
             <ion-button
             (click)="closeModal()"
             title="Fechar modal"
@@ -46,10 +49,14 @@
                 [placeholder]="'Tipo de usuário'" mode="ios">
                   <ion-select-option
                   *ngFor="let type of MOCK_USER_TYPES"
-                  [value]="type.value">{{ type.text.pt }}</ion-select-option>
+                  [value]="type.value">
+                    {{ type.text.pt }}
+                  </ion-select-option>
                 </ion-select>
 
-                <ion-icon name="chevron-down-outline" class="color-gray-light"></ion-icon>
+                <ion-icon
+                name="chevron-down-outline"
+                class="color-gray-light" />
               </ion-item>
 
               <ion-text
@@ -66,7 +73,9 @@
               </ion-text>
             </div>
 
-            <div class="mg-top-8" *ngIf="adminsFormGroup.get('role')?.value">
+            <div
+            class="mg-top-8"
+            *ngIf="adminsFormGroup.get('role')?.value">
               <ion-chip
               [ngClass]="adminsFormGroup.get('role')?.value === UserTypeEnum.ADMINISTRADOR ? 'admin' : 'gray'"
               mode="ios"
@@ -76,9 +85,18 @@
             </div>
           </ion-col>
 
-          <ion-col size="12" class="no-pad-top">
-            <ion-item mode="ios" lines="none" class="rgs-item-toggle disabled-w-opacity-1 mg-bottom-8" [disabled]="true">
-              <ion-toggle justify="space-between" mode="ios" formControlName="isAdmin">
+          <ion-col
+          size="12"
+          class="no-pad-top">
+            <ion-item
+            mode="ios"
+            lines="none"
+            class="rgs-item-toggle disabled-w-opacity-1 mg-bottom-8"
+            [disabled]="true">
+              <ion-toggle
+              justify="space-between"
+              mode="ios"
+              formControlName="isAdmin">
                 É administrador? <span class="font-w-bold" [ngClass]="{ 'color-green': adminsFormGroup.get('isAdmin')?.value }">{{ adminsFormGroup.get('isAdmin')?.value ? 'Sim' : 'Não' }}</span>
               </ion-toggle>
             </ion-item>
@@ -131,6 +149,7 @@
           <ion-col size="12">
             <hr class="rgs-divider">
           </ion-col>
+
           <ion-col size="12">
             <ion-text mode="ios">
               <h1 class="fs-24 font-baloo color-gray-text">
@@ -311,7 +330,7 @@
                 >
                   <ion-text mode="ios">
                     <p class="fs-14">
-                      <ion-icon [name]="rule.valid ? 'checkmark-circle' : 'close-circle'" class="fs-16"></ion-icon>
+                      <ion-icon [name]="rule.valid ? 'checkmark-circle' : 'close-circle'" class="fs-16" />
                       {{ rule.text.pt }}
                     </p>
                   </ion-text>
@@ -321,7 +340,7 @@
                 >
                   <ion-text mode="ios">
                     <p class="fs-14">
-                      <ion-icon [name]="passwordsMatch ? 'checkmark-circle' : 'close-circle'" class="fs-16"></ion-icon>
+                      <ion-icon [name]="passwordsMatch ? 'checkmark-circle' : 'close-circle'" class="fs-16" />
                       {{ passwordMatch.text.pt }}
                     </p>
                   </ion-text>
@@ -353,11 +372,11 @@ class="ion-no-border bg-white">
             mode="md"
             shape="round">
               <ng-container *ngIf="!isCreating">
-                <ion-icon name="person-add-outline" class="mg-right-8"></ion-icon> <b class="mg-right-5">Cadastrar</b> administrador
+                <ion-icon name="person-add-outline" class="mg-right-8" /> <b class="mg-right-5">Cadastrar</b> administrador
               </ng-container>
 
               <ng-container *ngIf="isCreating">
-                <ion-spinner name="dots"></ion-spinner>
+                <ion-spinner name="dots" />
               </ng-container>
             </ion-button>
           </ion-col>

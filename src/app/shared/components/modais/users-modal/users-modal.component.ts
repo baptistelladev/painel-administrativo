@@ -16,9 +16,6 @@ import { IUserType } from 'src/app/shared/models/IUserType';
 })
 export class UsersModalComponent  implements OnInit {
 
-  public MOCK_USER_TYPES: IUserType[] = MOCK_USER_TYPES;
-  public UserTypeEnum = UserTypeEnum;
-
   public interfaceOptions: any = {
     showBackdrop: true,
     backdropDismiss: true,
@@ -33,10 +30,12 @@ export class UsersModalComponent  implements OnInit {
     arrow: true,
   }
 
-  public showCreatePassword: boolean = false;
-  public showCreateConfirmPassword: boolean = false;
-
-  public showTermsAndConditionsModal: boolean = false;
+  public inputErrors: any = {
+    emailAlreadyInUse: {
+      show: false,
+      text: null
+    }
+  }
 
   public passwordMatch: { text: any } = {
     text: {
@@ -44,20 +43,20 @@ export class UsersModalComponent  implements OnInit {
     }
   }
 
-  public passwordRules: any[];
-  public passwordIsValid: boolean = false;
-  public passwordsMatch: boolean = false;
+  public MOCK_USER_TYPES: IUserType[] = MOCK_USER_TYPES;
+
+  public UserTypeEnum = UserTypeEnum;
 
   public createUserFormGroup : FormGroup;
 
+  public passwordIsValid: boolean = false;
+  public passwordsMatch: boolean = false;
+  public showCreatePassword: boolean = false;
+  public showCreateConfirmPassword: boolean = false;
+  public showTermsAndConditionsModal: boolean = false;
   public isCreating: boolean = false;
 
-  public inputErrors: any = {
-    emailAlreadyInUse: {
-      show: false,
-      text: null
-    }
-  }
+  public passwordRules: any[];
 
   constructor(
     private modalCtrl : ModalController,
@@ -72,10 +71,16 @@ export class UsersModalComponent  implements OnInit {
     this.getPasswordRules();
   }
 
+  /**
+   * @description Obtém regras das senhas.
+   */
   public getPasswordRules(): void {
     this.passwordRules = this.utilsService.getPasswordRules();
   }
 
+  /**
+   * @description Fechar modal.
+   */
   public closeModal(): void {
     this.modalCtrl.dismiss();
     this.passwordRules.forEach((rule) => rule.valid = false);
@@ -86,10 +91,16 @@ export class UsersModalComponent  implements OnInit {
     this.inputErrors.emailAlreadyInUse.text = null;
   }
 
+  /**
+   * @description Detecta mudanças na relação que o usuário tem com a Baixada Santista.
+   */
   public relationshipChanged(): void {
     console.log(this.createUserFormGroup.value.type);
   }
 
+  /**
+   * @description Cria um usuário.
+   */
   public async createAcc() {
     this.isCreating = true;
 
@@ -150,6 +161,9 @@ export class UsersModalComponent  implements OnInit {
     }, 2000);
   }
 
+  /**
+   * @description Inicializa o formulário.
+   */
   public initCreateUserForm(): void {
     this.createUserFormGroup = this.formBuilder.group({
       type: [null, [ Validators.required ]],
@@ -161,18 +175,27 @@ export class UsersModalComponent  implements OnInit {
     })
   }
 
-  preventWhitespace(event: KeyboardEvent) {
+  /**
+   * @description Previne o espaço de ser digitado.
+   */
+  public preventWhitespace(event: KeyboardEvent) {
     if (event.key === ' ') {
       event.preventDefault();
     }
   }
 
+  /**
+   * @description Limpa o nome no formuário deixando somente uma string.
+   */
   public clearFieldKeepJustName(event: any): void {
     let name: string = this.createUserFormGroup.value.name.replace(/[^a-zA-ZÀ-ÿ]/g, '');
     name = name.charAt(0).toUpperCase() + name.slice(1).toLocaleLowerCase();
     this.createUserFormGroup.patchValue({ name: name });
   }
 
+  /**
+   * @description Limpa erro no input se existir.
+   */
   public clearErrorsIfExists(error: string): void {
     if (error === 'email-already-in-use' && this.inputErrors.emailAlreadyInUse.show) {
       this.inputErrors.emailAlreadyInUse.show = false;
@@ -180,6 +203,9 @@ export class UsersModalComponent  implements OnInit {
     }
   }
 
+  /**
+   * @description Torna a string somente letras minúsculas.
+   */
   public justLowercase(form: FormGroup, field: string): void {
     let value: string = form.value[field];
 
@@ -189,14 +215,23 @@ export class UsersModalComponent  implements OnInit {
     }
   }
 
+  /**
+   * @description Mostra e esconde a confirmação de senha.
+   */
   public toggleCreateConfirmPassword(): void {
     this.showCreateConfirmPassword = !this.showCreateConfirmPassword;
   }
 
+  /**
+   * @description Mostra e esconde a senha.
+   */
   public toggleCreatePassword(): void {
     this.showCreatePassword = !this.showCreatePassword;
   }
 
+  /**
+   * @description Checa se a senha e confirmação da senha coincidem.
+   */
   public checkPasswordsMatch(): boolean {
     this.passwordsMatch = this.createUserFormGroup.value.password === this.createUserFormGroup.value.confirmPassword
 
@@ -207,10 +242,16 @@ export class UsersModalComponent  implements OnInit {
     return this.passwordsMatch
   }
 
+  /**
+   * @description Mostra e esconde o modal de Termos e Condições.
+   */
   public toggleTermsAndConditionsModal(show: boolean): void {
     this.showTermsAndConditionsModal = show
   }
 
+  /**
+   * @description Checa as regras das senhas.
+   */
   public checkPasswordRules(): void {
     let senha: string = this.createUserFormGroup.get('password')?.value;
 

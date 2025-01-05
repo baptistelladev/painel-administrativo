@@ -20,10 +20,9 @@ export class CidadesModalComponent  implements OnInit {
   public MOCK_CITIES: ICity[] = [...MOCK_CITIES];
 
   constructor(
-    private modalCtrl : ModalController,
     private store : Store,
-    private storageService : StorageService,
-    private title : Title
+    private modalCtrl : ModalController,
+    private storageService : StorageService
   ) { }
 
   ngOnInit() {
@@ -32,6 +31,10 @@ export class CidadesModalComponent  implements OnInit {
   ionViewWillEnter(): void {
   }
 
+  /**
+   * @description Seleciona a cidade, guarda no NGRX para refletir no app inteiro e guarda na Storage pois quando a tela
+   * é atualizada ou entra no app é a primeiro coisa que checamos.
+   */
   public async selectCity(city: any) {
     this.currentCity = city;
     this.store.dispatch(AppStore.setCurrentCity({ city: this.currentCity }))
@@ -39,10 +42,16 @@ export class CidadesModalComponent  implements OnInit {
     await this.closeModalAndFireChange();
   }
 
+  /**
+   * @description Fechar modal.
+   */
   public async closeModal() {
     await this.modalCtrl.dismiss('', '', 'cities-modal');
   }
 
+  /**
+   * @description Fecha o modal e dispara.
+   */
   public async closeModalAndFireChange() {
     await this.modalCtrl.dismiss(this.currentCity, 'change', 'cities-modal');
   }
