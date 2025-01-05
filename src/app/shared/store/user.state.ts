@@ -1,6 +1,5 @@
 import { createAction, createFeatureSelector, createReducer, createSelector, on, props } from "@ngrx/store"
 import { IAdmin } from "../models/IAdmin"
-import { RolesEnum } from "../enums/Roles"
 import { IUserType } from "../models/IUserType"
 
 export interface IUserState {

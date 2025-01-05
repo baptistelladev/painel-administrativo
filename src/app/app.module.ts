@@ -32,11 +32,13 @@ passiveSupport({/*...*/})
 import { provideLottieOptions } from 'ngx-lottie';
 import player from 'lottie-web';
 import { getApp } from 'firebase/app';
+import { userReducer } from './shared/store/user.state';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    AppRoutingModule,
     IonicModule.forRoot(
       {
         mode: 'md',
@@ -46,13 +48,13 @@ import { getApp } from 'firebase/app';
         // scrollPadding: false
       }
     ),
-    AppRoutingModule,
+    StoreModule.forRoot({
+      app: appReducer,
+      user: userReducer
+    }),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
       logOnly: !isDevMode()
-    }),
-    StoreModule.forRoot({
-      app: appReducer
     }),
     IonicStorageModule.forRoot({
       name: 'anfitrion-dashboard-storage',

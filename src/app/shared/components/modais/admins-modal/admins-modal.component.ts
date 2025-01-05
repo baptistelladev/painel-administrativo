@@ -2,12 +2,15 @@ import { AdminService } from './../../../../core/services/firebase/admin.service
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription } from 'rxjs';
 import { UtilsService } from 'src/app/core/services/utils.service';
 import { UserTypeEnum } from 'src/app/shared/enums/UserType';
 import { MOCK_USER_TYPES } from 'src/app/shared/mocks/MockUserTypes';
 import { IAdmin } from 'src/app/shared/models/IAdmin';
 import { IUserType } from 'src/app/shared/models/IUserType';
 import { OverlayService } from 'src/app/shared/services/overlay.service';
+import * as AppStore from 'src/app/shared/store/app.state';
 
 @Component({
   selector: 'app-admins-modal',
@@ -60,7 +63,12 @@ export class AdminsModalComponent  implements OnInit {
   public passwordRules: any[];
   public user: any;
 
+  public admin: IAdmin;
+  public admin$: Observable<IAdmin>;
+  public adminSubscription: Subscription;
+
   constructor(
+    private store : Store,
     private formBuilder : FormBuilder,
     private modalCtrl : ModalController,
     private utilsService : UtilsService,
@@ -71,6 +79,33 @@ export class AdminsModalComponent  implements OnInit {
   async ngOnInit() {
     this.initAdminForm();
     this.getPasswordRules();
+    this.getAdminFromNGRX();
+  }
+
+  /**
+   * @description Obtém o admin previamente selecionado e guardado no NGRX.
+   */
+  public getAdminFromNGRX(): void {
+    this.admin$ = this.store.select(AppStore.selectCurrentAdmin);
+
+    this.adminSubscription = this.admin$
+    .subscribe((admin: IAdmin) => {
+      this.admin = admin;
+      if (this.admin) {
+        this.fillAdminFormAndVariables(admin);
+      }
+    })
+  }
+
+  public fillAdminFormAndVariables(admin: IAdmin): void {
+    this.adminsFormGroup.patchValue({
+      name: admin.firstName,
+      isAdmin: admin.isAdmin,
+    })
+
+    if (admin.role?.value) {
+      this.adminsFormGroup.get('role')?.patchValue(admin.role.value)
+    }
   }
 
   /**
