@@ -18,6 +18,13 @@ import * as AppStore from 'src/app/shared/store/app.state';
   styleUrls: ['./admins-modal.component.scss'],
 })
 export class AdminsModalComponent  implements OnInit {
+  public adminInfoFormHasChanges: boolean = false;
+  public adminInfoFormHasChanges$: Observable<boolean>
+  public adminInfoFormHasChangesSubscription: Subscription;
+
+  public adminAccessFormHasChanges: boolean = false;
+  public adminAccessFormHasChanges$: Observable<boolean>
+  public adminAccessFormHasChangesSubscription: Subscription;
 
   public interfaceOptions: any = {
     showBackdrop: true,
@@ -51,14 +58,18 @@ export class AdminsModalComponent  implements OnInit {
   public MOCK_USER_TYPES: IUserType[] = MOCK_USER_TYPES;
 
   public adminsFormGroup: FormGroup;
+  public adminsFormAccessGroup: FormGroup;
 
   public UserTypeEnum = UserTypeEnum;
 
   public isCreating: boolean = false;
+  public isUpdatingInfo: boolean = false;
+  public isUpdatingAccess: boolean = false;
   public passwordsMatch: boolean = false;
   public passwordIsValid: boolean = false;
   public showCreatePassword: boolean = false;
   public showCreateConfirmPassword: boolean = false;
+  public showAccessForm: boolean = false;
 
   public passwordRules: any[];
   public user: any;
@@ -78,8 +89,47 @@ export class AdminsModalComponent  implements OnInit {
 
   async ngOnInit() {
     this.initAdminForm();
+    this.initAdminAccessForm();
     this.getPasswordRules();
     this.getAdminFromNGRX();
+  }
+
+  public listenForChangesInAdminAccessInfo(): void {
+    this.adminAccessFormHasChanges$ = this.adminsFormGroup.valueChanges;
+
+    this.adminAccessFormHasChangesSubscription = this.adminAccessFormHasChanges$
+    .subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.adminAccessFormHasChanges = true;
+        }
+      },
+      error: () => {
+
+      },
+      complete: () => {
+
+      }
+    })
+  }
+
+  public listenForChangesInAdminInfo(): void {
+    this.adminInfoFormHasChanges$ = this.adminsFormGroup.valueChanges;
+
+    this.adminInfoFormHasChangesSubscription = this.adminInfoFormHasChanges$
+    .subscribe({
+      next: (res: any) => {
+        if (res) {
+          this.adminInfoFormHasChanges = true;
+        }
+      },
+      error: () => {
+
+      },
+      complete: () => {
+
+      }
+    })
   }
 
   /**
@@ -93,6 +143,13 @@ export class AdminsModalComponent  implements OnInit {
       this.admin = admin;
       if (this.admin) {
         this.fillAdminFormAndVariables(admin);
+        this.listenForChangesInAdminInfo();
+      } else {
+        this.adminsFormAccessGroup.get('password')?.addValidators([ Validators.required, Validators.minLength(8) ]);
+        this.adminsFormAccessGroup.get('password')?.updateValueAndValidity();
+        this.adminsFormAccessGroup.get('confirmPassword')?.addValidators([ Validators.required, Validators.minLength(8) ]);
+        this.adminsFormAccessGroup.get('confirmPassword')?.updateValueAndValidity();
+        this.listenForChangesInAdminAccessInfo();
       }
     })
   }
@@ -101,6 +158,7 @@ export class AdminsModalComponent  implements OnInit {
     this.adminsFormGroup.patchValue({
       name: admin.firstName,
       isAdmin: admin.isAdmin,
+      email: admin.email
     })
 
     if (admin.role?.value) {
@@ -121,19 +179,43 @@ export class AdminsModalComponent  implements OnInit {
   private initAdminForm(): void {
     this.adminsFormGroup = this.formBuilder.group({
       name: [ null, [ Validators.required, Validators.minLength(3) ]],
-      email: [ null, [ Validators.required, Validators.email ]],
       role: [ UserTypeEnum.ADMINISTRADOR, [ Validators.required ]],
       isAdmin: [ true, [ Validators.required ]],
-      password: [ '', [ Validators.required, Validators.minLength(8) ] ],
-      confirmPassword: [ '', [ Validators.required, Validators.minLength(8) ] ]
+      email: [ null, [ Validators.required, Validators.email ]]
     })
   }
 
   /**
-   * @description Fechar modal.
+   * @description Inicializar o formulário responsável pelo cadastro ou atualização do acesso do administrador.
    */
-  public closeModal(): void {
-    this.modalCtrl.dismiss(null, '', 'register-admin');
+  private initAdminAccessForm(): void {
+    this.adminsFormAccessGroup = this.formBuilder.group({
+      password: [ null ],
+      confirmPassword: [ null ]
+    })
+  }
+
+  /**
+   * @description Fechar modal, limpar variáveis e resetar formulários.
+   */
+  public closeModalAndClearVariables(): void {
+    this.modalCtrl.dismiss(null, '', 'register-admin').then(() => {
+      this.store.dispatch(AppStore.clearCurrentAdmin());
+      this.adminsFormAccessGroup.reset();
+      this.adminsFormGroup.reset();
+
+      this.inputErrors.emailAlreadyInUse.show = false;
+      this.inputErrors.emailAlreadyInUse.text = null;
+
+
+      this.passwordRules.forEach((rule) => rule.valid = false);
+      this.passwordIsValid = false;
+      this.passwordsMatch = false;
+
+
+      this.showCreatePassword = false;
+      this.showCreateConfirmPassword = false;
+    })
   }
 
   /**
@@ -187,9 +269,9 @@ export class AdminsModalComponent  implements OnInit {
    * @description Checa se a senha e a confirmação da senha coincidem.
    */
   public checkPasswordsMatch(): boolean {
-    this.passwordsMatch = this.adminsFormGroup.value.password === this.adminsFormGroup.value.confirmPassword
+    this.passwordsMatch = this.adminsFormAccessGroup.value.password === this.adminsFormAccessGroup.value.confirmPassword
 
-    if (this.adminsFormGroup.value.password === '' || this.adminsFormGroup.value.confirmPassword === '') {
+    if (this.adminsFormAccessGroup.value.password === '' || this.adminsFormAccessGroup.value.confirmPassword === '') {
       this.passwordsMatch = false
     }
 
@@ -214,10 +296,10 @@ export class AdminsModalComponent  implements OnInit {
    * @description Checa se as regras das senha estão corretas.
    */
   public checkPasswordRules(): void {
-    let senha: string = this.adminsFormGroup.get('password')?.value;
+    let password: string = this.adminsFormAccessGroup.get('password')?.value;
 
-    if (senha.length > 0) {
-      this.utilsService.checkPasswordRules(senha);
+    if (password && password.length > 0) {
+      this.utilsService.checkPasswordRules(password);
       this.passwordIsValid = this.passwordRules.every((rule) => rule.valid === true);
 
       this.checkPasswordsMatch();
@@ -227,8 +309,12 @@ export class AdminsModalComponent  implements OnInit {
   /**
    * @description Registra um admnistrador.
    */
-  public async registerAdmin() {
-    this.isCreating = true;
+  public async registerOrUpdateAdmin(action: 'register' | 'update') {
+    if (action === 'register') {
+      this.isCreating = true;
+    } else {
+      this.isUpdatingInfo = true;
+    }
 
     const toastError = await this.overlayService.fireToast({
       position: 'top',
@@ -249,44 +335,47 @@ export class AdminsModalComponent  implements OnInit {
       role: this.MOCK_USER_TYPES.find((userType: IUserType) => {
         return userType.value === this.adminsFormGroup.value.role
       }),
-      isAdmin: this.adminsFormGroup.value.isAdmin
+      isAdmin: this.adminsFormGroup.value.isAdmin,
+      email: this.adminsFormGroup.value.email
     }
 
-    this.adminService.createUserWithEmailAndPassword(this.adminsFormGroup.value.email, this.adminsFormGroup.value.password, adminInfo)
-    .then(async () => {
-      this.isCreating = false;
-      this.adminsFormGroup.patchValue({ email: this.adminsFormGroup.value.email });
-      this.adminsFormGroup.reset();
-      this.showCreatePassword = false;
-      this.showCreateConfirmPassword = false;
-      this.passwordRules.forEach((rule) => rule.valid = false);
-      this.passwordIsValid = false;
-      this.passwordsMatch = false;
-      this.inputErrors.emailAlreadyInUse.show = false;
-      this.inputErrors.emailAlreadyInUse.text = null;
-      this.closeModal();
+    if (action === 'register') {
+      this.adminService.createUserWithEmailAndPassword(this.adminsFormGroup.value.email, this.adminsFormAccessGroup.value.password, adminInfo)
+      .then(async () => {
+        this.isCreating = false;
+        this.closeModalAndClearVariables();
+        toastSuccess.message = `Conta criada, <b>com sucesso</b>`;
+        await toastSuccess.present();
+      }).catch( async (error) => {
+        toastError.message = error.text.pt;
 
-      toastSuccess.message = `Conta criada, <b>com sucesso</b>`;
-      await toastSuccess.present();
-    }).catch( async (error) => {
-      toastError.message = error.text.pt;
+        switch (error.error.code) {
+          case 'auth/email-already-in-use':
+            this.inputErrors.emailAlreadyInUse.text = toastError.message;
+            this.inputErrors.emailAlreadyInUse.show = true;
+          break;
+        }
 
-      switch (error.error.code) {
-        case 'auth/email-already-in-use':
-          this.inputErrors.emailAlreadyInUse.text = toastError.message;
-          this.inputErrors.emailAlreadyInUse.show = true;
-        break;
-      }
+        await toastError.present();
 
-      await toastError.present();
+        this.isCreating = false;
 
-      this.isCreating = false;
-
-      await toastError.onDidDismiss()
-      .then(() => {
-        toastError.message = '';
+        await toastError.onDidDismiss()
+        .then(() => {
+          toastError.message = '';
+        })
       })
-    })
+    } else {
+      if (this.admin.uid) {
+        this.adminService.updateAdminInfo(this.admin.uid, adminInfo)
+        .then(() => {
+          this.closeModalAndClearVariables();
+          this.isUpdatingInfo = false;
+        }).catch((res: any) => {
+          console.log(res);
+        })
+      }
+    }
   }
 
 }

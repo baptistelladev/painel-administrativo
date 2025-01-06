@@ -38,6 +38,12 @@ class="ion-content-w-linear-bg">
           class="unlock-shadow-from-swiper bigger auto-width">
             <div class="admin-circle-wrapper">
 
+              <ion-chip
+              mode="ios"
+              class="txt-uppercase as-badge admin admin-chip">
+                {{ admin.role?.text.pt }}
+              </ion-chip>
+
               <div class="circle-frame mg-bottom-16">
                 <ion-icon name="person-outline" class="color-gray-mid" />
               </div>
@@ -45,12 +51,6 @@ class="ion-content-w-linear-bg">
               <ion-text mode="ios" class="txt-center line-height-16">
                 <p class="mg-top-8 font-baloo fs-14 color-gray-text font-w-bold mg-bottom-5">{{ admin.firstName }}</p>
               </ion-text>
-
-              <ion-chip
-              mode="ios"
-              class="txt-uppercase as-badge admin">
-                {{ admin.role?.text.pt }}
-              </ion-chip>
 
               <ion-item
               (click)="seeAdmin(admin)"
@@ -60,6 +60,18 @@ class="ion-content-w-linear-bg">
               mode="ios">
                 <ion-text mode="ios" class="fs-13 font-w-thin">
                   <p>ver <b>perfil</b></p>
+                </ion-text>
+              </ion-item>
+
+              <ion-item
+              (click)="showAlertToRemove(admin)"
+              class="remove"
+              [detailIcon]="'trash-outline'"
+              lines="none"
+              [button]="true"
+              mode="ios">
+                <ion-text mode="ios" class="fs-13 font-w-thin">
+                  <p><b>remover</b> perfil</p>
                 </ion-text>
               </ion-item>
             </div>
