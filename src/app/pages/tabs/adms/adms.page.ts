@@ -1,6 +1,6 @@
 import { setCurrentAdmin } from './../../../shared/store/app.state';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { AlertController, ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
 import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subscription } from 'rxjs';
@@ -47,8 +47,7 @@ export class AdmsPage implements OnInit, OnDestroy, AfterViewInit {
     private adminService : AdminService,
     private navCtrl : NavController,
     private modalCtrl : ModalController,
-    private store : Store,
-    private alertCtrl : AlertController
+    private store : Store
   ) { }
 
   ngOnInit() {
@@ -136,41 +135,6 @@ export class AdmsPage implements OnInit, OnDestroy, AfterViewInit {
     await modal.present();
 
     return modal;
-  }
-
-  /**
-   * @description Mostrar um alerta para confirmar remoção de lugar.
-   */
-  public async showAlertToRemove(admin: IAdmin): Promise<HTMLIonAlertElement> {
-    const alert = await this.alertCtrl.create({
-      mode: 'ios',
-      message: `Confirmar remoção de ${admin.firstName}?`,
-      subHeader: `${admin.firstName}`,
-      cssClass: 'anfitrion-alert negative-btn',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-
-          }
-        },
-        {
-          text: 'Remover',
-          role: 'confirm',
-          handler: async () => {
-            await alert.dismiss();
-            if (admin.uid) {
-              await this.adminService.removeAdminDoc(CollectionsEnum.ADMINS, admin.uid);
-            }
-          }
-        },
-      ]
-    })
-
-    await alert.present();
-
-    return alert;
   }
 
   public ngOnDestroy(): void {

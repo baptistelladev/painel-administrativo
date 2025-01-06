@@ -3,8 +3,8 @@ import { Auth } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
-import { collection, CollectionReference, deleteDoc, doc, getDoc, getDocs, onSnapshot, orderBy, query, QueryConstraint, setDoc, updateDoc, where } from 'firebase/firestore';
-import { Observable, Subscription } from 'rxjs';
+import { collection, CollectionReference, doc, getDoc, getDocs, onSnapshot, orderBy, query, QueryConstraint, setDoc, updateDoc, where } from 'firebase/firestore';
+import { Observable } from 'rxjs';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IAdmin } from 'src/app/shared/models/IAdmin';
 import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
@@ -14,7 +14,6 @@ import * as UserStore from 'src/app/shared/store/user.state';
   providedIn: 'root'
 })
 export class AdminService {
-
 
   constructor(
     private firestore : Firestore,
@@ -130,16 +129,14 @@ export class AdminService {
       const userCredential = await createUserWithEmailAndPassword(this.auth, email, password);
       const user = userCredential.user;
 
-      if (user) {
-        await setDoc(doc(this.firestore, CollectionsEnum.ADMINS, user.uid), {
-          uid: user.uid,
-          ...userInfo
-        })
+      await setDoc(doc(this.firestore, CollectionsEnum.ADMINS, user.uid), {
+        uid: user.uid,
+        ...userInfo
+      })
 
-        return user
-      } else {
-        return false
-      }
+      await sendEmailVerification(user);
+
+      return user
     } catch (error) {
       const errorMessage = this.getFirebaseErrorMessage(error);
       throw errorMessage;
@@ -196,43 +193,6 @@ export class AdminService {
             es: 'Error desconocido. Intente de nuevo más tarde'
           }
         }
-    }
-  }
-
-  /**
-   * @description Responsável por atualizar os dados do admin.
-   * @param docId obrigatório do tipo string - id da conta do admin.
-   * @param adminInfo obrigatório do tipo any - dados do admin.
-   * @returns uma promessa do tipo void.
-   */
-  public async updateAdminInfo(docId: string, adminInfo: any): Promise<any> {
-    try {
-      const docRef = doc(this.firestore, CollectionsEnum.ADMINS, docId);
-      await updateDoc(docRef, adminInfo);
-      const docSnap = await getDoc(docRef);
-      return docSnap.data()
-    } catch (error) {
-      throw error;
-    }
-  }
-
-  /**
-   * @description Responsável por remover um admin.
-   * @param collectionName obrigatório do tipo string - nome da coleção no firebase.
-   * @param docId obrigatório do tipo string - representa o ID do admin.
-   * @returns uma promessa que pode ser qualquer coisa, um erro ou ou o documento.
-   */
-  public async removeAdminDoc(
-    collectionName: string,
-    docId: string
-  ): Promise<any> {
-    const docRef = doc(this.firestore, collectionName, docId);
-
-    try {
-      await deleteDoc(docRef);
-      return true
-    } catch (error) {
-      return false
     }
   }
 }

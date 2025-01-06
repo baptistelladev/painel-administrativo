@@ -276,10 +276,6 @@ export const clearCurrentEstablishment = createAction(
   '[APP] Limpar estabelecimento selecionado'
 )
 
-export const clearCurrentAdmin = createAction(
-  '[APP] Limpar admin selecionado'
-)
-
 export const setAppInfoNetworks = createAction(
   '[APP] Definir redes sociais/contato do aplicativo',
   props<{ networks: ISocialNetwork[] }>()
@@ -344,10 +340,6 @@ export const appReducer = createReducer(
   on(
     clearCurrentEstablishment,
     (state): IAppState => ({ ...state, currentPlace: appInitialState.currentPlace })
-  ),
-  on(
-    clearCurrentAdmin,
-    (state): IAppState => ({ ...state, currentAdmin: appInitialState.currentAdmin })
   ),
   on(
     setCurrentUser,
