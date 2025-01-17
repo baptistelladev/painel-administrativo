@@ -1,13 +1,16 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auth } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, sendEmailVerification } from '@angular/fire/auth';
 import { Firestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
-import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
+import { FirebaseError } from 'firebase/app';
 import { collection, CollectionReference, doc, getDoc, getDocs, onSnapshot, orderBy, query, QueryConstraint, setDoc, updateDoc, where } from 'firebase/firestore';
-import { Observable } from 'rxjs';
+import { IRequestNewAdmin } from 'functions/src/models/IRequestCreateNewAdmin';
+import { firstValueFrom, Observable } from 'rxjs';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IAdmin } from 'src/app/shared/models/IAdmin';
 import { IFirebaseFilter } from 'src/app/shared/models/IFirebaseFilter';
+import { OverlayService } from 'src/app/shared/services/overlay.service';
 import * as UserStore from 'src/app/shared/store/user.state';
 
 @Injectable({
@@ -15,10 +18,14 @@ import * as UserStore from 'src/app/shared/store/user.state';
 })
 export class AdminService {
 
+  private baseUrl: string = 'admin.anfitrionapp.com.br/api';
+
   constructor(
     private firestore : Firestore,
     private store : Store,
-    private auth : Auth
+    private auth : Auth,
+    private overlayService : OverlayService,
+    private http: HttpClient
   ) { }
 
   /**
@@ -44,11 +51,31 @@ export class AdminService {
         await this.dispatchUserEmail(userCred.email);
         return true;
       } else {
-        console.warn('Acesso restrito');
+        const alert = await this.overlayService.fireAlert({
+          backdropDismiss: false,
+          cssClass: 'anf-alert',
+          mode: 'ios',
+          subHeader: `Atenção`,
+          message: `Não existe um admnistrador com essas credenciais.`,
+          buttons: [
+            {
+              text: `Entendi`,
+              role: 'confirm',
+              handler: async () => {}
+            }
+          ]
+        })
+        await alert.present();
         return false;
       }
-    } catch (error) {
-      console.error('Erro ao buscar dados no Firestore:', error);
+    } catch (error: any) {
+      if (error instanceof FirebaseError) {
+        console.error('Erro ao buscar dados no Firestore:', error.name);
+        console.error('Erro ao buscar dados no Firestore:', error.message);
+        console.error('Erro ao buscar dados no Firestore:', error.code);
+      } else {
+        console.error('Erro desconhecido:', error);
+      }
       return false;
     }
   }
@@ -193,6 +220,18 @@ export class AdminService {
             es: 'Error desconocido. Intente de nuevo más tarde'
           }
         }
+    }
+  }
+
+  public async createAdmin(payload: IRequestNewAdmin): Promise<any> {
+    try {
+      const response = await firstValueFrom(
+        this.http.post(`${this.baseUrl}/create-new-admin`, payload)
+      );
+      return response;
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      throw error; // Repassa o erro para o chamador
     }
   }
 }

@@ -81,11 +81,18 @@ import { userReducer } from './shared/store/user.state';
     // Inicialização do app principal
     provideFirebaseApp(() => initializeApp(environment.anfitrionFirebaseConfig)),
     provideFirestore(() => getFirestore()), // Firestore para o app principal
-    provideAuth(() => getAuth()), // Auth para o app principal
+    provideAuth(() => {
+      const auth = getAuth();
+      // Conectar ao emulador do Auth
+     // {
+     //   connectAuthEmulator(auth, 'http://localhost:9099')
+    //  }
+      return auth;
+    }), // Auth para o app principal
 
     // Inicialização do segundo app (para 'anfitrion-management')
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig, 'anfitrion-management')),
-    // provideFirestore(() => getFirestore(getApp('anfitrion-management'))), // Firestore para o segundo app
+    provideFirestore(() => getFirestore(getApp('anfitrion-management'))),
      //provideAuth(() => getAuth(getApp('anfitrion-management'))), // Auth para o segundo app
 
     provideLottieOptions({

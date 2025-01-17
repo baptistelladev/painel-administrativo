@@ -11,6 +11,8 @@ import { IAdmin } from 'src/app/shared/models/IAdmin';
 import { IUserType } from 'src/app/shared/models/IUserType';
 import { OverlayService } from 'src/app/shared/services/overlay.service';
 import * as AppStore from 'src/app/shared/store/app.state';
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { IRequestNewAdmin } from 'src/app/shared/models/IRequestCreateNewAdmin';
 
 @Component({
   selector: 'app-admins-modal',
@@ -252,41 +254,26 @@ export class AdminsModalComponent  implements OnInit {
       isAdmin: this.adminsFormGroup.value.isAdmin
     }
 
-    this.adminService.createUserWithEmailAndPassword(this.adminsFormGroup.value.email, this.adminsFormGroup.value.password, adminInfo)
-    .then(async () => {
-      this.isCreating = false;
-      this.adminsFormGroup.patchValue({ email: this.adminsFormGroup.value.email });
-      this.adminsFormGroup.reset();
-      this.showCreatePassword = false;
-      this.showCreateConfirmPassword = false;
-      this.passwordRules.forEach((rule) => rule.valid = false);
-      this.passwordIsValid = false;
-      this.passwordsMatch = false;
-      this.inputErrors.emailAlreadyInUse.show = false;
-      this.inputErrors.emailAlreadyInUse.text = null;
-      this.closeModal();
+    const payload: IRequestNewAdmin = {
+      email: 'teste@teste.com',
+      password: 'Felipe@123',
+      claims: '',
+      adminInfo: adminInfo
+    }
 
-      toastSuccess.message = `Conta criada, <b>com sucesso</b>`;
-      await toastSuccess.present();
-    }).catch( async (error) => {
-      toastError.message = error.text.pt;
-
-      switch (error.error.code) {
-        case 'auth/email-already-in-use':
-          this.inputErrors.emailAlreadyInUse.text = toastError.message;
-          this.inputErrors.emailAlreadyInUse.show = true;
-        break;
-      }
-
-      await toastError.present();
-
-      this.isCreating = false;
-
-      await toastError.onDidDismiss()
-      .then(() => {
-        toastError.message = '';
-      })
-    })
+    await this.createAdmin(payload);
   }
+
+  async createAdmin(payload: IRequestNewAdmin) {
+    try {
+      const response = await this.adminService.createAdmin(payload);
+      console.log('Usuário criado com sucesso:', response);
+      // Aqui você pode atualizar a lista de usuários ou mostrar uma mensagem de sucesso
+    } catch (error) {
+      console.error('Erro ao criar usuário:', error);
+      // Trate o erro de forma apropriada (exemplo: mostrar mensagem ao usuário)
+    }
+  }
+
 
 }

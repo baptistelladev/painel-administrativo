@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Auth, confirmPasswordReset, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, UserCredential } from '@angular/fire/auth';
+import { Auth, confirmPasswordReset, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signOut  } from '@angular/fire/auth';
 import { collection, doc, Firestore, setDoc } from '@angular/fire/firestore';
 import { NavController } from '@ionic/angular';
 import { addDoc } from 'firebase/firestore';

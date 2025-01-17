@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "module": "CommonJS",                        // Usando módulos ES6 (ESNext)
+    "moduleResolution": "node",                // Resolve os módulos da mesma maneira que o Node.js
+    "esModuleInterop": true,                   // Habilita a interoperabilidade entre CommonJS e ESModules
+    "noImplicitReturns": true,                 // Exige que funções sempre retornem um valor
+    "noUnusedLocals": true,                    // Emite erro se houver variáveis não utilizadas
+    "outDir": "lib",                           // Diretório onde os arquivos compilados serão gerados
+    "sourceMap": true,                         // Gera arquivos de mapa para facilitar o debug
+    "strict": true,                            // Ativa todas as verificações estritas de tipo
+    "target": "ES2020",                        // Compila para ECMAScript 2020
+    "skipLibCheck": true,                      // Opcional, pode melhorar a performance durante a compilação
+    "resolveJsonModule": true,                 // Permite importar arquivos JSON
+    "allowJs": true,                           // Permite a importação de arquivos JavaScript junto aos arquivos TypeScript
+    "allowSyntheticDefaultImports": true,       // Permite imports default sintéticos (ajuda em compatibilidade),
+    "typeRoots": ["node_modules/@types"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

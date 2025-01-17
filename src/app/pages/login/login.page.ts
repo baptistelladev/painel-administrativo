@@ -79,6 +79,9 @@ export class LoginPage implements OnInit {
     await this.authService.signInWithEmailAndPassword(this.formLoginGroup.value.email, this.formLoginGroup.value.password)
     .then( async (user: any) => {
 
+      console.log(user, 'autenticado');
+
+
       const passwordInput = this.passwordInput.getInputElement();
       passwordInput.then((input) => input.blur());
 
