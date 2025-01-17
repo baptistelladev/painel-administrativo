@@ -37,8 +37,6 @@
     "animate.css": "^4.1.1",
     "cors": "^2.8.5",
     "firebase": "^10.14.1",
-    "firebase-functions": "^6.2.0",
-    "firebase-functions-auth": "^4.0.1",
     "ionicons": "^7.0.0",
     "lottie-web": "^5.12.2",
     "moment": "^2.30.1",
