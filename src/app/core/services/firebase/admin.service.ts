@@ -5,7 +5,6 @@ import { Firestore } from '@angular/fire/firestore';
 import { Store } from '@ngrx/store';
 import { FirebaseError } from 'firebase/app';
 import { collection, CollectionReference, doc, getDoc, getDocs, onSnapshot, orderBy, query, QueryConstraint, setDoc, updateDoc, where } from 'firebase/firestore';
-import { IRequestNewAdmin } from 'functions/src/models/IRequestCreateNewAdmin';
 import { firstValueFrom, Observable } from 'rxjs';
 import { CollectionsEnum } from 'src/app/shared/enums/Collection';
 import { IAdmin } from 'src/app/shared/models/IAdmin';
@@ -220,18 +219,6 @@ export class AdminService {
             es: 'Error desconocido. Intente de nuevo más tarde'
           }
         }
-    }
-  }
-
-  public async createAdmin(payload: IRequestNewAdmin): Promise<any> {
-    try {
-      const response = await firstValueFrom(
-        this.http.post(`${this.baseUrl}/create-new-admin`, payload)
-      );
-      return response;
-    } catch (error) {
-      console.error('Erro ao criar usuário:', error);
-      throw error; // Repassa o erro para o chamador
     }
   }
 }
